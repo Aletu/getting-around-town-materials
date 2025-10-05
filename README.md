@@ -1,15 +1,11 @@
 # Getting Around Town – Interactive Materials
 
-Multiple materials on the same site (Scenario: “Getting around town!”):
+Scaffold a Svelte + Vite + Tailwind (DaisyUI) project with two learning modules (same site).
 
-1. Help the Visitor – Short Text Hints  
-   - Assessment strategy: R.1  
-   - Indicator: R.1.1 (short texts with “Excuse me…”, “Be careful…” + locations)  
+## Material #1
 
-2. Safe Walk Sequence  
-   - Assessment strategy: R.2  
-   - Indicator: R.2.1 (place images in order by following a short text)
+Help the Visitor (R1.1) – show short messages (“Excuse me…”, “Be careful…”) and 3–4 place options (bakery, park, etc.); give instant feedback and score.
 
-## Technologies
-- Svelte + Vite
-- Tailwind CSS + DaisyUI
+## Material #2
+
+Safe Walk Sequence (R2.1) – show a short safety text and let students drag/drop images (traffic light, crosswalk, park) to the correct order.
