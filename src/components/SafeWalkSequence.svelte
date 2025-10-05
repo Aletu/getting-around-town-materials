@@ -54,15 +54,16 @@
     {/each}
   </div>
 
-  <div class="grid md:grid-cols-3 gap-4" on:dragover={onDragOver}>
+  <!-- container has a role/list semantics so the dragover handler has an explicit ARIA role -->
+  <div class="grid md:grid-cols-3 gap-4" on:dragover={onDragOver} role="list" aria-label="Safe walk sequence list">
     {#each items as item}
       <div
         class="card bg-base-100 shadow cursor-move border border-base-300"
         draggable="true"
         on:dragstart={(e) => onDragStart(e, item.id)}
         on:drop={(e) => onDrop(e, item.id)}
-        aria-grabbed="false"
-        role="group"
+        aria-grabbed={dragSrcId === item.id}
+        role="listitem"
       >
         <div class="card-body items-center p-4">
           <span class="text-5xl" aria-hidden="true">{item.emoji}</span>

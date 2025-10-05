@@ -9,11 +9,11 @@
   let attempts = 0;
   let finished = false;
   let feedback = '';
-  let messages = [...HINT_MESSAGES];
+  // start with messages shuffled so the same message doesn't always appear first
+  let messages = [...HINT_MESSAGES].sort(() => Math.random() - 0.5);
 
-  function currentMessage() {
-    return messages[currentIndex];
-  }
+  // reactive current message so Svelte updates when currentIndex or messages change
+  $: current = messages[currentIndex];
 
   function buildOptions(msg) {
     const base = [msg.answer, ...msg.distractors];
@@ -25,16 +25,31 @@
       .sort(() => Math.random() - 0.5);
   }
 
-  let options = buildOptions(currentMessage());
+  // make options reactive so they're rebuilt whenever the current message or messages change
+  $: options = current ? buildOptions(current) : [];
+
+  // debugging: track state so it's easier to see why we might be stuck on the first message
+  function dbgState(tag) {
+    // use console.debug so logs are visible in devtools without being too noisy
+    console.debug('[HelpVisitor]', tag, {
+      currentIndex,
+      messagesLength: messages.length,
+      currentId: current?.id,
+      currentText: current?.text
+    });
+  }
 
   function selectPlace(id) {
     attempts++;
-    if (id === currentMessage().answer) {
+    dbgState('selectPlace - before check');
+    if (current && id === current.answer) {
       score++;
       feedback = '✅ Correct!';
+      dbgState('selectPlace - correct');
       advance();
     } else {
       feedback = '❌ Try again.';
+      dbgState('selectPlace - wrong');
     }
   }
 
@@ -43,9 +58,10 @@
       feedback = '';
       if (currentIndex < messages.length - 1) {
         currentIndex++;
-        options = buildOptions(currentMessage());
+        dbgState('advance - incremented');
       } else {
         finished = true;
+        dbgState('advance - finished');
       }
     }, 600);
   }
@@ -57,7 +73,7 @@
     finished = false;
     feedback = '';
     messages = [...HINT_MESSAGES].sort(() => Math.random() - 0.5);
-    options = buildOptions(currentMessage());
+    dbgState('restart');
   }
 </script>
 
@@ -73,12 +89,13 @@
   {#if !finished}
     <div class="card bg-base-100 shadow">
       <div class="card-body">
-        <p class="font-medium" aria-live="polite">
-          <span class="badge badge-info mr-2">Message {currentIndex + 1}/{messages.length}</span>
-          {currentMessage().text}
-        </p>
-        <div class="grid gap-3 mt-4 sm:grid-cols-2 md:grid-cols-3">
-          {#each options as opt}
+        {#key current?.id}
+          <p class="font-medium" aria-live="polite">
+            <span class="badge badge-info mr-2">Message {currentIndex + 1}/{messages.length}</span>
+            {current?.text}
+          </p>
+          <div class="grid gap-3 mt-4 sm:grid-cols-2 md:grid-cols-3">
+            {#each options as opt (opt.id)}
             <button
               class="btn btn-outline flex flex-col gap-1"
               on:click={() => selectPlace(opt.id)}
@@ -87,8 +104,9 @@
               <span class="text-2xl">{opt.emoji}</span>
               <span class="text-xs">{opt.label}</span>
             </button>
-          {/each}
-        </div>
+            {/each}
+          </div>
+  {/key}
         {#if feedback}
           <div class="mt-3 text-sm font-semibold" role="status">{feedback}</div>
         {/if}
