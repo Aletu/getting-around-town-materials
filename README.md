@@ -1,11 +1,34 @@
 # Getting Around Town – Interactive Materials
 
-Scaffold a Svelte + Vite + Tailwind (DaisyUI) project with two learning modules (same site).
+This repository contains an educational prototype built with Svelte + Vite + Tailwind (DaisyUI). It currently includes two small interactive modules:
 
-## Material #1
+- Material #1 — Help the Visitor: short text hints where the learner selects the correct place (multiple choice).
+- Material #2 — Safe Walk Sequence: short safety text plus an image ordering activity (drag & drop).
 
-Help the Visitor (R1.1) – show short messages (“Excuse me…”, “Be careful…”) and 3–4 place options (bakery, park, etc.); give instant feedback and score.
+## Quick links
 
-## Material #2
+- Live demo (deployed to Vercel):
+ [https://getting-around-town-materials.vercel.app](https://getting-around-town-materials.vercel.app)
 
-Safe Walk Sequence (R2.1) – show a short safety text and let students drag/drop images (traffic light, crosswalk, park) to the correct order.
+## For Development
+
+1. Install dependencies
+
+    ```powershell
+    npm install
+    ```
+
+2. Start dev server (Vite will pick an available port)
+
+    ```powershell
+    npm run dev
+    ```
+
+3. Open the URL printed by Vite (for example: `http://localhost:5173`) and use the UI to try the modules.
+
+Build & preview
+
+```powershell
+npm run build
+npm run preview
+```
