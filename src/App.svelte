@@ -33,32 +33,51 @@
 
 <main class="p-4 max-w-5xl mx-auto">
   {#if view === 'home'}
-    <section class="space-y-4">
-      <h1 class="text-2xl font-bold">Materials Overview</h1>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="card bg-base-100 shadow">
-          <div class="card-body">
-            <h2 class="card-title">Material #1: Help the Visitor</h2>
-            <p class="text-sm">
-              Short text hints with greetings/warnings (R.1 / R.1.1). Select the correct community place.
-            </p>
-            <button class="btn btn-primary btn-sm mt-2" on:click={() => setView('help-visitor')}>
-              Open
-            </button>
-          </div>
-        </div>
-        <div class="card bg-base-100 shadow">
-          <div class="card-body">
-            <h2 class="card-title">Material #2: Safe Walk Sequence</h2>
-            <p class="text-sm">
-              Read a short text and order the images (R.2 / R.2.1).
-            </p>
-            <button class="btn btn-secondary btn-sm mt-2" on:click={() => setView('safe-walk')}>
-              Open
-            </button>
-          </div>
-        </div>
+    <section class="space-y-6">
+      <div class="flex items-center justify-between">
+        <h1 class="text-2xl font-bold">Materials Overview</h1>
       </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <article class="card bg-base-100 shadow hover:shadow-lg transition-shadow duration-150 group">
+          <div class="card-body">
+            <div class="flex items-start gap-3">
+              <div class="text-3xl">💬</div>
+              <div>
+                <h2 class="card-title">Help the Visitor</h2>
+                <p class="text-sm opacity-80">Short text hints (greetings & warnings). Choose the correct community place and get instant feedback.</p>
+                <ul class="mt-3 text-xs space-y-1">
+                  <li>• 3–4 options per message</li>
+                  <li>• Immediate feedback and scoring</li>
+                </ul>
+              </div>
+            </div>
+            <div class="mt-4 sm:mt-6">
+              <button class="btn btn-primary w-full sm:w-auto" on:click={() => setView('help-visitor')}>Open module →</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card bg-base-100 shadow hover:shadow-lg transition-shadow duration-150 group">
+          <div class="card-body">
+            <div class="flex items-start gap-3">
+              <div class="text-3xl">🚦</div>
+              <div>
+                <h2 class="card-title">Safe Walk Sequence</h2>
+                <p class="text-sm opacity-80">Read a short safety text and arrange images in order to demonstrate a safe walking sequence.</p>
+                <ul class="mt-3 text-xs space-y-1">
+                  <li>• Drag & drop to reorder</li>
+                  <li>• Check sequence and get feedback</li>
+                </ul>
+              </div>
+            </div>
+            <div class="mt-4 sm:mt-6">
+              <button class="btn btn-secondary w-full sm:w-auto" on:click={() => setView('safe-walk')}>Open module →</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
     </section>
   {:else if view === 'help-visitor'}
     <HelpVisitor on:back={() => setView('home')} />
@@ -75,5 +94,13 @@
   button.selected {
     font-weight: 600;
     text-decoration: underline;
+  }
+
+  /* subtle card hover: shadow only (no levitation) */
+  .card:hover {
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+  }
+  .card:focus-within {
+    outline: 2px solid rgba(59,130,246,0.2);
   }
 </style>
