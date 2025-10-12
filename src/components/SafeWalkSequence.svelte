@@ -2,6 +2,7 @@
   import { SAFE_WALK_SEQUENCE } from '../data/sequence.js';
   import { SAFE_WALK_TEXT } from '../data/sequenceText.js';
   import { createEventDispatcher } from 'svelte';
+  import { flip } from 'svelte/animate';
 
   const dispatch = createEventDispatcher();
   let items = SAFE_WALK_SEQUENCE.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
@@ -11,7 +12,17 @@
 
   function onDragStart(e, id) {
     dragSrcId = id;
-    e.dataTransfer.setData('text/plain', id);
+    // prefer move and set drag image to make dragging feel native
+    try {
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', id);
+    } catch (err) {
+      // some browsers may throw when customizing dataTransfer; ignore
+    }
+  }
+  function onDragEnd() {
+    // clear dragging state so styles/aria update
+    dragSrcId = null;
   }
   function onDragOver(e) {
     e.preventDefault();
@@ -23,6 +34,7 @@
     const sourceIndex = items.findIndex(i => i.id === sourceId);
     const targetIndex = items.findIndex(i => i.id === targetId);
     [items[sourceIndex], items[targetIndex]] = [items[targetIndex], items[sourceIndex]];
+    // trigger list update and let animate:flip handle smooth reorder
     items = [...items];
     dragSrcId = null;
     feedback = '';
@@ -56,14 +68,17 @@
 
   <!-- container has a role/list semantics so the dragover handler has an explicit ARIA role -->
   <div class="grid md:grid-cols-3 gap-4" on:dragover={onDragOver} role="list" aria-label="Safe walk sequence list">
-    {#each items as item}
+    {#each items as item (item.id)}
       <div
         class="card bg-base-100 shadow cursor-move border border-base-300"
         draggable="true"
         on:dragstart={(e) => onDragStart(e, item.id)}
+        on:dragend={onDragEnd}
         on:drop={(e) => onDrop(e, item.id)}
-        aria-grabbed={dragSrcId === item.id}
-        role="listitem"
+  aria-grabbed={dragSrcId === item.id}
+  role="listitem"
+  class:dragging={dragSrcId === item.id}
+    animate:flip={{ duration: 160 }}
       >
         <div class="card-body items-center p-4">
           <span class="text-5xl" aria-hidden="true">{item.emoji}</span>
@@ -88,3 +103,15 @@
     </div>
   {/if}
 </section>  
+
+<style>
+  /* smooth transitions for reorder and dragged item */
+  .card {
+     transition: transform 160ms cubic-bezier(.2,.9,.3,1), box-shadow 160ms ease, opacity 120ms ease;
+  }
+  .card.dragging {
+     transform: scale(1.035) translateZ(0);
+     box-shadow: 0 10px 22px rgba(0,0,0,0.14);
+     opacity: 0.985;
+  }
+</style>

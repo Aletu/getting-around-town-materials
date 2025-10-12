@@ -59,7 +59,6 @@
           </div>
         </div>
       </div>
-      <p class="text-xs opacity-70">Both materials share the same domain/site. Add future modules reusing this structure.</p>
     </section>
   {:else if view === 'help-visitor'}
     <HelpVisitor on:back={() => setView('home')} />
