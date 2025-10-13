@@ -6,5 +6,8 @@ export const PLACES = [
   { id: 'park', label: 'Park', emoji: '🌳' },
   { id: 'supermarket', label: 'Supermarket', emoji: '🛒' },
   { id: 'traffic_light', label: 'Traffic Light', emoji: '🚦' },
-  { id: 'crosswalk', label: 'Crosswalk', emoji: '🚸' }
+  { id: 'crosswalk', label: 'Crosswalk', emoji: '🚸' },
+  { id: 'sidewalk', label: 'Sidewalk', emoji: '🚶' },
+  { id: 'school', label: 'School', emoji: '🏫' },
+  { id: 'pharmacy', label: 'Pharmacy', emoji: '💊' }
 ];

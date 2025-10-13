@@ -36,4 +36,29 @@ export const HINT_MESSAGES = [
     answer: 'hospital',
     distractors: ['library', 'park']
   }
+  ,
+  {
+    id: 7,
+    text: 'Excuse me, is there a pharmacy nearby?',
+    answer: 'pharmacy',
+    distractors: ['bus_stop', 'library']
+  },
+  {
+    id: 8,
+    text: 'Walk on the sidewalk, please.',
+    answer: 'sidewalk',
+    distractors: ['park', 'crosswalk']
+  },
+  {
+    id: 9,
+    text: 'Excuse me, where is the school?',
+    answer: 'school',
+    distractors: ['library', 'bus_stop']
+  },
+  {
+    id: 10,
+    text: 'I need to buy food for dinner.',
+    answer: 'supermarket',
+    distractors: ['bakery', 'pharmacy']
+  }
 ];
