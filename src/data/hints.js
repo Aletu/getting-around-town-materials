@@ -2,62 +2,62 @@
 export const HINT_MESSAGES = [
   {
     id: 1,
-    text: 'Excuse me, where is the bakery?',
+    text: 'I\'m hungry and want something to eat.',
     answer: 'bakery',
     distractors: ['park', 'hospital']
   },
   {
     id: 2,
-    text: 'Be careful near the crosswalk!',
+    text: 'Watch out when you cross the street here.',
     answer: 'crosswalk',
     distractors: ['library', 'bus_stop']
   },
   {
     id: 3,
-    text: 'Excuse me, I need a book.',
+    text: 'I\'m looking for a place with many books.',
     answer: 'library',
     distractors: ['supermarket', 'bakery']
   },
   {
     id: 4,
-    text: 'Be careful, the light is red.',
+    text: 'Stop when the signal shows red.',
     answer: 'traffic_light',
     distractors: ['park', 'hospital']
   },
   {
     id: 5,
-    text: 'Excuse me, where can I take the bus?',
+    text: 'I need to catch public transport to go further.',
     answer: 'bus_stop',
     distractors: ['bakery', 'supermarket']
   },
   {
     id: 6,
-    text: 'Be careful and rest if you feel sick.',
+    text: 'If you feel unwell you should go to a place that helps the sick.',
     answer: 'hospital',
     distractors: ['library', 'park']
   }
   ,
   {
     id: 7,
-    text: 'Excuse me, is there a pharmacy nearby?',
+    text: 'I need medicine; is there a place to buy it?',
     answer: 'pharmacy',
     distractors: ['bus_stop', 'library']
   },
   {
     id: 8,
-    text: 'Walk on the sidewalk, please.',
+    text: 'Use the paved path next to the road when you walk.',
     answer: 'sidewalk',
     distractors: ['park', 'crosswalk']
   },
   {
     id: 9,
-    text: 'Excuse me, where is the school?',
+    text: 'I am looking for the place where children go to learn.',
     answer: 'school',
     distractors: ['library', 'bus_stop']
   },
   {
     id: 10,
-    text: 'I need to buy food for dinner.',
+    text: 'I want to buy ingredients and groceries for dinner.',
     answer: 'supermarket',
     distractors: ['bakery', 'pharmacy']
   }
