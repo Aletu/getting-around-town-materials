@@ -93,13 +93,42 @@
     <button class="btn btn-outline btn-sm" on:click={restart}>Shuffle</button>
   </div>
 
-  {#if feedback}
+  {#if feedback && !completed}
     <div class="mt-2 text-sm font-semibold" role="status">{feedback}</div>
   {/if}
 
   {#if completed}
-    <div class="alert alert-success mt-4">
-      <span>Sequence completed! Great job!</span>
+    <div class="card bg-base-100 shadow-xl mt-6">
+      <div class="card-body items-center text-center">
+        <div class="text-6xl mb-4 animate-bounce">🎊</div>
+        <h3 class="text-2xl font-bold mb-2">Perfect Sequence!</h3>
+        <p class="text-sm opacity-80 mb-4">You successfully arranged all the steps in the correct order</p>
+        
+        <div class="flex flex-wrap gap-2 justify-center mb-4">
+          {#each items as item, i}
+            <div class="badge badge-lg badge-success gap-2">
+              <span>{item.emoji}</span>
+              <span class="text-xs">{i + 1}</span>
+            </div>
+          {/each}
+        </div>
+
+        <div class="alert alert-info mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <span class="text-sm">You've demonstrated understanding of safe walking procedures!</span>
+        </div>
+
+        <div class="flex gap-3">
+          <button class="btn btn-primary" on:click={restart}>
+            <span class="text-lg mr-1">🔄</span>
+            Try Again
+          </button>
+          <button class="btn btn-ghost" on:click={() => dispatch('back')}>
+            <span class="text-lg mr-1">🏠</span>
+            Back Home
+          </button>
+        </div>
+      </div>
     </div>
   {/if}
 </section>  

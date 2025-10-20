@@ -116,12 +116,54 @@
       </div>
     </div>
   {:else}
-    <div class="alert alert-success">
-      <span>Finished! Final score: {score} / {messages.length} (Attempts: {attempts})</span>
-    </div>
-    <div class="flex gap-2 mt-4">
-      <button class="btn btn-primary btn-sm" on:click={restart}>Restart</button>
-      <button class="btn btn-ghost btn-sm" on:click={() => dispatch('back')}>Home</button>
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body items-center text-center">
+        <div class="text-6xl mb-4 animate-bounce">🎉</div>
+        <h3 class="text-2xl font-bold mb-2">Great Work!</h3>
+        <p class="text-sm opacity-80 mb-4">You've completed all the hints</p>
+        
+        <div class="stats shadow mb-6">
+          <div class="stat place-items-center">
+            <div class="stat-title">Correct Answers</div>
+            <div class="stat-value text-primary">{score}</div>
+            <div class="stat-desc">out of {messages.length}</div>
+          </div>
+          
+          <div class="stat place-items-center">
+            <div class="stat-title">Accuracy</div>
+            <div class="stat-value text-secondary">{Math.round((score / attempts) * 100)}%</div>
+            <div class="stat-desc">{attempts} total attempts</div>
+          </div>
+        </div>
+
+        {#if score === messages.length}
+          <div class="badge badge-success gap-2 p-4 mb-4">
+            <span class="text-lg">⭐</span>
+            <span>Perfect Score!</span>
+          </div>
+        {:else if score >= messages.length * 0.8}
+          <div class="badge badge-info gap-2 p-4 mb-4">
+            <span class="text-lg">👏</span>
+            <span>Excellent!</span>
+          </div>
+        {:else if score >= messages.length * 0.6}
+          <div class="badge badge-warning gap-2 p-4 mb-4">
+            <span class="text-lg">👍</span>
+            <span>Good effort!</span>
+          </div>
+        {/if}
+
+        <div class="flex gap-3 mt-2">
+          <button class="btn btn-primary" on:click={restart}>
+            <span class="text-lg mr-1">🔄</span>
+            Try Again
+          </button>
+          <button class="btn btn-ghost" on:click={() => dispatch('back')}>
+            <span class="text-lg mr-1">🏠</span>
+            Back Home
+          </button>
+        </div>
+      </div>
     </div>
   {/if}
 </section>
