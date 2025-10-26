@@ -1,11 +1,13 @@
 <script>
-  import { SAFE_WALK_SEQUENCE } from '../data/sequence.js';
-  import { SAFE_WALK_TEXT } from '../data/sequenceText.js';
+  import { SAFE_WALK_SCENARIOS } from '../data/sequenceText.js';
   import { createEventDispatcher } from 'svelte';
   import { flip } from 'svelte/animate';
 
   const dispatch = createEventDispatcher();
-  let items = SAFE_WALK_SEQUENCE.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
+  
+  // Select a random scenario on load
+  let currentScenario = SAFE_WALK_SCENARIOS[Math.floor(Math.random() * SAFE_WALK_SCENARIOS.length)];
+  let items = currentScenario.sequence.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
   let feedback = '';
   let completed = false;
   let dragSrcId = null;
@@ -45,7 +47,15 @@
     else feedback = '❌ Not yet. Try again.';
   }
   function restart() {
-    items = SAFE_WALK_SEQUENCE.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
+    // Pick a different random scenario (avoid repeating the same one)
+    if (SAFE_WALK_SCENARIOS.length > 1) {
+      let newScenario;
+      do {
+        newScenario = SAFE_WALK_SCENARIOS[Math.floor(Math.random() * SAFE_WALK_SCENARIOS.length)];
+      } while (newScenario.id === currentScenario.id);
+      currentScenario = newScenario;
+    }
+    items = currentScenario.sequence.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
     feedback = '';
     completed = false;
   }
@@ -61,7 +71,7 @@
   </p>
 
   <div class="bg-base-200 p-4 rounded-lg text-sm leading-relaxed">
-    <p>{SAFE_WALK_TEXT}</p>
+    <p>{currentScenario.text}</p>
   </div>
 
   <!-- container has a role/list semantics so the dragover handler has an explicit ARIA role -->
