@@ -1,4 +1,4 @@
-import { HINT_MESSAGES } from '../src/data/hints.js';
+import { SCENARIOS } from '../src/data/scenarios.js';
 import { PLACES } from '../src/data/places.js';
 
 function buildOptions(msg) {
@@ -11,7 +11,7 @@ function buildOptions(msg) {
     .sort(() => Math.random() - 0.5);
 }
 
-for (const msg of HINT_MESSAGES) {
+for (const msg of SCENARIOS) {
   const opts = buildOptions(msg);
   const hasAnswer = opts.some(o => o.id === msg.answer);
   console.log(`id=${msg.id} text="${msg.text}" answer=${msg.answer} -> hasAnswer=${hasAnswer}`);

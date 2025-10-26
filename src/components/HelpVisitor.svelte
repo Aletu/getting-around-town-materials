@@ -1,5 +1,5 @@
 <script>
-  import { HINT_MESSAGES } from '../data/hints.js';
+  import { SCENARIOS } from '../data/scenarios.js';
   import { PLACES } from '../data/places.js';
   import { createEventDispatcher } from 'svelte';
 
@@ -9,8 +9,8 @@
   let attempts = 0;
   let finished = false;
   let feedback = '';
-  // start with messages shuffled so the same message doesn't always appear first
-  let messages = [...HINT_MESSAGES].sort(() => Math.random() - 0.5);
+  // start with scenarios shuffled so the same scenario doesn't always appear first
+  let messages = [...SCENARIOS].sort(() => Math.random() - 0.5);
 
   // reactive current message so Svelte updates when currentIndex or messages change
   $: current = messages[currentIndex];
@@ -72,7 +72,7 @@
     attempts = 0;
     finished = false;
     feedback = '';
-    messages = [...HINT_MESSAGES].sort(() => Math.random() - 0.5);
+    messages = [...SCENARIOS].sort(() => Math.random() - 0.5);
     dbgState('restart');
   }
 </script>
@@ -80,10 +80,10 @@
 <section class="space-y-4">
   <div class="flex items-center gap-2">
     <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-    <h2 class="text-xl font-semibold">Help the Visitor – Short Text Hints</h2>
+    <h2 class="text-xl font-semibold">Help the Visitor – Scenarios</h2>
   </div>
   <p class="text-sm opacity-80">
-    Read the short message. Click the correct place.
+    Read the scenario. Click the correct place.
   </p>
 
   {#if !finished}
@@ -91,7 +91,7 @@
       <div class="card-body">
         {#key current?.id}
           <p class="font-medium" aria-live="polite">
-            <span class="badge badge-info mr-2">Message {currentIndex + 1}/{messages.length}</span>
+            <span class="badge badge-info mr-2">Scenario {currentIndex + 1}/{messages.length}</span>
             {current?.text}
           </p>
           <div class="grid gap-3 mt-4 sm:grid-cols-2 md:grid-cols-3">
@@ -120,7 +120,7 @@
       <div class="card-body items-center text-center">
         <div class="text-6xl mb-4 animate-bounce">🎉</div>
         <h3 class="text-2xl font-bold mb-2">Great Work!</h3>
-        <p class="text-sm opacity-80 mb-4">You've completed all the hints</p>
+        <p class="text-sm opacity-80 mb-4">You've completed all the scenarios</p>
         
         <div class="stats shadow mb-6">
           <div class="stat place-items-center">

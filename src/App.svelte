@@ -45,9 +45,9 @@
               <div class="text-3xl">💬</div>
               <div>
                 <h2 class="card-title">Help the Visitor</h2>
-                <p class="text-sm opacity-80">Short text hints (greetings & warnings). Choose the correct community place and get instant feedback.</p>
+                <p class="text-sm opacity-80">Read different scenarios and choose the correct community place to help visitors find what they need.</p>
                 <ul class="mt-3 text-xs space-y-1">
-                  <li>• 3–4 options per message</li>
+                  <li>• 10 different scenarios</li>
                   <li>• Immediate feedback and scoring</li>
                 </ul>
               </div>

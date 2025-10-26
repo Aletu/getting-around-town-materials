@@ -1,5 +1,5 @@
-// Messages for Material #1
-export const HINT_MESSAGES = [
+// Scenarios for Material #1
+export const SCENARIOS = [
   {
     id: 1,
     text: 'I\'m hungry and want something to eat.',
