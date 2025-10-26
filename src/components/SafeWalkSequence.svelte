@@ -60,10 +60,8 @@
     Read the short text. Arrange the images in the correct order.
   </p>
 
-  <div class="bg-base-200 p-4 rounded-lg text-sm leading-snug">
-    {#each SAFE_WALK_TEXT as line, i}
-      <div><span class="font-semibold">Step {i + 1}:</span> {line}</div>
-    {/each}
+  <div class="bg-base-200 p-4 rounded-lg text-sm leading-relaxed">
+    <p>{SAFE_WALK_TEXT}</p>
   </div>
 
   <!-- container has a role/list semantics so the dragover handler has an explicit ARIA role -->
