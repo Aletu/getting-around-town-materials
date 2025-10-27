@@ -158,7 +158,7 @@
             <span class="text-lg mr-1">🔄</span>
             Try Again
           </button>
-          <button class="btn btn-ghost" on:click={() => dispatch('back')}>
+          <button class="btn btn-outline" on:click={() => dispatch('back')}>
             <span class="text-lg mr-1">🏠</span>
             Back Home
           </button>

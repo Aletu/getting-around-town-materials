@@ -14,15 +14,15 @@
   }
 </script>
 
-<header class="navbar bg-base-200 px-4">
+<header class="navbar bg-base-100 px-4 shadow-sm">
   <div class="flex-1">
-    <span class="font-bold text-lg">Getting Around Town!</span>
+    <span class="font-bold text-xl text-primary">Getting Around Town!</span>
   </div>
   <nav class="flex gap-2">
     {#each navItems as item}
       <button
         class="btn btn-ghost btn-sm"
-        class:selected={view === item.id}
+        class:btn-primary={view === item.id}
         on:click={() => setView(item.id)}
         aria-current={view === item.id ? 'page' : 'false'}>
         {item.label}
@@ -72,7 +72,7 @@
               </div>
             </div>
             <div class="mt-4 sm:mt-6">
-              <button class="btn btn-secondary w-full sm:w-auto" on:click={() => setView('safe-walk')}>Open module →</button>
+              <button class="btn btn-primary w-full sm:w-auto" on:click={() => setView('safe-walk')}>Open module →</button>
             </div>
           </div>
         </article>
@@ -91,16 +91,11 @@
 </footer>
 
 <style>
-  button.selected {
-    font-weight: 600;
-    text-decoration: underline;
-  }
-
   /* subtle card hover: shadow only (no levitation) */
   .card:hover {
-    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
   }
   .card:focus-within {
-    outline: 2px solid rgba(59,130,246,0.2);
+    outline: 2px solid rgba(59,130,246,0.5);
   }
 </style>
