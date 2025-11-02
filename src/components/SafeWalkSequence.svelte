@@ -62,53 +62,55 @@
 </script>
 
 <section class="space-y-4">
-  <div class="flex items-center gap-2">
-    <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-    <h2 class="text-2xl font-bold">Safe Walk Sequence</h2>
-  </div>
-  <p class="text-base font-medium">
-    Read the short text. Arrange the images in the correct order.
-  </p>
-
-  <div class="card bg-base-100 border border-base-300">
-    <div class="card-body p-5">
-      <div class="flex items-center gap-2 mb-2 text-primary">
-        <span class="text-xl" aria-hidden="true">🧭</span>
-        <h3 class="font-semibold">Scenario</h3>
-      </div>
-  <p class="text-base-content text-lg md:text-xl leading-relaxed md:leading-loose">{currentScenario.text}</p>
+  {#if !completed}
+    <div class="flex items-center gap-2">
+      <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
+      <h2 class="text-2xl font-bold">Safe Walk Sequence</h2>
     </div>
-  </div>
+    <p class="text-base font-medium">
+      Read the short text. Arrange the images in the correct order.
+    </p>
 
-  <!-- container has a role/list semantics so the dragover handler has an explicit ARIA role -->
-  <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4" on:dragover={onDragOver} role="list" aria-label="Safe walk sequence list">
-    {#each items as item (item.id)}
-      <div
-        class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-move border border-base-300 select-none"
-        draggable="true"
-        on:dragstart={(e) => onDragStart(e, item.id)}
-        on:dragend={onDragEnd}
-        on:drop={(e) => onDrop(e, item.id)}
-  aria-grabbed={dragSrcId === item.id}
-  role="listitem"
-  class:dragging={dragSrcId === item.id}
-    animate:flip={{ duration: 160 }}
-      >
-        <div class="card-body items-center p-4">
-          <span class="text-5xl" aria-hidden="true">{item.emoji}</span>
-          <span class="text-sm sm:text-base font-semibold mt-2">{item.label}</span>
+    <div class="card bg-base-100 border border-base-300">
+      <div class="card-body p-5">
+        <div class="flex items-center gap-2 mb-2 text-primary">
+          <span class="text-xl" aria-hidden="true">🧭</span>
+          <h3 class="font-semibold">Scenario</h3>
         </div>
+        <p class="text-base-content text-lg md:text-xl leading-relaxed md:leading-loose">{currentScenario.text}</p>
       </div>
-    {/each}
-  </div>
+    </div>
 
-  <div class="flex gap-2">
-    <button class="btn btn-primary" on:click={checkOrder} disabled={completed}>Check Order</button>
-    <button class="btn btn-secondary" on:click={restart}>Shuffle</button>
-  </div>
+    <!-- container has a role/list semantics so the dragover handler has an explicit ARIA role -->
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4" on:dragover={onDragOver} role="list" aria-label="Safe walk sequence list">
+      {#each items as item (item.id)}
+        <div
+          class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-move border border-base-300 select-none"
+          draggable="true"
+          on:dragstart={(e) => onDragStart(e, item.id)}
+          on:dragend={onDragEnd}
+          on:drop={(e) => onDrop(e, item.id)}
+          aria-grabbed={dragSrcId === item.id}
+          role="listitem"
+          class:dragging={dragSrcId === item.id}
+          animate:flip={{ duration: 160 }}
+        >
+          <div class="card-body items-center p-4">
+            <span class="text-5xl" aria-hidden="true">{item.emoji}</span>
+            <span class="text-sm sm:text-base font-semibold mt-2">{item.label}</span>
+          </div>
+        </div>
+      {/each}
+    </div>
 
-  {#if feedback && !completed}
-    <div class="mt-2 text-base font-bold" role="status" aria-live="polite">{feedback}</div>
+    <div class="flex gap-2">
+      <button class="btn btn-primary" on:click={checkOrder} disabled={completed}>Check Order</button>
+      <button class="btn btn-secondary" on:click={restart}>Shuffle</button>
+    </div>
+
+    {#if feedback}
+      <div class="mt-2 text-base font-bold" role="status" aria-live="polite">{feedback}</div>
+    {/if}
   {/if}
 
   {#if completed}
