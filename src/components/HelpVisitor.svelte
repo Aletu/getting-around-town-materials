@@ -90,10 +90,14 @@
     <div class="card bg-base-100 shadow">
       <div class="card-body">
         {#key current?.id}
-          <p class="font-medium" aria-live="polite">
-            <span class="badge badge-info mr-2">Scenario {currentIndex + 1}/{messages.length}</span>
-            {current?.text}
-          </p>
+          <div class="mb-2">
+            <div class="flex items-center gap-2 text-primary font-semibold">
+              <span class="text-lg" aria-hidden="true">🧭</span>
+              <span>Scenario</span>
+              <span class="badge badge-info ml-auto py-4 px-3">{currentIndex + 1}/{messages.length}</span>
+            </div>
+            <p class="mt-2 text-base-content text-base md:text-lg leading-relaxed" aria-live="polite">{current?.text}</p>
+          </div>
           <div class="grid gap-3 mt-4 sm:grid-cols-2 md:grid-cols-3">
             {#each options as opt (opt.id)}
             <button
@@ -102,7 +106,7 @@
               aria-label={"Select " + opt.label}
             >
               <span class="text-2xl">{opt.emoji}</span>
-              <span class="text-xs">{opt.label}</span>
+              <span class="text-sm md:text-base">{opt.label}</span>
             </button>
             {/each}
           </div>
