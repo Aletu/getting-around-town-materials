@@ -2,11 +2,13 @@
   import { SCENARIOS } from '../data/scenarios.js';
   import { PLACES } from '../data/places.js';
   import { createEventDispatcher } from 'svelte';
+  import { onMount } from 'svelte';
 
   const dispatch = createEventDispatcher();
   let currentIndex = 0;
   let score = 0;
   let attempts = 0;
+  let wrongAttemptsForCurrent = 0;
   let finished = false;
   let feedback = '';
   // start with scenarios shuffled so the same scenario doesn't always appear first
@@ -49,6 +51,7 @@
       advance();
     } else {
       feedback = '❌ Try again.';
+      wrongAttemptsForCurrent += 1;
       dbgState('selectPlace - wrong');
     }
   }
@@ -58,6 +61,7 @@
       feedback = '';
       if (currentIndex < messages.length - 1) {
         currentIndex++;
+        wrongAttemptsForCurrent = 0;
         dbgState('advance - incremented');
       } else {
         finished = true;
@@ -70,11 +74,38 @@
     currentIndex = 0;
     score = 0;
     attempts = 0;
+    wrongAttemptsForCurrent = 0;
     finished = false;
     feedback = '';
     messages = [...SCENARIOS].sort(() => Math.random() - 0.5);
     dbgState('restart');
+    persist();
   }
+
+  // persistence helpers
+  function persist() {
+    if (typeof window === 'undefined') return;
+    const data = { currentIndex, score, attempts };
+    window.localStorage.setItem('helpVisitorProgress', JSON.stringify(data));
+  }
+  $: persist(); // reactive persistence on changes
+
+  onMount(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const raw = window.localStorage.getItem('helpVisitorProgress');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (typeof parsed.currentIndex === 'number' && parsed.currentIndex < messages.length) {
+          currentIndex = parsed.currentIndex;
+        }
+        if (typeof parsed.score === 'number') score = parsed.score;
+        if (typeof parsed.attempts === 'number') attempts = parsed.attempts;
+      }
+    } catch (e) {
+      console.warn('Failed to restore progress', e);
+    }
+  });
 </script>
 
 <section class="space-y-4">
@@ -89,6 +120,7 @@
   {#if !finished}
     <div class="card bg-base-100 shadow">
       <div class="card-body">
+        <progress class="progress progress-primary w-full mb-3" value={currentIndex} max={messages.length}></progress>
         {#key current?.id}
           <div class="mb-2">
             <div class="flex items-center gap-2 text-primary font-semibold">
@@ -113,6 +145,12 @@
   {/key}
         {#if feedback}
           <div class="mt-3 text-sm font-semibold" role="status">{feedback}</div>
+        {/if}
+        {#if wrongAttemptsForCurrent >= 1 && current?.hint}
+          <div class="alert alert-info mt-3">
+            <span class="font-medium">Hint:</span>
+            <span class="ml-2">{current.hint}</span>
+          </div>
         {/if}
         <div class="mt-4 text-xs opacity-70">
           Score: {score} / {messages.length} | Attempts: {attempts}
