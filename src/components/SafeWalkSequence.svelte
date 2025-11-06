@@ -62,14 +62,15 @@
 </script>
 
 <section class="space-y-4">
+  <div class="flex items-center gap-2">
+    <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
+    <h2 class="text-2xl font-bold">Safe Walk Sequence</h2>
+  </div>
+  <p class="text-base font-medium">
+    Read the short text. Arrange the images in the correct order.
+  </p>
+
   {#if !completed}
-    <div class="flex items-center gap-2">
-      <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-      <h2 class="text-2xl font-bold">Safe Walk Sequence</h2>
-    </div>
-    <p class="text-base font-medium">
-      Read the short text. Arrange the images in the correct order.
-    </p>
 
     <div class="card bg-base-100 border border-base-300">
       <div class="card-body p-5">
