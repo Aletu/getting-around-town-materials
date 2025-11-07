@@ -1,6 +1,7 @@
 <script>
   import HelpVisitor from './components/HelpVisitor.svelte';
   import SafeWalkSequence from './components/SafeWalkSequence.svelte';
+  import ucrLogo from './assets/firma-ucr-vertical.svg';
 
   let view = 'home';
   const navItems = [
@@ -14,6 +15,7 @@
   }
 </script>
 
+<div class="min-h-screen flex flex-col">
 <header class="navbar bg-base-100 px-4 shadow-sm">
   <div class="flex-1">
     <span class="font-bold text-xl text-primary">Getting Around Town!</span>
@@ -31,7 +33,7 @@
   </nav>
 </header>
 
-<main class="p-4 max-w-5xl mx-auto">
+<main class="flex-1 p-4 max-w-5xl mx-auto w-full">
   {#if view === 'home'}
     <section class="space-y-6">
       <div class="flex items-center justify-between">
@@ -86,9 +88,28 @@
   {/if}
 </main>
 
-<footer class="p-4 text-center text-xs opacity-70">
-  © {new Date().getFullYear()} Getting Around Town – Educational Prototype
+<footer class="mt-8">
+  <div class="bg-[#3270d6] text-white">
+    <div class="max-w-5xl mx-auto p-6">
+      <div class="flex flex-col sm:flex-row items-center sm:items-center gap-6 sm:gap-10 md:gap-14">
+        <img src={ucrLogo} alt="University of Costa Rica – vertical signature" class="h-20 sm:h-24 w-auto select-none" />
+        <div class="text-sm sm:pl-6 sm:border-l sm:border-white/25 flex flex-col justify-center">
+          <p class="opacity-90">TCU-501 Project · Escuela de Lenguas Modernas</p>
+          <a
+            href="https://lenguasmodernas.ucr.ac.cr/tcu-501/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 mt-1 underline font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded"
+          >
+            Visit the TCU-501 website →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </footer>
+
+</div>
 
 <style>
   /* subtle card hover: shadow only (no levitation) */
