@@ -10,37 +10,33 @@
   let items = currentScenario.sequence.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
   let feedback = '';
   let completed = false;
-  let dragSrcId = null;
+  let selectedId = null;
 
-  function onDragStart(e, id) {
-    dragSrcId = id;
-    // prefer move and set drag image to make dragging feel native
-    try {
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', id);
-    } catch (err) {
-      // some browsers may throw when customizing dataTransfer; ignore
+  function handleItemClick(id) {
+    if (completed) return;
+
+    if (selectedId === null) {
+      // Nothing is selected, so select this item.
+      selectedId = id;
+    } else if (selectedId === id) {
+      // The same item was clicked, so deselect it.
+      selectedId = null;
+    } else {
+      // A different item was already selected, so perform a swap.
+      const sourceIndex = items.findIndex(i => i.id === selectedId);
+      const targetIndex = items.findIndex(i => i.id === id);
+
+      if (sourceIndex !== -1 && targetIndex !== -1) {
+        [items[sourceIndex], items[targetIndex]] = [items[targetIndex], items[sourceIndex]];
+        items = [...items]; // Trigger reactivity for the animation.
+      }
+
+      // Reset selection and feedback after the swap.
+      selectedId = null;
+      feedback = '';
     }
   }
-  function onDragEnd() {
-    // clear dragging state so styles/aria update
-    dragSrcId = null;
-  }
-  function onDragOver(e) {
-    e.preventDefault();
-  }
-  function onDrop(e, targetId) {
-    e.preventDefault();
-    const sourceId = dragSrcId || e.dataTransfer.getData('text/plain');
-    if (!sourceId || sourceId === targetId) return;
-    const sourceIndex = items.findIndex(i => i.id === sourceId);
-    const targetIndex = items.findIndex(i => i.id === targetId);
-    [items[sourceIndex], items[targetIndex]] = [items[targetIndex], items[sourceIndex]];
-    // trigger list update and let animate:flip handle smooth reorder
-    items = [...items];
-    dragSrcId = null;
-    feedback = '';
-  }
+
   function checkOrder() {
     const isCorrect = items.every((it, idx) => it.correctIndex === idx);
     if (isCorrect) { feedback = '✅ Correct sequence!'; completed = true; }
@@ -58,6 +54,7 @@
     items = currentScenario.sequence.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
     feedback = '';
     completed = false;
+    selectedId = null;
   }
 </script>
 
@@ -67,7 +64,7 @@
     <h2 class="text-2xl font-bold">Safe Walk Sequence</h2>
   </div>
   <p class="text-base font-medium">
-    Read the short text. Arrange the images in the correct order.
+    Read the short text. Tap an item to select it, then tap another to swap their positions.
   </p>
 
   {#if !completed}
@@ -82,18 +79,13 @@
       </div>
     </div>
 
-    <!-- container has a role/list semantics so the dragover handler has an explicit ARIA role -->
-    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" on:dragover={onDragOver} role="list" aria-label="Safe walk sequence list">
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" role="list" aria-label="Safe walk sequence list">
       {#each items as item (item.id)}
         <div
-          class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-move border border-base-300 select-none"
-          draggable="true"
-          on:dragstart={(e) => onDragStart(e, item.id)}
-          on:dragend={onDragEnd}
-          on:drop={(e) => onDrop(e, item.id)}
-          aria-grabbed={dragSrcId === item.id}
+          class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-base-300 select-none"
+          on:click={() => handleItemClick(item.id)}
           role="listitem"
-          class:dragging={dragSrcId === item.id}
+          class:selected={selectedId === item.id}
           animate:flip={{ duration: 160 }}
         >
           <div class="card-body items-center p-4">
@@ -151,11 +143,11 @@
 </section>  
 
 <style>
-  /* smooth transitions for reorder and dragged item */
+  /* smooth transitions for reorder and selected item */
   .card {
      transition: transform 160ms cubic-bezier(.2,.9,.3,1), box-shadow 160ms ease, opacity 120ms ease;
   }
-  .card.dragging {
+  .card.selected {
      transform: scale(1.035) translateZ(0);
     box-shadow: 0 10px 22px rgba(0,0,0,0.14);
      opacity: 0.985;
