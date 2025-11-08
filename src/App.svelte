@@ -4,11 +4,6 @@
   import ucrLogo from './assets/firma-ucr-vertical.svg';
 
   let view = 'home';
-  const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'help-visitor', label: 'Help the Visitor' },
-    { id: 'safe-walk', label: 'Safe Walk Sequence' }
-  ];
   function setView(id) {
     view = id;
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -18,19 +13,8 @@
 <div class="min-h-screen flex flex-col">
 <header class="navbar bg-base-100 px-4 shadow-sm">
   <div class="flex-1">
-    <span class="font-bold text-xl text-primary">Getting Around Town!</span>
+    <span class="font-bold text-2xl sm:text-xl text-primary">Getting Around Town!</span>
   </div>
-  <nav class="flex gap-2">
-    {#each navItems as item}
-      <button
-        class="btn btn-ghost btn-sm"
-        class:btn-primary={view === item.id}
-        on:click={() => setView(item.id)}
-        aria-current={view === item.id ? 'page' : 'false'}>
-        {item.label}
-      </button>
-    {/each}
-  </nav>
 </header>
 
 <main class="flex-1 p-4 max-w-5xl mx-auto w-full">

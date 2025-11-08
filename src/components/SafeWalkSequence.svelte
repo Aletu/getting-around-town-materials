@@ -83,7 +83,7 @@
     </div>
 
     <!-- container has a role/list semantics so the dragover handler has an explicit ARIA role -->
-    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4" on:dragover={onDragOver} role="list" aria-label="Safe walk sequence list">
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" on:dragover={onDragOver} role="list" aria-label="Safe walk sequence list">
       {#each items as item (item.id)}
         <div
           class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-move border border-base-300 select-none"
@@ -135,7 +135,7 @@
           <span class="text-base font-medium">You've demonstrated understanding of safe walking procedures!</span>
         </div>
 
-        <div class="flex gap-3">
+        <div class="flex flex-col sm:flex-row gap-3">
           <button class="btn btn-primary" on:click={restart}>
             <span class="text-lg mr-1">🔄</span>
             Try Again

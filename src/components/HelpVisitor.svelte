@@ -164,7 +164,7 @@
         <h3 class="text-2xl font-bold mb-2">Great Work!</h3>
         <p class="text-sm opacity-80 mb-4">You've completed all the scenarios</p>
         
-        <div class="stats shadow mb-6">
+        <div class="stats stats-vertical sm:stats-horizontal shadow mb-6">
           <div class="stat place-items-center">
             <div class="stat-title">Correct Answers</div>
             <div class="stat-value text-primary">{score}</div>
@@ -195,7 +195,7 @@
           </div>
         {/if}
 
-        <div class="flex gap-3 mt-2">
+        <div class="flex flex-col sm:flex-row gap-3 mt-2">
           <button class="btn btn-primary" on:click={restart}>
             <span class="text-lg mr-1">🔄</span>
             Try Again
