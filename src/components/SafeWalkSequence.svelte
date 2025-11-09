@@ -2,6 +2,7 @@
   import { SAFE_WALK_SCENARIOS } from '../data/sequenceText.js';
   import { createEventDispatcher } from 'svelte';
   import { flip } from 'svelte/animate';
+  import { tick } from 'svelte';
 
   const dispatch = createEventDispatcher();
   
@@ -12,7 +13,7 @@
   let completed = false;
   let selectedId = null;
 
-  function handleItemClick(id) {
+  async function handleItemClick(id) {
     if (completed) return;
 
     if (selectedId === null) {
@@ -31,6 +32,9 @@
         items = [...items]; // Trigger reactivity for the animation.
       }
 
+      // Wait for the DOM to update before resetting the selection
+      await tick();
+      
       // Reset selection and feedback after the swap.
       selectedId = null;
       feedback = '';
@@ -148,7 +152,6 @@
      transition: transform 160ms cubic-bezier(.2,.9,.3,1), box-shadow 160ms ease, opacity 120ms ease;
   }
   .card.selected {
-     transform: scale(1.035) translateZ(0);
     box-shadow: 0 10px 22px rgba(0,0,0,0.14);
      opacity: 0.985;
     outline: 2px solid rgba(59,130,246,0.45); /* primary-blue outline */
