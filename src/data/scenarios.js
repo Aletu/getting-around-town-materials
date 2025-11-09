@@ -41,8 +41,7 @@ export const SCENARIOS = [
     hint: 'Doctors and nurses work here.',
     answer: 'hospital',
     distractors: ['library', 'park']
-  }
-  ,
+  },
   {
     id: 7,
     text: 'I need medicine; is there a place to buy it?',
@@ -70,5 +69,75 @@ export const SCENARIOS = [
     hint: 'You push a cart and choose fruits and vegetables here.',
     answer: 'supermarket',
     distractors: ['bakery', 'pharmacy']
+  },
+  {
+    id: 11,
+    text: 'I need to get some cash.',
+    hint: 'This place has ATMs and tellers to help with money.',
+    answer: 'bank',
+    distractors: ['post_office', 'museum']
+  },
+  {
+    id: 12,
+    text: 'I want to watch the latest blockbuster movie.',
+    hint: 'Look for a place with a big screen and popcorn.',
+    answer: 'movie_theater',
+    distractors: ['library', 'park']
+  },
+  {
+    id: 13,
+    text: 'I need to mail a letter.',
+    hint: 'You can buy stamps and send packages here.',
+    answer: 'post_office',
+    distractors: ['bank', 'school']
+  },
+  {
+    id: 14,
+    text: 'My car is almost out of fuel.',
+    hint: 'This place has pumps for gasoline and diesel.',
+    answer: 'gas_station',
+    distractors: ['fire_station', 'hospital']
+  },
+  {
+    id: 15,
+    text: 'I want to see historical artifacts.',
+    hint: 'This building displays items from the past.',
+    answer: 'museum',
+    distractors: ['movie_theater', 'playground']
+  },
+  {
+    id: 16,
+    text: 'The kids want to go down the slide and play on the swings.',
+    hint: 'This outdoor area is designed for children\'s recreation.',
+    answer: 'playground',
+    distractors: ['park', 'school']
+  },
+  {
+    id: 17,
+    text: 'There is a fire! Who should we call?',
+    hint: 'This station houses large red trucks and firefighters.',
+    answer: 'fire_station',
+    distractors: ['police_station', 'hospital']
+  },
+  {
+    id: 18,
+    text: 'I want to report a crime.',
+    hint: 'Police officers work at this station.',
+    answer: 'police_station',
+    distractors: ['fire_station', 'post_office']
+  },
+  {
+    id: 19,
+    text: 'I\'d like to sit down for a nice meal that someone else cooks.',
+    hint: 'You can order from a menu at this establishment.',
+    answer: 'restaurant',
+    distractors: ['supermarket', 'cafe']
+  },
+  {
+    id: 20,
+    text: 'I need a good cup of coffee and a place to relax.',
+    hint: 'A barista can make you an espresso or a latte here.',
+    answer: 'cafe',
+    distractors: ['restaurant', 'bakery']
   }
 ];

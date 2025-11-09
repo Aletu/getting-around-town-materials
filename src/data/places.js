@@ -1,13 +1,23 @@
 export const PLACES = [
   { id: 'bakery', label: 'Bakery', emoji: '🥖' },
+  { id: 'bank', label: 'Bank', emoji: '🏦' },
   { id: 'bus_stop', label: 'Bus Stop', emoji: '🚌' },
+  { id: 'cafe', label: 'Café', emoji: '☕' },
+  { id: 'crosswalk', label: 'Crosswalk', emoji: '🚸' },
+  { id: 'fire_station', label: 'Fire Station', emoji: '🚒' },
+  { id: 'gas_station', label: 'Gas Station', emoji: '⛽' },
   { id: 'hospital', label: 'Hospital', emoji: '🏥' },
   { id: 'library', label: 'Library', emoji: '📚' },
+  { id: 'movie_theater', label: 'Movie Theater', emoji: '🎬' },
+  { id: 'museum', label: 'Museum', emoji: '🏛️' },
   { id: 'park', label: 'Park', emoji: '🌳' },
-  { id: 'supermarket', label: 'Supermarket', emoji: '🛒' },
-  { id: 'traffic_light', label: 'Traffic Light', emoji: '🚦' },
-  { id: 'crosswalk', label: 'Crosswalk', emoji: '🚸' },
-  { id: 'sidewalk', label: 'Sidewalk', emoji: '🚶' },
+  { id: 'pharmacy', label: 'Pharmacy', emoji: '💊' },
+  { id: 'playground', label: 'Playground', emoji: '🛝' },
+  { id: 'police_station', label: 'Police Station', emoji: '�' },
+  { id: 'post_office', label: 'Post Office', emoji: '✉️' },
+  { id: 'restaurant', label: 'Restaurant', emoji: '🍴' },
   { id: 'school', label: 'School', emoji: '🏫' },
-  { id: 'pharmacy', label: 'Pharmacy', emoji: '💊' }
+  { id: 'sidewalk', label: 'Sidewalk', emoji: '🚶' },
+  { id: 'supermarket', label: 'Supermarket', emoji: '🛒' },
+  { id: 'traffic_light', label: 'Traffic Light', emoji: '�' }
 ];

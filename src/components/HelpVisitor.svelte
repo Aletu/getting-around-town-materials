@@ -12,7 +12,7 @@
   let finished = false;
   let feedback = '';
   // start with scenarios shuffled so the same scenario doesn't always appear first
-  let messages = [...SCENARIOS].sort(() => Math.random() - 0.5);
+  let messages = [...SCENARIOS].sort(() => Math.random() - 0.5).slice(0, 10);
 
   // reactive current message so Svelte updates when currentIndex or messages change
   $: current = messages[currentIndex];
@@ -77,7 +77,7 @@
     wrongAttemptsForCurrent = 0;
     finished = false;
     feedback = '';
-    messages = [...SCENARIOS].sort(() => Math.random() - 0.5);
+    messages = [...SCENARIOS].sort(() => Math.random() - 0.5).slice(0, 10);
     dbgState('restart');
     persist();
   }
