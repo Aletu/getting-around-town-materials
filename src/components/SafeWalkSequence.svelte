@@ -5,16 +5,40 @@
   import { tick } from 'svelte';
 
   const dispatch = createEventDispatcher();
-  
-  // Select a random scenario on load
-  let currentScenario = SAFE_WALK_SCENARIOS[Math.floor(Math.random() * SAFE_WALK_SCENARIOS.length)];
-  let items = currentScenario.sequence.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
+
+  // Session state: we play through 3 distinct scenarios before the module is "fully" completed
+  const SCENARIOS_PER_SESSION = 3;
+  let sessionScenarios = [];
+  let currentIndex = 0;
+  let currentScenario;
+  let items = [];
   let feedback = '';
-  let completed = false;
+  let completed = false; // true when the whole 3-scenario session is done
+  let scenarioDone = false; // true when the current scenario has been correctly ordered
   let selectedId = null;
 
+  function startNewSession() {
+    // shuffle a shallow copy and take the first SCENARIOS_PER_SESSION
+    const shuffled = [...SAFE_WALK_SCENARIOS].sort(() => Math.random() - 0.5);
+    sessionScenarios = shuffled.slice(0, SCENARIOS_PER_SESSION);
+    currentIndex = 0;
+    completed = false;
+    loadCurrentScenario();
+  }
+
+  function loadCurrentScenario() {
+    currentScenario = sessionScenarios[currentIndex];
+    items = currentScenario.sequence.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
+    feedback = '';
+    scenarioDone = false;
+    selectedId = null;
+  }
+
+  // initialise first session
+  startNewSession();
+
   async function handleItemClick(id) {
-    if (completed) return;
+    if (completed || scenarioDone) return;
 
     if (selectedId === null) {
       // Nothing is selected, so select this item.
@@ -43,22 +67,26 @@
 
   function checkOrder() {
     const isCorrect = items.every((it, idx) => it.correctIndex === idx);
-    if (isCorrect) { feedback = '✅ Correct sequence!'; completed = true; }
-    else feedback = '❌ Not yet. Try again.';
+    if (isCorrect) {
+      feedback = '✅ Correct sequence!';
+      scenarioDone = true;
+
+      // small delay gives time to read feedback before switching automatically
+      setTimeout(() => {
+        if (currentIndex < SCENARIOS_PER_SESSION - 1) {
+          currentIndex += 1;
+          loadCurrentScenario();
+        } else {
+          completed = true;
+        }
+      }, 700);
+    } else {
+      feedback = '❌ Not yet. Try again.';
+    }
   }
   function restart() {
-    // Pick a different random scenario (avoid repeating the same one)
-    if (SAFE_WALK_SCENARIOS.length > 1) {
-      let newScenario;
-      do {
-        newScenario = SAFE_WALK_SCENARIOS[Math.floor(Math.random() * SAFE_WALK_SCENARIOS.length)];
-      } while (newScenario.id === currentScenario.id);
-      currentScenario = newScenario;
-    }
-    items = currentScenario.sequence.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
-    feedback = '';
-    completed = false;
-    selectedId = null;
+    // restart a full 3-scenario session
+    startNewSession();
   }
 </script>
 
@@ -71,6 +99,9 @@
     Read the short text. Tap an item to select it, then tap another to swap their positions.
   </p>
 
+  {#if !completed}
+    <p class="text-sm opacity-75">Scenario {currentIndex + 1} of {SCENARIOS_PER_SESSION}</p>
+  {/if}
   {#if !completed}
 
     <div class="card bg-base-100 border border-base-300">
@@ -85,10 +116,11 @@
 
     <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" role="list" aria-label="Safe walk sequence list">
       {#each items as item (item.id)}
-        <div
-          class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-base-300 select-none"
+        <button
+          type="button"
+          class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-base-300 select-none text-left"
           on:click={() => handleItemClick(item.id)}
-          role="listitem"
+          aria-pressed={selectedId === item.id}
           class:selected={selectedId === item.id}
           animate:flip={{ duration: 160 }}
         >
@@ -96,7 +128,7 @@
             <span class="text-5xl" aria-hidden="true">{item.emoji}</span>
             <span class="text-sm sm:text-base font-semibold mt-2">{item.label}</span>
           </div>
-        </div>
+        </button>
       {/each}
     </div>
 
@@ -114,17 +146,8 @@
     <div class="card bg-base-100 shadow-xl mt-6">
       <div class="card-body items-center text-center">
         <div class="text-6xl mb-4 animate-bounce">🎊</div>
-        <h3 class="text-3xl font-bold mb-3">Perfect Sequence!</h3>
-        <p class="text-base mb-4">You successfully arranged all the steps in the correct order</p>
-        
-        <div class="flex flex-wrap gap-2 justify-center mb-4">
-          {#each items as item, i}
-            <div class="badge badge-lg badge-success gap-2">
-              <span>{item.emoji}</span>
-              <span class="text-xs">{i + 1}</span>
-            </div>
-          {/each}
-        </div>
+        <h3 class="text-3xl font-bold mb-3">Session complete!</h3>
+        <p class="text-base mb-4">You successfully arranged all the steps in three different safe-walk scenarios.</p>
 
         <div class="alert alert-info mb-4">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
