@@ -11,8 +11,10 @@
   let wrongAttemptsForCurrent = 0;
   let finished = false;
   let feedback = '';
-  // start with scenarios shuffled so the same scenario doesn't always appear first
-  let messages = [...SCENARIOS].sort(() => Math.random() - 0.5).slice(0, 10);
+  // session size: pick a random subset of scenarios per session to keep sessions short
+  const QUESTIONS_PER_SESSION = 10;
+  // start with scenarios shuffled and limited to QUESTIONS_PER_SESSION so sessions are consistent
+  let messages = [...SCENARIOS].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, SCENARIOS.length));
 
   // reactive current message so Svelte updates when currentIndex or messages change
   $: current = messages[currentIndex];
@@ -77,7 +79,7 @@
     wrongAttemptsForCurrent = 0;
     finished = false;
     feedback = '';
-    messages = [...SCENARIOS].sort(() => Math.random() - 0.5).slice(0, 10);
+    messages = [...SCENARIOS].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, SCENARIOS.length));
     dbgState('restart');
     persist();
   }
@@ -120,14 +122,21 @@
   {#if !finished}
     <div class="card bg-base-100 shadow">
       <div class="card-body">
-        <progress class="progress progress-primary w-full mb-3" value={currentIndex} max={messages.length}></progress>
+        <div class="mb-3 space-y-1">
+          <div class="flex items-center gap-2 text-primary font-semibold">
+            <span class="text-lg" aria-hidden="true">🧭</span>
+            <span>Scenario</span>
+            <span class="badge badge-info ml-auto py-4 px-3">{currentIndex + 1}/{messages.length}</span>
+          </div>
+          <progress
+            class="progress progress-primary w-full"
+            value={currentIndex + 1}
+            max={messages.length}
+            aria-label={`Scenario progress: ${currentIndex + 1} of ${messages.length}`}
+          ></progress>
+        </div>
         {#key current?.id}
           <div class="mb-2">
-            <div class="flex items-center gap-2 text-primary font-semibold">
-              <span class="text-lg" aria-hidden="true">🧭</span>
-              <span>Scenario</span>
-              <span class="badge badge-info ml-auto py-4 px-3">{currentIndex + 1}/{messages.length}</span>
-            </div>
             <p class="mt-2 text-base-content text-base md:text-lg leading-relaxed" aria-live="polite">{current?.text}</p>
           </div>
           <div class="grid gap-3 mt-4 sm:grid-cols-2 md:grid-cols-3">

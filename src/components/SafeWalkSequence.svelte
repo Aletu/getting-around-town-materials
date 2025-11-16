@@ -100,15 +100,20 @@
   </p>
 
   {#if !completed}
-    <p class="text-sm opacity-75">Scenario {currentIndex + 1} of {SCENARIOS_PER_SESSION}</p>
-  {/if}
-  {#if !completed}
-
     <div class="card bg-base-100 border border-base-300">
       <div class="card-body p-5">
-        <div class="flex items-center gap-2 mb-2 text-primary">
-          <span class="text-xl" aria-hidden="true">🧭</span>
-          <h3 class="font-semibold">Scenario</h3>
+        <div class="mb-3 space-y-1">
+          <div class="flex items-center gap-2 text-primary font-semibold">
+            <span class="text-xl" aria-hidden="true">🧭</span>
+            <span>Scenario</span>
+            <span class="badge badge-info ml-auto py-4 px-3">{currentIndex + 1}/{SCENARIOS_PER_SESSION}</span>
+          </div>
+          <progress
+            class="progress progress-primary w-full"
+            value={currentIndex + 1}
+            max={SCENARIOS_PER_SESSION}
+            aria-label={`Scenario progress: ${currentIndex + 1} of ${SCENARIOS_PER_SESSION}`}
+          ></progress>
         </div>
         <p class="text-base-content text-lg md:text-xl leading-relaxed md:leading-loose">{currentScenario.text}</p>
       </div>
