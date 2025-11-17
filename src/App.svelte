@@ -1,6 +1,7 @@
 <script>
   import HelpVisitor from './components/HelpVisitor.svelte';
   import SafeWalkSequence from './components/SafeWalkSequence.svelte';
+  import ShortQA from './components/ShortQA.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
 
   let view = 'home';
@@ -47,7 +48,7 @@
         <article class="card bg-base-100 shadow hover:shadow-lg transition-shadow duration-150 group">
           <div class="card-body">
             <div class="flex items-start gap-3">
-              <div class="text-3xl">🚦</div>
+              <div class="text-3xl"></div>
               <div>
                 <h2 class="card-title">Safe Walk Sequence</h2>
                 <p class="text-sm opacity-80">Read a short safety text and arrange images in order to demonstrate a safe walking sequence.</p>
@@ -62,6 +63,25 @@
             </div>
           </div>
         </article>
+
+        <article class="card bg-base-100 shadow hover:shadow-lg transition-shadow duration-150 group">
+          <div class="card-body">
+            <div class="flex items-start gap-3">
+              <div class="text-3xl">❓</div>
+              <div>
+                <h2 class="card-title">Short Q&A – Step-by-step directions</h2>
+                <p class="text-sm opacity-80">Read short questions and choose the response that makes the most sense in context.</p>
+                <ul class="mt-3 text-xs space-y-1">
+                  <li>• 5 questions per session</li>
+                  <li>• Focus on meaningful answers, not only grammar</li>
+                </ul>
+              </div>
+            </div>
+            <div class="mt-4 sm:mt-6">
+              <button class="btn btn-primary w-full sm:w-auto" on:click={() => setView('short-qa')}>Open module →</button>
+            </div>
+          </div>
+        </article>
       </div>
 
     </section>
@@ -69,6 +89,8 @@
     <HelpVisitor on:back={() => setView('home')} />
   {:else if view === 'safe-walk'}
     <SafeWalkSequence on:back={() => setView('home')} />
+  {:else if view === 'short-qa'}
+    <ShortQA on:back={() => setView('home')} />
   {/if}
 </main>
 
