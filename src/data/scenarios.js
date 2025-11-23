@@ -1,5 +1,5 @@
 // Scenarios for Material #1
-export const SCENARIOS = [
+export let SCENARIOS = [
   {
     id: 1,
     text: 'I\'m hungry and want something to eat.',

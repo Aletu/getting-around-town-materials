@@ -1,10 +1,28 @@
 <script>
   import { SHORT_QA_ITEMS } from '../data/shortQA.js';
   import { createEventDispatcher } from 'svelte';
+  import { teacherMode } from '../lib/store.js';
 
   const dispatch = createEventDispatcher();
 
   const QUESTIONS_PER_SESSION = 5;
+
+  // pool management: either use built-in questions or a custom teacher-provided pool
+  let useCustomPool = false;
+  let customPool = [];
+  let teacherJson = '';
+  let teacherError = '';
+
+  function getActivePool() {
+    const pool = useCustomPool && customPool.length ? customPool : SHORT_QA_ITEMS;
+    return pool;
+  }
+
+  function makeSessionItems() {
+    const pool = getActivePool();
+    const shuffled = [...pool].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, Math.min(QUESTIONS_PER_SESSION, pool.length));
+  }
 
   let items = [];
   let currentIndex = 0;
@@ -15,8 +33,7 @@
   let selectedId = null;
 
   function startSession() {
-    const shuffled = [...SHORT_QA_ITEMS].sort(() => Math.random() - 0.5);
-    items = shuffled.slice(0, Math.min(QUESTIONS_PER_SESSION, SHORT_QA_ITEMS.length));
+    items = makeSessionItems();
     currentIndex = 0;
     score = 0;
     attempts = 0;
@@ -56,17 +73,178 @@
 
   // initialize first session
   startSession();
+
+  // ------- Teacher tools (JSON import / export) -------
+
+  function refreshTeacherJson() {
+    const pool = getActivePool();
+    try {
+      teacherJson = JSON.stringify(pool, null, 2);
+      teacherError = '';
+    } catch (e) {
+      teacherError = 'Could not serialise questions to JSON.';
+    }
+  }
+
+  $: if ($teacherMode) {
+    refreshTeacherJson();
+  }
+
+  function handlePoolSourceChange(mode) {
+    useCustomPool = mode === 'custom';
+    teacherError = '';
+    startSession();
+    refreshTeacherJson();
+  }
+
+  function applyTeacherJsonFromTextarea() {
+    teacherError = '';
+    try {
+      const parsed = JSON.parse(teacherJson);
+      if (!Array.isArray(parsed)) {
+        throw new Error('JSON must be an array of question objects.');
+      }
+      for (const item of parsed) {
+        if (
+          typeof item !== 'object' ||
+          typeof item.question !== 'string' ||
+          !Array.isArray(item.options) ||
+          typeof item.answer !== 'string'
+        ) {
+          throw new Error('Each question needs question, options[], and answer.');
+        }
+      }
+      customPool = parsed;
+      useCustomPool = true;
+      startSession();
+    } catch (e) {
+      teacherError = e.message || 'Could not parse JSON.';
+    }
+  }
+
+  function downloadCurrentPool() {
+    try {
+      const data = getActivePool();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'short-qa-items.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      teacherError = 'Could not download JSON.';
+    }
+  }
+
+  function handleFileUpload(event) {
+    const [file] = event.target.files || [];
+    if (!file) return;
+    teacherError = '';
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        if (!Array.isArray(parsed)) {
+          throw new Error('JSON must be an array of question objects.');
+        }
+        for (const item of parsed) {
+          if (
+            typeof item !== 'object' ||
+            typeof item.question !== 'string' ||
+            !Array.isArray(item.options) ||
+            typeof item.answer !== 'string'
+          ) {
+            throw new Error('Each question needs question, options[], and answer.');
+          }
+        }
+        customPool = parsed;
+        useCustomPool = true;
+        startSession();
+        teacherJson = JSON.stringify(customPool, null, 2);
+      } catch (e) {
+        teacherError = e.message || 'Could not parse uploaded JSON.';
+      }
+    };
+    reader.onerror = () => {
+      teacherError = 'Could not read file.';
+    };
+    reader.readAsText(file);
+  }
 </script>
 
 <section class="space-y-4">
   <div class="flex items-center gap-2">
     <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-    <h2 class="text-xl font-semibold">Short Q&A – Step-by-step directions</h2>
+    <h2 class="text-xl font-semibold">Short Q&A</h2>
   </div>
   <p class="text-sm opacity-80">
     Read the question and choose the answer that makes the most sense.
   </p>
 
+  {#if $teacherMode}
+    <details class="mt-2 mb-4 collapse bg-base-200">
+      <summary class="collapse-title font-semibold cursor-pointer">
+        Teacher tools – question pool
+      </summary>
+      <div class="collapse-content space-y-3 text-sm">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="font-medium mr-2">Question source:</span>
+          <div class="join">
+            <button
+              type="button"
+              class="btn btn-xs join-item {useCustomPool ? '' : 'btn-primary'}"
+              on:click={() => handlePoolSourceChange('default')}
+            >
+              Default examples
+            </button>
+            <button
+              type="button"
+              class="btn btn-xs join-item {useCustomPool ? 'btn-primary' : ''}"
+              on:click={() => handlePoolSourceChange('custom')}
+            >
+              Custom pool
+            </button>
+          </div>
+          <span class="badge badge-ghost">
+            Active items: {getActivePool().length}
+          </span>
+        </div>
+
+        <p class="text-xs opacity-80">
+          Paste or edit questions here. Each item should look like the built-in examples
+          with <code>question</code>, an <code>options</code> array of answers, and an
+          <code>answer</code> id that matches one of the option ids.
+        </p>
+
+        <textarea
+          class="textarea textarea-bordered w-full font-mono text-xs h-48"
+          bind:value={teacherJson}
+        ></textarea>
+
+        <div class="flex flex-wrap gap-2 items-center">
+          <button class="btn btn-sm btn-primary" type="button" on:click={applyTeacherJsonFromTextarea}>
+            Use JSON above
+          </button>
+          <button class="btn btn-sm" type="button" on:click={downloadCurrentPool}>
+            Download current pool
+          </button>
+          <label class="btn btn-sm btn-outline">
+            Upload JSON
+            <input type="file" accept="application/json" class="hidden" on:change={handleFileUpload} />
+          </label>
+        </div>
+
+        {#if teacherError}
+          <div class="alert alert-error mt-2 text-xs">
+            <span>{teacherError}</span>
+          </div>
+        {/if}
+      </div>
+    </details>
+  {/if}
   {#if !finished && current}
     <div class="card bg-base-100 shadow">
       <div class="card-body">

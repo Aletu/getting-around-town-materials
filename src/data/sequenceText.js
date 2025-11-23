@@ -1,6 +1,6 @@
 // Dynamic scenario texts where students sequence locations based on contextual clues
 // Traffic safety elements are described in text, but only locations are draggable options
-export const SAFE_WALK_SCENARIOS = [
+export let SAFE_WALK_SCENARIOS = [
   {
     id: 1,
     text: 'I leave home in the morning. I walk on the sidewalk to the place where I learn and study. After my classes end, I go to the place with swings and slides to play. Then I stop at the place with books before going back.',

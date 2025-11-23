@@ -3,11 +3,24 @@
   import { createEventDispatcher } from 'svelte';
   import { flip } from 'svelte/animate';
   import { tick } from 'svelte';
+  import { teacherMode } from '../lib/store.js';
 
   const dispatch = createEventDispatcher();
 
   // Session state: we play through 3 distinct scenarios before the module is "fully" completed
   const SCENARIOS_PER_SESSION = 3;
+
+  // pool management: either use built-in scenarios or a custom teacher-provided pool
+  let useCustomPool = false;
+  let customPool = [];
+  let teacherJson = '';
+  let teacherError = '';
+
+  function getActivePool() {
+    const pool = useCustomPool && customPool.length ? customPool : SAFE_WALK_SCENARIOS;
+    return pool;
+  }
+
   let sessionScenarios = [];
   let currentIndex = 0;
   let currentScenario;
@@ -19,7 +32,7 @@
 
   function startNewSession() {
     // shuffle a shallow copy and take the first SCENARIOS_PER_SESSION
-    const shuffled = [...SAFE_WALK_SCENARIOS].sort(() => Math.random() - 0.5);
+    const shuffled = [...getActivePool()].sort(() => Math.random() - 0.5);
     sessionScenarios = shuffled.slice(0, SCENARIOS_PER_SESSION);
     currentIndex = 0;
     completed = false;
@@ -88,6 +101,96 @@
     // restart a full 3-scenario session
     startNewSession();
   }
+
+  // ------- Teacher tools (JSON import / export) -------
+
+  function refreshTeacherJson() {
+    const pool = getActivePool();
+    try {
+      teacherJson = JSON.stringify(pool, null, 2);
+      teacherError = '';
+    } catch (e) {
+      teacherError = 'Could not serialise scenarios to JSON.';
+    }
+  }
+
+  $: if ($teacherMode) {
+    refreshTeacherJson();
+  }
+
+  function handlePoolSourceChange(mode) {
+    useCustomPool = mode === 'custom';
+    teacherError = '';
+    startNewSession();
+    refreshTeacherJson();
+  }
+
+  function applyTeacherJsonFromTextarea() {
+    teacherError = '';
+    try {
+      const parsed = JSON.parse(teacherJson);
+      if (!Array.isArray(parsed)) {
+        throw new Error('JSON must be an array of scenario objects.');
+      }
+      for (const item of parsed) {
+        if (typeof item !== 'object' || typeof item.text !== 'string' || !Array.isArray(item.sequence)) {
+          throw new Error('Each scenario needs text and sequence[].');
+        }
+      }
+      customPool = parsed;
+      useCustomPool = true;
+      startNewSession();
+    } catch (e) {
+      teacherError = e.message || 'Could not parse JSON.';
+    }
+  }
+
+  function downloadCurrentPool() {
+    try {
+      const data = getActivePool();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'safe-walk-scenarios.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      teacherError = 'Could not download JSON.';
+    }
+  }
+
+  function handleFileUpload(event) {
+    const [file] = event.target.files || [];
+    if (!file) return;
+    teacherError = '';
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const parsed = JSON.parse(reader.result);
+        if (!Array.isArray(parsed)) {
+          throw new Error('JSON must be an array of scenario objects.');
+        }
+        for (const item of parsed) {
+          if (typeof item !== 'object' || typeof item.text !== 'string' || !Array.isArray(item.sequence)) {
+            throw new Error('Each scenario needs text and sequence[].');
+          }
+        }
+        customPool = parsed;
+        useCustomPool = true;
+        startNewSession();
+        teacherJson = JSON.stringify(customPool, null, 2);
+      } catch (e) {
+        teacherError = e.message || 'Could not parse uploaded JSON.';
+      }
+    };
+    reader.onerror = () => {
+      teacherError = 'Could not read file.';
+    };
+    reader.readAsText(file);
+  }
 </script>
 
 <section class="space-y-4">
@@ -98,6 +201,68 @@
   <p class="text-base font-medium">
     Read the short text. Tap an item to select it, then tap another to swap their positions.
   </p>
+
+  {#if $teacherMode}
+    <details class="mt-2 mb-4 collapse bg-base-200">
+      <summary class="collapse-title font-semibold cursor-pointer">
+        Teacher tools – scenario pool
+      </summary>
+      <div class="collapse-content space-y-3 text-sm">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="font-medium mr-2">Scenario source:</span>
+          <div class="join">
+            <button
+              type="button"
+              class="btn btn-xs join-item {useCustomPool ? '' : 'btn-primary'}"
+              on:click={() => handlePoolSourceChange('default')}
+            >
+              Default examples
+            </button>
+            <button
+              type="button"
+              class="btn btn-xs join-item {useCustomPool ? 'btn-primary' : ''}"
+              on:click={() => handlePoolSourceChange('custom')}
+            >
+              Custom pool
+            </button>
+          </div>
+          <span class="badge badge-ghost">
+            Active items: {getActivePool().length}
+          </span>
+        </div>
+
+        <p class="text-xs opacity-80">
+          Paste or edit scenarios here. Each item should look like the built-in examples
+          with <code>text</code> and a <code>sequence</code> array of locations
+          with <code>id</code>, <code>label</code>, <code>emoji</code>, and <code>correctIndex</code>.
+        </p>
+
+        <textarea
+          class="textarea textarea-bordered w-full font-mono text-xs h-48"
+          bind:value={teacherJson}
+        ></textarea>
+
+        <div class="flex flex-wrap gap-2 items-center">
+          <button class="btn btn-sm btn-primary" type="button" on:click={applyTeacherJsonFromTextarea}>
+            Use JSON above
+          </button>
+          <button class="btn btn-sm" type="button" on:click={downloadCurrentPool}>
+            Download current pool
+          </button>
+          <label class="btn btn-sm btn-outline">
+            Upload JSON
+            <input type="file" accept="application/json" class="hidden" on:change={handleFileUpload} />
+          </label>
+        </div>
+
+        {#if teacherError}
+          <div class="alert alert-error mt-2 text-xs">
+            <span>{teacherError}</span>
+          </div>
+        {/if}
+      </div>
+    </details>
+  {/if}
 
   {#if !completed}
     <div class="card bg-base-100 border border-base-300">
