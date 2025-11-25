@@ -1,5 +1,5 @@
 <script>
-  import { SCENARIOS } from '../data/scenarios.js';
+  import { scenariosStore, teacherMode } from '../stores.js';
   import { PLACES } from '../data/places.js';
   import { createEventDispatcher } from 'svelte';
   import { onMount } from 'svelte';
@@ -14,7 +14,12 @@
   // session size: pick a random subset of scenarios per session to keep sessions short
   const QUESTIONS_PER_SESSION = 10;
   // start with scenarios shuffled and limited to QUESTIONS_PER_SESSION so sessions are consistent
-  let messages = [...SCENARIOS].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, SCENARIOS.length));
+  let messages = [];
+
+  // Initialize messages when store is ready
+  $: if ($scenariosStore.length > 0 && messages.length === 0) {
+      restart();
+  }
 
   // reactive current message so Svelte updates when currentIndex or messages change
   $: current = messages[currentIndex];
@@ -79,7 +84,7 @@
     wrongAttemptsForCurrent = 0;
     finished = false;
     feedback = '';
-    messages = [...SCENARIOS].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, SCENARIOS.length));
+    messages = [...$scenariosStore].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, $scenariosStore.length));
     dbgState('restart');
     persist();
   }
@@ -108,8 +113,69 @@
       console.warn('Failed to restore progress', e);
     }
   });
+
+  // Teacher Mode Functions
+  function addScenario() {
+    $scenariosStore = [...$scenariosStore, {
+        id: Date.now(),
+        text: 'New Scenario',
+        hint: 'New Hint',
+        answer: 'park',
+        distractors: ['school', 'library']
+    }];
+  }
+
+  function deleteScenario(index) {
+    const newScenarios = [...$scenariosStore];
+    newScenarios.splice(index, 1);
+    $scenariosStore = newScenarios;
+  }
+
+  function updateDistractors(index, value) {
+    const distractors = value.split(',').map(s => s.trim()).filter(s => s);
+    $scenariosStore[index].distractors = distractors;
+    $scenariosStore = $scenariosStore; 
+  }
 </script>
 
+{#if $teacherMode}
+  <div class="space-y-4">
+    <div class="flex items-center gap-2">
+        <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
+        <h2 class="text-xl font-semibold">Teacher Mode: Edit Scenarios</h2>
+    </div>
+    {#each $scenariosStore as scenario, i}
+      <div class="card bg-base-100 shadow p-4">
+        <div class="form-control">
+          <label class="label">Text</label>
+          <input type="text" class="input input-bordered" bind:value={scenario.text} />
+        </div>
+        <div class="form-control">
+            <label class="label">Hint</label>
+            <input type="text" class="input input-bordered" bind:value={scenario.hint} />
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <div class="form-control">
+                <label class="label">Answer</label>
+                <select class="select select-bordered" bind:value={scenario.answer}>
+                    {#each PLACES as place}
+                        <option value={place.id}>{place.label}</option>
+                    {/each}
+                </select>
+            </div>
+             <div class="form-control">
+                <label class="label">Distractors (comma separated IDs)</label>
+                <input type="text" class="input input-bordered" value={scenario.distractors.join(', ')} on:input={(e) => updateDistractors(i, e.target.value)} />
+            </div>
+        </div>
+        <div class="mt-2 text-right">
+            <button class="btn btn-error btn-sm" on:click={() => deleteScenario(i)}>Delete</button>
+        </div>
+      </div>
+    {/each}
+    <button class="btn btn-success w-full" on:click={addScenario}>Add New Scenario</button>
+  </div>
+{:else}
 <section class="space-y-4">
   <div class="flex items-center gap-2">
     <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
@@ -218,3 +284,4 @@
     </div>
   {/if}
 </section>
+{/if}

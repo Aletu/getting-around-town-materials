@@ -1,5 +1,5 @@
 <script>
-  import { SAFE_WALK_SCENARIOS } from '../data/sequenceText.js';
+  import { safeWalkStore, teacherMode } from '../stores.js';
   import { createEventDispatcher } from 'svelte';
   import { flip } from 'svelte/animate';
   import { tick } from 'svelte';
@@ -19,11 +19,16 @@
 
   function startNewSession() {
     // shuffle a shallow copy and take the first SCENARIOS_PER_SESSION
-    const shuffled = [...SAFE_WALK_SCENARIOS].sort(() => Math.random() - 0.5);
+    const shuffled = [...$safeWalkStore].sort(() => Math.random() - 0.5);
     sessionScenarios = shuffled.slice(0, SCENARIOS_PER_SESSION);
     currentIndex = 0;
     completed = false;
     loadCurrentScenario();
+  }
+
+  // Re-init if store changes and we have no items (initial load)
+  $: if ($safeWalkStore.length > 0 && sessionScenarios.length === 0) {
+      startNewSession();
   }
 
   function loadCurrentScenario() {
@@ -35,7 +40,7 @@
   }
 
   // initialise first session
-  startNewSession();
+  // startNewSession(); // Removed, handled by reactive statement
 
   async function handleItemClick(id) {
     if (completed || scenarioDone) return;
@@ -88,8 +93,66 @@
     // restart a full 3-scenario session
     startNewSession();
   }
+
+  // Teacher Mode Functions
+  function addScenario() {
+    $safeWalkStore = [...$safeWalkStore, {
+        id: Date.now(),
+        text: 'New Sequence Scenario',
+        sequence: [
+            { id: 'step1', label: 'Step 1', emoji: '1️⃣', correctIndex: 0, alt: 'Step 1' },
+            { id: 'step2', label: 'Step 2', emoji: '2️⃣', correctIndex: 1, alt: 'Step 2' },
+            { id: 'step3', label: 'Step 3', emoji: '3️⃣', correctIndex: 2, alt: 'Step 3' }
+        ]
+    }];
+  }
+
+  function deleteScenario(index) {
+    const newScenarios = [...$safeWalkStore];
+    newScenarios.splice(index, 1);
+    $safeWalkStore = newScenarios;
+  }
 </script>
 
+{#if $teacherMode}
+  <div class="space-y-4">
+    <div class="flex items-center gap-2">
+        <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
+        <h2 class="text-xl font-semibold">Teacher Mode: Edit Sequences</h2>
+    </div>
+    {#each $safeWalkStore as scenario, i}
+      <div class="card bg-base-100 shadow p-4">
+        <div class="form-control">
+          <label class="label">Scenario Text</label>
+          <textarea class="textarea textarea-bordered" bind:value={scenario.text}></textarea>
+        </div>
+        <div class="mt-2">
+            <h3 class="font-bold">Sequence Items (in correct order)</h3>
+            {#each scenario.sequence as item, j}
+                <div class="grid grid-cols-3 gap-2 mb-2 border p-2 rounded">
+                    <div class="form-control">
+                        <label class="label text-xs">Label</label>
+                        <input type="text" class="input input-sm input-bordered" bind:value={item.label} />
+                    </div>
+                    <div class="form-control">
+                        <label class="label text-xs">Emoji</label>
+                        <input type="text" class="input input-sm input-bordered" bind:value={item.emoji} />
+                    </div>
+                    <div class="form-control">
+                        <label class="label text-xs">Alt Text</label>
+                        <input type="text" class="input input-sm input-bordered" bind:value={item.alt} />
+                    </div>
+                </div>
+            {/each}
+        </div>
+        <div class="mt-2 text-right">
+            <button class="btn btn-error btn-sm" on:click={() => deleteScenario(i)}>Delete</button>
+        </div>
+      </div>
+    {/each}
+    <button class="btn btn-success w-full" on:click={addScenario}>Add New Scenario</button>
+  </div>
+{:else}
 <section class="space-y-4">
   <div class="flex items-center gap-2">
     <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
@@ -172,7 +235,8 @@
       </div>
     </div>
   {/if}
-</section>  
+</section>
+{/if}  
 
 <style>
   /* smooth transitions for reorder and selected item */

@@ -1,5 +1,5 @@
 <script>
-  import { SHORT_QA_ITEMS } from '../data/shortQA.js';
+  import { shortQAStore, teacherMode } from '../stores.js';
   import { createEventDispatcher } from 'svelte';
 
   const dispatch = createEventDispatcher();
@@ -15,8 +15,8 @@
   let selectedId = null;
 
   function startSession() {
-    const shuffled = [...SHORT_QA_ITEMS].sort(() => Math.random() - 0.5);
-    items = shuffled.slice(0, Math.min(QUESTIONS_PER_SESSION, SHORT_QA_ITEMS.length));
+    const shuffled = [...$shortQAStore].sort(() => Math.random() - 0.5);
+    items = shuffled.slice(0, Math.min(QUESTIONS_PER_SESSION, $shortQAStore.length));
     currentIndex = 0;
     score = 0;
     attempts = 0;
@@ -26,6 +26,11 @@
   }
 
   $: current = items[currentIndex];
+
+  // Re-init if store changes and we have no items (initial load)
+  $: if ($shortQAStore.length > 0 && items.length === 0) {
+      startSession();
+  }
 
   function selectOption(id) {
     if (finished || !current) return;
@@ -55,9 +60,66 @@
   }
 
   // initialize first session
-  startSession();
+  // startSession(); // Removed, handled by reactive statement
+
+  // Teacher Mode Functions
+  function addItem() {
+    $shortQAStore = [...$shortQAStore, {
+        id: Date.now(),
+        question: 'New Question?',
+        options: [
+            { id: 'a', text: 'Option A' },
+            { id: 'b', text: 'Option B' },
+            { id: 'c', text: 'Option C' },
+            { id: 'd', text: 'Option D' }
+        ],
+        answer: 'a'
+    }];
+  }
+
+  function deleteItem(index) {
+    const newItems = [...$shortQAStore];
+    newItems.splice(index, 1);
+    $shortQAStore = newItems;
+  }
 </script>
 
+{#if $teacherMode}
+  <div class="space-y-4">
+    <div class="flex items-center gap-2">
+        <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
+        <h2 class="text-xl font-semibold">Teacher Mode: Edit Q&A</h2>
+    </div>
+    {#each $shortQAStore as item, i}
+      <div class="card bg-base-100 shadow p-4">
+        <div class="form-control">
+          <label class="label">Question</label>
+          <input type="text" class="input input-bordered" bind:value={item.question} />
+        </div>
+        <div class="form-control">
+            <label class="label">Correct Answer ID</label>
+            <select class="select select-bordered" bind:value={item.answer}>
+                {#each item.options as opt}
+                    <option value={opt.id}>{opt.id}</option>
+                {/each}
+            </select>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
+            {#each item.options as opt}
+                <div class="form-control">
+                    <label class="label">Option {opt.id}</label>
+                    <input type="text" class="input input-bordered" bind:value={opt.text} />
+                </div>
+            {/each}
+        </div>
+        <div class="mt-2 text-right">
+            <button class="btn btn-error btn-sm" on:click={() => deleteItem(i)}>Delete</button>
+        </div>
+      </div>
+    {/each}
+    <button class="btn btn-success w-full" on:click={addItem}>Add New Question</button>
+  </div>
+{:else}
 <section class="space-y-4">
   <div class="flex items-center gap-2">
     <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
@@ -144,3 +206,4 @@
     </div>
   {/if}
 </section>
+{/if}

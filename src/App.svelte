@@ -3,6 +3,7 @@
   import SafeWalkSequence from './components/SafeWalkSequence.svelte';
   import ShortQA from './components/ShortQA.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
+  import { teacherMode } from './stores.js';
 
   let view = 'home';
   function setView(id) {
@@ -15,6 +16,12 @@
 <header class="navbar bg-base-100 px-4 shadow-sm">
   <div class="flex-1">
     <span class="font-bold text-2xl sm:text-xl text-primary">Getting Around Town!</span>
+  </div>
+  <div class="flex-none">
+    <label class="label cursor-pointer gap-2">
+      <span class="label-text font-medium">Teacher Mode</span> 
+      <input type="checkbox" class="toggle toggle-primary" bind:checked={$teacherMode} />
+    </label>
   </div>
 </header>
 
