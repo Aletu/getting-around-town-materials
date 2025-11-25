@@ -171,7 +171,7 @@
         </div>
       </div>
     </div>
-  {:else}
+  {:else if finished}
     <div class="card bg-base-100 shadow-xl">
       <div class="card-body items-center text-center">
         <div class="text-6xl mb-4 animate-bounce">🌟</div>
@@ -203,6 +203,15 @@
           </button>
         </div>
       </div>
+    </div>
+  {:else}
+    <div class="card bg-base-100 shadow-xl">
+        <div class="card-body items-center text-center">
+            <p class="text-lg">Loading questions...</p>
+            {#if $shortQAStore.length === 0}
+                <p class="text-warning">No questions found. Please add some in Teacher Mode.</p>
+            {/if}
+        </div>
     </div>
   {/if}
 </section>

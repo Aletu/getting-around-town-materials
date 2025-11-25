@@ -136,6 +136,22 @@
     $scenariosStore[index].distractors = distractors;
     $scenariosStore = $scenariosStore; 
   }
+
+  function addDistractor(index, placeId) {
+    if (!placeId) return;
+    const scenario = $scenariosStore[index];
+    if (!scenario.distractors.includes(placeId)) {
+        scenario.distractors = [...scenario.distractors, placeId];
+        $scenariosStore = $scenariosStore;
+    }
+  }
+
+  function removeDistractor(index, distractorIndex) {
+    const scenario = $scenariosStore[index];
+    scenario.distractors.splice(distractorIndex, 1);
+    scenario.distractors = scenario.distractors; // trigger reactivity
+    $scenariosStore = $scenariosStore;
+  }
 </script>
 
 {#if $teacherMode}
@@ -164,8 +180,25 @@
                 </select>
             </div>
              <div class="form-control">
-                <label class="label">Distractors (comma separated IDs)</label>
-                <input type="text" class="input input-bordered" value={scenario.distractors.join(', ')} on:input={(e) => updateDistractors(i, e.target.value)} />
+                <label class="label">Distractors</label>
+                <div class="flex flex-wrap gap-2 mb-2">
+                    {#each scenario.distractors as distractor, dIndex}
+                        <div class="badge badge-secondary gap-2 p-3">
+                            {PLACES.find(p => p.id === distractor)?.label || distractor}
+                            <button class="btn btn-ghost btn-xs btn-circle text-white" on:click={() => removeDistractor(i, dIndex)}>✕</button>
+                        </div>
+                    {/each}
+                </div>
+                <div class="flex gap-2">
+                    <select class="select select-bordered flex-1" on:change={(e) => addDistractor(i, e.target.value)} value="">
+                        <option value="" disabled selected>Add distractor...</option>
+                        {#each PLACES as place}
+                            {#if place.id !== scenario.answer && !scenario.distractors.includes(place.id)}
+                                <option value={place.id}>{place.label}</option>
+                            {/if}
+                        {/each}
+                    </select>
+                </div>
             </div>
         </div>
         <div class="mt-2 text-right">
