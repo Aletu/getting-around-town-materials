@@ -1,7 +1,7 @@
 // Short Q&A items for Material #3 – Step-by-step directions / simple responses
 // Each item represents a short question and 3–4 possible answers.
 
-export let SHORT_QA_ITEMS = [
+export const SHORT_QA_ITEMS = [
   {
     id: 1,
     question: 'Can you help me?',
