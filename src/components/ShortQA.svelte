@@ -1,6 +1,7 @@
 <script>
   import { shortQAStore, teacherMode } from '../stores.js';
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import { SHORT_QA_ITEMS } from '../data/shortQA.js';
 
   const dispatch = createEventDispatcher();
 
@@ -14,6 +15,13 @@
   let feedback = '';
   let selectedId = null;
 
+  onMount(() => {
+    // Ensure store is a valid array and has items. If not, reset to defaults.
+    if (!Array.isArray($shortQAStore) || $shortQAStore.length === 0) {
+      $shortQAStore = JSON.parse(JSON.stringify(SHORT_QA_ITEMS));
+    }
+  });
+
   function startSession() {
     const shuffled = [...$shortQAStore].sort(() => Math.random() - 0.5);
     items = shuffled.slice(0, Math.min(QUESTIONS_PER_SESSION, $shortQAStore.length));
@@ -25,14 +33,13 @@
     selectedId = null;
   }
 
-  $: current = items[currentIndex];
-
   // Re-init if store changes and we have no items (initial load)
-  $: if ($shortQAStore.length > 0 && items.length === 0) {
+  $: if (Array.isArray($shortQAStore) && $shortQAStore.length > 0 && items.length === 0) {
       startSession();
   }
 
   function selectOption(id) {
+    const current = items[currentIndex];
     if (finished || !current) return;
 
     attempts += 1;
@@ -129,7 +136,7 @@
     Read the question and choose the answer that makes the most sense.
   </p>
 
-  {#if !finished && current}
+  {#if !finished && items.length > 0 && items[currentIndex]}
     <div class="card bg-base-100 shadow">
       <div class="card-body">
         <div class="mb-3 space-y-1">
@@ -146,14 +153,14 @@
           ></progress>
         </div>
 
-        <p class="mt-2 text-base-content text-base md:text-lg leading-relaxed" aria-live="polite">{current.question}</p>
+        <p class="mt-2 text-base-content text-base md:text-lg leading-relaxed" aria-live="polite">{items[currentIndex].question}</p>
 
         <div class="grid gap-3 mt-4 sm:grid-cols-2">
-          {#each current.options as opt (opt.id)}
+          {#each items[currentIndex].options as opt (opt.id)}
             <button
               type="button"
               class="btn btn-outline justify-start flex gap-2"
-              class:btn-primary={selectedId === opt.id && opt.id === current.answer}
+              class:btn-primary={selectedId === opt.id && opt.id === items[currentIndex].answer}
               on:click={() => selectOption(opt.id)}
               aria-label={`Answer option: ${opt.text}`}
             >
@@ -208,7 +215,7 @@
     <div class="card bg-base-100 shadow-xl">
         <div class="card-body items-center text-center">
             <p class="text-lg">Loading questions...</p>
-            {#if $shortQAStore.length === 0}
+            {#if Array.isArray($shortQAStore) && $shortQAStore.length === 0}
                 <p class="text-warning">No questions found. Please add some in Teacher Mode.</p>
             {/if}
         </div>
