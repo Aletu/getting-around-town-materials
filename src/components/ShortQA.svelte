@@ -24,7 +24,14 @@
 
   function startSession() {
     const shuffled = [...$shortQAStore].sort(() => Math.random() - 0.5);
-    items = shuffled.slice(0, Math.min(QUESTIONS_PER_SESSION, $shortQAStore.length));
+    const selected = shuffled.slice(0, Math.min(QUESTIONS_PER_SESSION, $shortQAStore.length));
+    
+    // Shuffle options for each question so the answer isn't always the first one
+    items = selected.map(q => ({
+      ...q,
+      options: [...q.options].sort(() => Math.random() - 0.5)
+    }));
+
     currentIndex = 0;
     score = 0;
     attempts = 0;
