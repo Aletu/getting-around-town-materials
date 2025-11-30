@@ -55,7 +55,7 @@
         <article class="card bg-base-100 shadow hover:shadow-lg transition-shadow duration-150 group">
           <div class="card-body">
             <div class="flex items-start gap-3">
-              <div class="text-3xl"></div>
+              <div class="text-3xl">🚦</div>
               <div>
                 <h2 class="card-title">Safe Walk Sequence</h2>
                 <p class="text-sm opacity-80">Read a short safety text and arrange images in order to demonstrate a safe walking sequence.</p>
