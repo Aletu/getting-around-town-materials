@@ -3,7 +3,7 @@
 export const SAFE_WALK_SCENARIOS = [
   {
     id: 1,
-    text: 'I leave home in the morning. I walk on the sidewalk to the place where I learn and study. After my classes end, I go to the place with swings and slides to play. Then I stop at the place with books before going back.',
+    text: 'It\'s a busy school day! I start by leaving my house and walking safely on the sidewalk to get to school. When the bell rings, I head to the playground to have some fun. On my way back, I stop at the library to pick up a new storybook before finally returning home.',
     sequence: [
       { id: 'house', label: 'House', emoji: '🏠', correctIndex: 0, alt: 'House' },
       { id: 'school', label: 'School', emoji: '🏫', correctIndex: 1, alt: 'School building' },
@@ -14,7 +14,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 2,
-    text: 'I start my day at home. My mom is sick, so I go to see the doctor with her. After the appointment, I pick up her medicine. Then I buy groceries before we go home.',
+    text: 'Mom isn\'t feeling well today, so we leave the house to visit the hospital. After the doctor sees her, we stop at the pharmacy for her medicine. We quickly grab some food at the store and then head back home to rest.',
     sequence: [
       { id: 'house', label: 'House', emoji: '🏠', correctIndex: 0, alt: 'House' },
       { id: 'hospital', label: 'Hospital', emoji: '🏥', correctIndex: 1, alt: 'Hospital' },
@@ -25,7 +25,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 3,
-    text: 'I visit my friend at their house. We walk together to play at the green space with trees. When we get hungry, we stop for lunch. Then we go see a movie together.',
+    text: 'I\'m visiting my best friend\'s house today! We walk over to the park to run around in the grass. All that playing makes us hungry, so we grab a bite at a restaurant. To end the fun day, we go to the theater to watch a cool new film.',
     sequence: [
       { id: 'house', label: 'Friend s House', emoji: '🏠', correctIndex: 0, alt: 'House' },
       { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 1, alt: 'Park' },
@@ -35,7 +35,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 4,
-    text: 'Dad gives me an errand to help. Starting from home, I need to deposit money for him. Next, I mail a package for grandma. Then I buy milk and bread before coming back.',
+    text: 'Dad needs some help with errands. Leaving from our house, I first go to the bank to deposit some money. Next, I head to the post office to mail a package for grandma. Finally, I stop at the store for milk and bread.',
     sequence: [
       { id: 'house', label: 'House', emoji: '🏠', correctIndex: 0, alt: 'House' },
       { id: 'bank', label: 'Bank', emoji: '🏦', correctIndex: 1, alt: 'Bank' },
@@ -45,7 +45,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 5,
-    text: 'After school, I need to return a book I borrowed. Then I wait to catch the bus to my dentist appointment.',
+    text: 'School is over for the day, but I have one more stop. I go to the library to return a borrowed book. Then, I wait at the bus stop to catch a ride to my dentist appointment.',
     sequence: [
       { id: 'school', label: 'School', emoji: '🏫', correctIndex: 0, alt: 'School' },
       { id: 'library', label: 'Library', emoji: '📚', correctIndex: 1, alt: 'Library' },
@@ -55,7 +55,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 6,
-    text: 'I enjoy a walk in the green space with trees. Then I go work out and exercise. After my workout, I am hungry so I stop for food.',
+    text: 'It\'s a healthy day! I start with a nice walk in the park. Then, I head to the gym for some exercise. All that moving makes me hungry, so I finish up at a restaurant for a good meal.',
     sequence: [
       { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 0, alt: 'Park' },
       { id: 'gym', label: 'Gym', emoji: '💪', correctIndex: 1, alt: 'Gym' },
@@ -64,7 +64,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 7,
-    text: 'I leave home for my dental checkup. My tooth hurts, so the dentist gives me a prescription. Then I go fill it right away.',
+    text: 'I have a toothache, so I leave my house to see the dentist. The dentist gives me a prescription to help. I go straight to the pharmacy to pick it up.',
     sequence: [
       { id: 'house', label: 'House', emoji: '🏠', correctIndex: 0, alt: 'House' },
       { id: 'dentist', label: 'Dentist', emoji: '🦷', correctIndex: 1, alt: 'Dentist' },
@@ -73,7 +73,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 8,
-    text: 'Mom sends me to buy eggs and juice. Then I walk to catch the bus to get to class on time.',
+    text: 'Mom needs eggs and juice for breakfast, so I run to the store. After shopping, I hurry to the bus stop. I need to catch the bus so I can get to school on time!',
     sequence: [
       { id: 'store', label: 'Store', emoji: '🏪', correctIndex: 0, alt: 'Store' },
       { id: 'bus_stop', label: 'Bus Stop', emoji: '🚏', correctIndex: 1, alt: 'Bus stop' },
@@ -82,7 +82,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 9,
-    text: 'I visit grandma at the hospital. She asks me to mail a card for her. Then I deposit her check. Before going home, I buy her favorite snacks.',
+    text: 'I\'m visiting grandma at the hospital today. She asks me to do a favor and mail a card at the post office. Then, I stop by the bank for her. Before heading home, I buy her favorite snacks at the store.',
     sequence: [
       { id: 'hospital', label: 'Hospital', emoji: '🏥', correctIndex: 0, alt: 'Hospital' },
       { id: 'post_office', label: 'Post Office', emoji: '📮', correctIndex: 1, alt: 'Post office' },
@@ -92,7 +92,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 10,
-    text: 'My little sister and I play on the swings and slide. Then we go watch a movie together. After the movie, we are hungry so we get pizza.',
+    text: 'My little sister and I are having a fun day out. We start by playing on the swings at the playground. Then, we go to the theater to see a funny movie. Afterwards, we grab some pizza at a restaurant.',
     sequence: [
       { id: 'playground', label: 'Playground', emoji: '🎪', correctIndex: 0, alt: 'Playground' },
       { id: 'theater', label: 'Theater', emoji: '🎬', correctIndex: 1, alt: 'Theater' },
@@ -101,7 +101,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 11,
-    text: 'I walk from home to the green space to meet my friends. We play outside, then we all walk together to our classes. After school, we go to the place where we can shoot hoops and exercise.',
+    text: 'I leave my house and walk to the park to meet my friends. We play for a bit before walking to school together. After classes are done, we all head to the gym to shoot some hoops.',
     sequence: [
       { id: 'house', label: 'House', emoji: '🏠', correctIndex: 0, alt: 'House' },
       { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 1, alt: 'Park' },
@@ -111,7 +111,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 12,
-    text: 'I need to return my library books. Then dad asks me to deposit his paycheck for him. After that, I buy snacks for our family movie night.',
+    text: 'I have a few things to do today. First, I drop off some books at the library. Then, I go to the bank to help my dad. Finally, I stop at the store to get snacks for movie night.',
     sequence: [
       { id: 'library', label: 'Library', emoji: '📚', correctIndex: 0, alt: 'Library' },
       { id: 'bank', label: 'Bank', emoji: '🏦', correctIndex: 1, alt: 'Bank' },
@@ -120,7 +120,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 13,
-    text: 'After my workout and exercise class, I catch the bus. I am going to visit my aunt who is not feeling well.',
+    text: 'I just finished my workout at the gym. Now I need to catch a ride at the bus stop. I\'m on my way to the hospital to visit my aunt who isn\'t feeling well.',
     sequence: [
       { id: 'gym', label: 'Gym', emoji: '💪', correctIndex: 0, alt: 'Gym' },
       { id: 'bus_stop', label: 'Bus Stop', emoji: '🚏', correctIndex: 1, alt: 'Bus stop' },
@@ -129,7 +129,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 14,
-    text: 'After watching a movie, I need to get my teeth checked. Then I pick up some medicine for my mom.',
+    text: 'I just saw a great movie at the theater! Now, unfortunately, I have to go to the dentist. Afterwards, I\'ll stop at the pharmacy to pick up medicine for mom.',
     sequence: [
       { id: 'theater', label: 'Theater', emoji: '🎬', correctIndex: 0, alt: 'Theater' },
       { id: 'dentist', label: 'Dentist', emoji: '🦷', correctIndex: 1, alt: 'Dentist' },
@@ -138,7 +138,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 15,
-    text: 'I need to mail a birthday card to my cousin. Then I meet my friend for lunch. After we eat, we walk through the green space with trees. Finally, I go to my friend\'s house to play.',
+    text: 'It\'s my cousin\'s birthday, so I go to the post office to mail a card. Then, I meet a friend for lunch at a restaurant. We take a nice walk through the park before I head to my friend\'s house.',
     sequence: [
       { id: 'post_office', label: 'Post Office', emoji: '📮', correctIndex: 0, alt: 'Post office' },
       { id: 'restaurant', label: 'Restaurant', emoji: '🍽️', correctIndex: 1, alt: 'Restaurant' },
@@ -148,7 +148,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 16,
-    text: 'I start my Saturday at the swimming pool for my lesson. After swimming, I am tired so I go to a cafe for a snack. Then I walk to the bookstore to buy a new comic.',
+    text: 'Saturday starts with a splash at the pool for my swimming lesson. Swimming makes me hungry, so I visit a cafe for a snack. Then, I head to the bookstore to find a new comic.',
     sequence: [
       { id: 'pool', label: 'Pool', emoji: '🏊', correctIndex: 0, alt: 'Swimming pool' },
       { id: 'cafe', label: 'Cafe', emoji: '☕', correctIndex: 1, alt: 'Cafe' },
@@ -157,7 +157,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 17,
-    text: 'Mom takes me to the place where animals are cared for. Our cat needs a checkup. After the visit, we stop at the pet store to buy food. Then we go to the green space so our cat can enjoy the fresh air.',
+    text: 'Our cat needs a checkup, so we take him to the veterinarian. Afterwards, we stop at the pet store for some treats. Then, we go to the park so he can get some fresh air.',
     sequence: [
       { id: 'vet', label: 'Veterinarian', emoji: '🐕‍🦺', correctIndex: 0, alt: 'Veterinarian' },
       { id: 'pet_store', label: 'Pet Store', emoji: '🐾', correctIndex: 1, alt: 'Pet store' },
@@ -166,7 +166,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 18,
-    text: 'I want to surprise grandpa on his birthday. I go to the bakery to order a cake. Then I pick up balloons at the party supply store. Finally, I visit him at his apartment.',
+    text: 'It\'s Grandpa\'s birthday! I go to the bakery to order a delicious cake. Then, I get some colorful balloons at the party store. Finally, I head to his apartment to surprise him.',
     sequence: [
       { id: 'bakery', label: 'Bakery', emoji: '🎂', correctIndex: 0, alt: 'Bakery' },
       { id: 'party_store', label: 'Party Store', emoji: '🎈', correctIndex: 1, alt: 'Party store' },
@@ -175,7 +175,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 19,
-    text: 'After school, I have piano practice. My teacher lives near the coffee shop. After my lesson, I meet my dad at his office. We walk home together.',
+    text: 'After school, I have my piano lesson. I walk to the music school near the coffee shop. When I\'m done, I meet my dad at his office, and we walk home together.',
     sequence: [
       { id: 'school', label: 'School', emoji: '🏫', correctIndex: 0, alt: 'School' },
       { id: 'music_school', label: 'Music School', emoji: '🎹', correctIndex: 1, alt: 'Music school' },
@@ -185,7 +185,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 20,
-    text: 'I need to get my hair cut for school pictures. After my haircut, I stop at the place where they develop photos to pick up prints. Then I buy a frame for my favorite picture.',
+    text: 'Picture day is coming! I go to the salon to get a fresh haircut. Then, I stop at the photo shop to pick up some prints. Finally, I buy a nice frame at the store.',
     sequence: [
       { id: 'salon', label: 'Salon', emoji: '💇', correctIndex: 0, alt: 'Hair salon' },
       { id: 'photo_shop', label: 'Photo Shop', emoji: '📷', correctIndex: 1, alt: 'Photo shop' },
@@ -194,7 +194,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 21,
-    text: 'Sunday morning, my family goes to church together. After the service, we volunteer at the community center to help serve meals. Then we walk to the ice cream shop as a treat.',
+    text: 'On Sunday, my family goes to church. After the service, we help out at the community center. As a reward for our hard work, we all go to the ice cream shop for a treat.',
     sequence: [
       { id: 'church', label: 'Church', emoji: '⛪', correctIndex: 0, alt: 'Church' },
       { id: 'community_center', label: 'Community Center', emoji: '🏘️', correctIndex: 1, alt: 'Community center' },
@@ -203,7 +203,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 22,
-    text: 'I walk to the museum for a field trip. After learning about history, we go to the cafeteria for lunch. Then we visit the aquarium next door to see the fish.',
+    text: 'We are on a field trip! First, we explore the museum to learn about history. Then, we eat lunch in the cafeteria. Our last stop is the aquarium to see the amazing fish.',
     sequence: [
       { id: 'museum', label: 'Museum', emoji: '🏛️', correctIndex: 0, alt: 'Museum' },
       { id: 'cafeteria', label: 'Cafeteria', emoji: '🍴', correctIndex: 1, alt: 'Cafeteria' },
@@ -212,7 +212,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 23,
-    text: 'I need to return my soccer uniform to the sports center. Then I go to the shoe store to buy new cleats. After shopping, I practice at the soccer field.',
+    text: 'I need to return my uniform to the sports center. Then, I head to the shoe store to buy new cleats. Finally, I go to the field for soccer practice.',
     sequence: [
       { id: 'sports_center', label: 'Sports Center', emoji: '⚽', correctIndex: 0, alt: 'Sports center' },
       { id: 'shoe_store', label: 'Shoe Store', emoji: '👟', correctIndex: 1, alt: 'Shoe store' },
@@ -221,7 +221,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 24,
-    text: 'On a rainy day, I go to the indoor climbing gym with friends. After climbing, we are hungry so we get burgers. Then we walk to the arcade to play games.',
+    text: 'It\'s raining, so we go to the climbing gym to have fun indoors. Climbing makes us hungry, so we grab some burgers. Then, we finish the day playing games at the arcade.',
     sequence: [
       { id: 'climbing_gym', label: 'Climbing Gym', emoji: '🧗', correctIndex: 0, alt: 'Climbing gym' },
       { id: 'burger_place', label: 'Burger Place', emoji: '🍔', correctIndex: 1, alt: 'Burger restaurant' },
@@ -230,7 +230,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 25,
-    text: 'I help my neighbor by walking her dog to the park. The dog loves to run and play. Then I take the dog to the groomer for a bath. Finally, I return the clean dog to my neighbor\'s house.',
+    text: 'I\'m helping my neighbor with her dog. We take a walk to the park so he can run. Then, I take him to the groomer for a bath. Finally, I bring the clean dog back to her house.',
     sequence: [
       { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 0, alt: 'Park' },
       { id: 'groomer', label: 'Groomer', emoji: '🛁', correctIndex: 1, alt: 'Pet groomer' },
@@ -239,7 +239,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 26,
-    text: 'My science project is due tomorrow! I go to the craft store to buy poster board. Then I stop at the print shop to make copies of my research. Finally, I work on it at the library.',
+    text: 'My science project is due! I go to the craft store for supplies. Then, I visit the print shop to copy my notes. Finally, I sit down at the library to put it all together.',
     sequence: [
       { id: 'craft_store', label: 'Craft Store', emoji: '🎨', correctIndex: 0, alt: 'Craft store' },
       { id: 'print_shop', label: 'Print Shop', emoji: '🖨️', correctIndex: 1, alt: 'Print shop' },
@@ -248,7 +248,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 27,
-    text: 'I volunteer at the animal shelter on weekends. After helping with the animals, I go to the farmer\'s market to buy fresh vegetables. Then I deliver them to the senior center for their meals.',
+    text: 'I volunteer at the animal shelter on weekends. Afterwards, I stop at the farmer\'s market for fresh veggies. Then, I deliver the food to the senior center.',
     sequence: [
       { id: 'shelter', label: 'Animal Shelter', emoji: '🐶', correctIndex: 0, alt: 'Animal shelter' },
       { id: 'farmers_market', label: 'Farmer\'s Market', emoji: '🥬', correctIndex: 1, alt: 'Farmer\'s market' },
@@ -257,7 +257,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 28,
-    text: 'I take art classes on Tuesdays. First, I go to the art studio downtown. After class, I need new supplies from the art store. Then I show my artwork to my grandma at her nursing home.',
+    text: 'Tuesday is art day! I start at the art studio for my class. Then, I go to the art store to buy more paint. Finally, I visit my grandma at the nursing home to show her my work.',
     sequence: [
       { id: 'art_studio', label: 'Art Studio', emoji: '🎨', correctIndex: 0, alt: 'Art studio' },
       { id: 'art_store', label: 'Art Store', emoji: '🖌️', correctIndex: 1, alt: 'Art supply store' },
@@ -266,7 +266,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 29,
-    text: 'I love reading! I walk to the bookstore to browse new releases. Then I get a smoothie at the juice bar. After my snack, I read my new book at the cozy coffee shop.',
+    text: 'I love reading! I walk to the bookstore to see the new books. Then, I grab a smoothie at the juice bar. Finally, I settle in at the cafe to read and relax.',
     sequence: [
       { id: 'bookstore', label: 'Bookstore', emoji: '📖', correctIndex: 0, alt: 'Bookstore' },
       { id: 'juice_bar', label: 'Juice Bar', emoji: '🥤', correctIndex: 1, alt: 'Juice bar' },
@@ -275,7 +275,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 30,
-    text: 'Dad and I fix my bike at home. We need a new tire, so we walk to the bike shop. After the repair, we test it by riding to the beach. Then we get tacos for dinner.',
+    text: 'Dad and I are fixing my bike at our house. We need a part, so we walk to the bike shop. Once it\'s fixed, we ride to the beach. Afterwards, we get tacos for dinner.',
     sequence: [
       { id: 'house', label: 'House', emoji: '🏠', correctIndex: 0, alt: 'House' },
       { id: 'bike_shop', label: 'Bike Shop', emoji: '🚲', correctIndex: 1, alt: 'Bike shop' },
