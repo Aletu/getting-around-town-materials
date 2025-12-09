@@ -2,6 +2,7 @@
   import HelpVisitor from './components/HelpVisitor.svelte';
   import SafeWalkSequence from './components/SafeWalkSequence.svelte';
   import ShortQA from './components/ShortQA.svelte';
+  import LearnPlaces from './components/LearnPlaces.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
   import { teacherMode } from './stores.js';
 
@@ -13,9 +14,13 @@
 </script>
 
 <div class="min-h-screen flex flex-col">
-<header class="navbar bg-base-100 px-4 shadow-sm">
-  <div class="flex-1">
-    <span class="font-bold text-2xl sm:text-xl text-primary">Getting Around Town!</span>
+<header class="navbar bg-base-100 px-4 shadow-sm z-10 relative">
+  <div class="flex-1 flex items-center gap-4">
+    <span class="font-bold text-2xl sm:text-xl text-primary mr-2">Getting Around Town!</span>
+    <div class="hidden sm:flex gap-1">
+        <button class="btn btn-ghost btn-sm" class:btn-active={view !== 'learn'} on:click={() => setView('home')}>Modules</button>
+        <button class="btn btn-ghost btn-sm" class:btn-active={view === 'learn'} on:click={() => setView('learn')}>Learn</button>
+    </div>
   </div>
   <div class="flex-none">
     <label class="label cursor-pointer gap-2">
@@ -24,6 +29,11 @@
     </label>
   </div>
 </header>
+<!-- Mobile Navigation -->
+<div class="sm:hidden flex justify-center gap-2 p-2 bg-base-100 border-b shadow-sm">
+    <button class="btn btn-ghost btn-sm flex-1" class:btn-active={view !== 'learn'} on:click={() => setView('home')}>Modules</button>
+    <button class="btn btn-ghost btn-sm flex-1" class:btn-active={view === 'learn'} on:click={() => setView('learn')}>Learn</button>
+</div>
 
 <main class="flex-1 p-4 max-w-5xl mx-auto w-full">
   {#if view === 'home'}
@@ -98,6 +108,8 @@
     <SafeWalkSequence on:back={() => setView('home')} />
   {:else if view === 'short-qa'}
     <ShortQA on:back={() => setView('home')} />
+  {:else if view === 'learn'}
+    <LearnPlaces />
   {/if}
 </main>
 
