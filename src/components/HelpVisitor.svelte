@@ -10,7 +10,8 @@
   let attempts = 0;
   let wrongAttemptsForCurrent = 0;
   let finished = false;
-  let feedback = '';
+  let selectedId = null;
+  let buttonStatus = null; // 'correct' or 'incorrect'
   // session size: pick a random subset of scenarios per session to keep sessions short
   const QUESTIONS_PER_SESSION = 10;
   // start with scenarios shuffled and limited to QUESTIONS_PER_SESSION so sessions are consistent
@@ -50,22 +51,28 @@
 
   function selectPlace(id) {
     attempts++;
+    selectedId = id;
     dbgState('selectPlace - before check');
     if (current && id === current.answer) {
       score++;
-      feedback = '✅ Correct!';
+      buttonStatus = 'correct';
       dbgState('selectPlace - correct');
       advance();
     } else {
-      feedback = '❌ Try again.';
+      buttonStatus = 'incorrect';
       wrongAttemptsForCurrent += 1;
       dbgState('selectPlace - wrong');
+      setTimeout(() => {
+        buttonStatus = null;
+        selectedId = null;
+      }, 600);
     }
   }
 
   function advance() {
     setTimeout(() => {
-      feedback = '';
+      buttonStatus = null;
+      selectedId = null;
       if (currentIndex < messages.length - 1) {
         currentIndex++;
         wrongAttemptsForCurrent = 0;
@@ -83,7 +90,8 @@
     attempts = 0;
     wrongAttemptsForCurrent = 0;
     finished = false;
-    feedback = '';
+    selectedId = null;
+    buttonStatus = null;
     messages = [...$scenariosStore].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, $scenariosStore.length));
     dbgState('restart');
     persist();
@@ -242,6 +250,8 @@
             {#each options as opt (opt.id)}
             <button
               class="btn btn-outline flex flex-col gap-1"
+              class:btn-success={selectedId === opt.id && buttonStatus === 'correct'}
+              class:btn-error={selectedId === opt.id && buttonStatus === 'incorrect'}
               on:click={() => selectPlace(opt.id)}
               aria-label={"Select " + opt.label}
             >
@@ -251,9 +261,6 @@
             {/each}
           </div>
   {/key}
-        {#if feedback}
-          <div class="mt-3 text-sm font-semibold" role="status">{feedback}</div>
-        {/if}
         {#if wrongAttemptsForCurrent >= 1 && current?.hint}
           <div class="alert alert-info mt-3">
             <span class="font-medium">Hint:</span>

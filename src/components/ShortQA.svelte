@@ -12,8 +12,8 @@
   let score = 0;
   let attempts = 0;
   let finished = false;
-  let feedback = '';
   let selectedId = null;
+  let buttonStatus = null; // 'correct' or 'incorrect'
 
   onMount(() => {
     // Ensure store is a valid array and has items. If not, reset to defaults.
@@ -36,8 +36,8 @@
     score = 0;
     attempts = 0;
     finished = false;
-    feedback = '';
     selectedId = null;
+    buttonStatus = null;
   }
 
   // Re-init if store changes and we have no items (initial load)
@@ -54,9 +54,9 @@
 
     if (id === current.answer) {
       score += 1;
-      feedback = '✅ That answer makes sense for this question.';
+      buttonStatus = 'correct';
       setTimeout(() => {
-        feedback = '';
+        buttonStatus = null;
         selectedId = null;
         if (currentIndex < items.length - 1) {
           currentIndex += 1;
@@ -65,7 +65,11 @@
         }
       }, 700);
     } else {
-      feedback = "❌ That doesn't quite fit. Try again.";
+      buttonStatus = 'incorrect';
+      setTimeout(() => {
+        buttonStatus = null;
+        selectedId = null;
+      }, 700);
     }
   }
 
@@ -167,7 +171,8 @@
             <button
               type="button"
               class="btn btn-outline justify-start flex gap-2"
-              class:btn-primary={selectedId === opt.id && opt.id === items[currentIndex].answer}
+              class:btn-success={selectedId === opt.id && buttonStatus === 'correct'}
+              class:btn-error={selectedId === opt.id && buttonStatus === 'incorrect'}
               on:click={() => selectOption(opt.id)}
               aria-label={`Answer option: ${opt.text}`}
             >
@@ -175,10 +180,6 @@
             </button>
           {/each}
         </div>
-
-        {#if feedback}
-          <div class="mt-3 text-sm font-semibold" role="status" aria-live="polite">{feedback}</div>
-        {/if}
 
         <div class="mt-4 text-xs opacity-70">
           Score: {score} / {items.length} | Attempts: {attempts}
