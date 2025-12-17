@@ -5,6 +5,7 @@
   import LearnPlaces from './components/LearnPlaces.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
   import { teacherMode } from './stores.js';
+  import { fade, fly } from 'svelte/transition';
 
   let view = 'home';
   function setView(id) {
@@ -13,89 +14,145 @@
   }
 </script>
 
-<div class="min-h-screen flex flex-col">
-<header class="navbar bg-base-100 px-4 shadow-sm z-10 relative">
+<div class="min-h-screen flex flex-col bg-base-200 font-sans">
+<header class="navbar bg-base-100 px-4 shadow-md sticky top-0 z-50">
   <div class="flex-1 flex items-center gap-4">
-    <span class="font-bold text-2xl sm:text-xl text-primary mr-2">Getting Around Town!</span>
-    <div class="hidden sm:flex gap-1">
-        <button class="btn btn-ghost btn-sm" class:btn-active={view !== 'learn'} on:click={() => setView('home')}>Modules</button>
-        <button class="btn btn-ghost btn-sm" class:btn-active={view === 'learn'} on:click={() => setView('learn')}>Learn</button>
+    <div class="flex items-center gap-2">
+        <span class="text-3xl">🏘️</span>
+        <span class="font-extrabold text-xl sm:text-2xl text-primary tracking-tight">Getting Around Town!</span>
+    </div>
+    <div class="hidden sm:flex gap-2 ml-4">
+        <button class="btn btn-sm rounded-full px-6" class:btn-primary={view !== 'learn'} class:btn-ghost={view === 'learn'} on:click={() => setView('home')}>Modules</button>
+        <button class="btn btn-sm rounded-full px-6" class:btn-primary={view === 'learn'} class:btn-ghost={view !== 'learn'} on:click={() => setView('learn')}>Learn</button>
     </div>
   </div>
   <div class="flex-none">
-    <label class="label cursor-pointer gap-2">
-      <span class="label-text font-medium">Teacher Mode</span> 
-      <input type="checkbox" class="toggle toggle-primary" bind:checked={$teacherMode} />
-    </label>
+    <!-- Desktop View -->
+    <div class="hidden sm:block">
+      <label class="label cursor-pointer gap-2 bg-base-200 px-3 py-1 rounded-full hover:bg-base-300 transition-colors">
+        <span class="label-text font-bold text-xs uppercase tracking-wider text-base-content/70">Teacher Mode</span> 
+        <input type="checkbox" class="toggle toggle-primary toggle-sm" bind:checked={$teacherMode} aria-label="Toggle Teacher Mode" />
+      </label>
+    </div>
+
+    <!-- Mobile View (Hamburger) -->
+    <div class="dropdown dropdown-end sm:hidden">
+      <div tabindex="0" role="button" class="btn btn-ghost btn-circle" aria-label="Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 border border-base-200">
+        <li>
+          <label class="label cursor-pointer justify-between active:bg-base-200">
+            <span class="label-text font-medium">Teacher Mode</span>
+            <input type="checkbox" class="toggle toggle-primary toggle-sm" bind:checked={$teacherMode} />
+          </label>
+        </li>
+      </ul>
+    </div>
   </div>
 </header>
 <!-- Mobile Navigation -->
-<div class="sm:hidden flex justify-center gap-2 p-2 bg-base-100 border-b shadow-sm">
-    <button class="btn btn-ghost btn-sm flex-1" class:btn-active={view !== 'learn'} on:click={() => setView('home')}>Modules</button>
-    <button class="btn btn-ghost btn-sm flex-1" class:btn-active={view === 'learn'} on:click={() => setView('learn')}>Learn</button>
+<div class="sm:hidden flex justify-center gap-2 p-2 bg-base-100 border-b shadow-sm sticky top-16 z-40">
+    <button class="btn btn-sm flex-1 rounded-full" class:btn-primary={view !== 'learn'} class:btn-ghost={view === 'learn'} on:click={() => setView('home')}>Modules</button>
+    <button class="btn btn-sm flex-1 rounded-full" class:btn-primary={view === 'learn'} class:btn-ghost={view !== 'learn'} on:click={() => setView('learn')}>Learn</button>
 </div>
 
-<main class="flex-1 p-4 max-w-5xl mx-auto w-full">
+<main class="flex-1 p-4 max-w-6xl mx-auto w-full">
   {#if view === 'home'}
-    <section class="space-y-6">
-      <div class="flex items-center justify-between">
-        <h1 class="text-2xl font-bold">Materials Overview</h1>
+    <section class="space-y-8" in:fade={{ duration: 300 }}>
+      
+      <!-- Hero Section -->
+      <div class="hero bg-base-100 rounded-3xl shadow-xl overflow-hidden">
+        <div class="hero-content flex-col lg:flex-row-reverse p-8 lg:p-12 gap-8">
+          <div class="text-9xl animate-bounce-slow select-none">🗺️</div>
+          <div>
+            <h1 class="text-4xl lg:text-5xl font-black text-primary mb-4">Explore Your Community!</h1>
+            <p class="py-2 text-lg opacity-80 max-w-xl">
+              Welcome to <strong>Getting Around Town</strong>! Learn how to navigate your city, help visitors find their way, and stay safe while walking. Choose a fun activity below to get started!
+            </p>
+            <button class="btn btn-secondary btn-lg rounded-full mt-4 shadow-lg hover:scale-105 transition-transform" on:click={() => setView('learn')}>
+                Start Learning Places ➜
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6">
-        <article class="card bg-base-100 shadow hover:shadow-lg transition-shadow duration-150 group">
-          <div class="card-body">
-            <div class="flex items-start gap-3">
-              <div class="text-3xl">💬</div>
-              <div>
-                <h2 class="card-title">Help the Visitor</h2>
-                <p class="text-sm opacity-80">Read different scenarios and choose the correct community place to help visitors find what they need.</p>
-                <ul class="mt-3 text-xs space-y-1">
-                  <li>• 10 different scenarios</li>
-                  <li>• Immediate feedback and scoring</li>
-                </ul>
+      <div class="flex items-center gap-2 mt-8 mb-4">
+        <h2 class="text-2xl font-bold text-base-content/80">Interactive Activities</h2>
+        <div class="h-1 flex-1 bg-base-300 rounded-full"></div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Help Visitor Card -->
+        <article class="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-b-4 border-primary group overflow-hidden">
+          <div class="card-body relative">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-8xl pointer-events-none">💬</div>
+            <div class="flex flex-col h-full">
+              <div class="mb-4">
+                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                    💬
+                </div>
+                <h2 class="card-title text-2xl mb-2">Help the Visitor</h2>
+                <p class="text-sm opacity-70">Read scenarios and guide visitors to the right place.</p>
               </div>
-            </div>
-            <div class="mt-4 sm:mt-6">
-              <button class="btn btn-primary w-full sm:w-auto" on:click={() => setView('help-visitor')}>Open module →</button>
+              
+              <div class="mt-auto pt-4">
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="badge badge-ghost">10 Scenarios</span>
+                    <span class="badge badge-ghost">Scoring</span>
+                </div>
+                <button class="btn btn-primary w-full rounded-xl group-hover:btn-active" on:click={() => setView('help-visitor')}>Play Now</button>
+              </div>
             </div>
           </div>
         </article>
 
-        <article class="card bg-base-100 shadow hover:shadow-lg transition-shadow duration-150 group">
-          <div class="card-body">
-            <div class="flex items-start gap-3">
-              <div class="text-3xl">🚦</div>
-              <div>
-                <h2 class="card-title">Safe Walk Sequence</h2>
-                <p class="text-sm opacity-80">Read a short safety text and arrange images in order to demonstrate a safe walking sequence.</p>
-                <ul class="mt-3 text-xs space-y-1">
-                  <li>• Drag & drop to reorder</li>
-                  <li>• Check sequence and get feedback</li>
-                </ul>
+        <!-- Safe Walk Card -->
+        <article class="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-b-4 border-secondary group overflow-hidden">
+          <div class="card-body relative">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-8xl pointer-events-none">🚦</div>
+            <div class="flex flex-col h-full">
+              <div class="mb-4">
+                <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                    🚦
+                </div>
+                <h2 class="card-title text-2xl mb-2">Safe Walk</h2>
+                <p class="text-sm opacity-70">Order the steps to show a safe walking sequence.</p>
               </div>
-            </div>
-            <div class="mt-4 sm:mt-6">
-              <button class="btn btn-primary w-full sm:w-auto" on:click={() => setView('safe-walk')}>Open module →</button>
+              
+              <div class="mt-auto pt-4">
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="badge badge-ghost">Drag & Drop</span>
+                    <span class="badge badge-ghost">Safety</span>
+                </div>
+                <button class="btn btn-secondary w-full rounded-xl group-hover:btn-active" on:click={() => setView('safe-walk')}>Play Now</button>
+              </div>
             </div>
           </div>
         </article>
 
-        <article class="card bg-base-100 shadow hover:shadow-lg transition-shadow duration-150 group">
-          <div class="card-body">
-            <div class="flex items-start gap-3">
-              <div class="text-3xl">❓</div>
-              <div>
-                <h2 class="card-title">Short Q&A – Step-by-step directions</h2>
-                <p class="text-sm opacity-80">Read short questions and choose the response that makes the most sense in context.</p>
-                <ul class="mt-3 text-xs space-y-1">
-                  <li>• 5 questions per session</li>
-                  <li>• Focus on meaningful answers, not only grammar</li>
-                </ul>
+        <!-- Short Q&A Card -->
+        <article class="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-b-4 border-accent group overflow-hidden">
+          <div class="card-body relative">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-8xl pointer-events-none">❓</div>
+            <div class="flex flex-col h-full">
+              <div class="mb-4">
+                <div class="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+                    ❓
+                </div>
+                <h2 class="card-title text-2xl mb-2">Short Q&A</h2>
+                <p class="text-sm opacity-70">Choose the best response for everyday questions.</p>
               </div>
-            </div>
-            <div class="mt-4 sm:mt-6">
-              <button class="btn btn-primary w-full sm:w-auto" on:click={() => setView('short-qa')}>Open module →</button>
+              
+              <div class="mt-auto pt-4">
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <span class="badge badge-ghost">5 Questions</span>
+                    <span class="badge badge-ghost">Logic</span>
+                </div>
+                <button class="btn btn-accent w-full rounded-xl text-white group-hover:btn-active" on:click={() => setView('short-qa')}>Play Now</button>
+              </div>
             </div>
           </div>
         </article>
@@ -103,45 +160,61 @@
 
     </section>
   {:else if view === 'help-visitor'}
-    <HelpVisitor on:back={() => setView('home')} />
+    <div in:fly={{ y: 20, duration: 300, delay: 100 }}>
+        <HelpVisitor on:back={() => setView('home')} />
+    </div>
   {:else if view === 'safe-walk'}
-    <SafeWalkSequence on:back={() => setView('home')} />
+    <div in:fly={{ y: 20, duration: 300, delay: 100 }}>
+        <SafeWalkSequence on:back={() => setView('home')} />
+    </div>
   {:else if view === 'short-qa'}
-    <ShortQA on:back={() => setView('home')} />
+    <div in:fly={{ y: 20, duration: 300, delay: 100 }}>
+        <ShortQA on:back={() => setView('home')} />
+    </div>
   {:else if view === 'learn'}
-    <LearnPlaces />
+    <div in:fly={{ y: 20, duration: 300, delay: 100 }}>
+        <LearnPlaces />
+    </div>
   {/if}
 </main>
 
-<footer class="mt-8">
-  <div class="bg-[#3270d6] text-white">
-    <div class="max-w-5xl mx-auto p-6">
-      <div class="flex flex-col sm:flex-row items-center sm:items-center gap-6 sm:gap-10 md:gap-14">
-        <img src={ucrLogo} alt="University of Costa Rica – vertical signature" class="h-20 sm:h-24 w-auto select-none" />
-        <div class="text-sm sm:pl-6 sm:border-l sm:border-white/25 flex flex-col justify-center">
-          <p class="opacity-90">TCU-501 Project · Escuela de Lenguas Modernas</p>
-          <a
+<footer class="mt-12 bg-neutral text-neutral-content">
+    <div class="max-w-6xl mx-auto p-10">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="flex items-center gap-6">
+            <img src={ucrLogo} alt="University of Costa Rica" class="h-20 w-auto brightness-0 invert opacity-90" />
+            <div class="h-12 w-px bg-white/20 hidden md:block"></div>
+            <div>
+                <p class="font-bold text-lg">TCU-501 Project</p>
+                <p class="text-sm opacity-70">Escuela de Lenguas Modernas</p>
+            </div>
+        </div>
+        <div class="flex gap-4">
+            <a
             href="https://lenguasmodernas.ucr.ac.cr/tcu-501/"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1 mt-1 underline font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded"
+            class="btn btn-outline btn-sm text-white hover:bg-white hover:text-neutral"
           >
-            Visit the TCU-501 website →
+            Visit TCU-501 Website
           </a>
         </div>
       </div>
+      <div class="mt-8 pt-8 border-t border-white/10 text-center text-xs opacity-50">
+        <p>&copy; {new Date().getFullYear()} Getting Around Town Materials. All rights reserved.</p>
+      </div>
     </div>
-  </div>
 </footer>
 
 </div>
 
 <style>
-  /* subtle card hover: shadow only (no levitation) */
-  .card:hover {
-    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  /* Custom animation for the hero emoji */
+  @keyframes bounce-slow {
+    0%, 100% { transform: translateY(-5%); }
+    50% { transform: translateY(5%); }
   }
-  .card:focus-within {
-    outline: 2px solid rgba(59,130,246,0.5);
+  .animate-bounce-slow {
+    animation: bounce-slow 3s infinite ease-in-out;
   }
 </style>

@@ -182,27 +182,27 @@
       </div>
     </div>
 
-    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" role="list" aria-label="Safe walk sequence list">
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4" role="list" aria-label="Safe walk sequence list">
       {#each items as item (item.id)}
         <button
           type="button"
-          class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-base-300 select-none text-left"
+          class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-base-300 select-none text-left active:scale-95 touch-manipulation"
           on:click={() => handleItemClick(item.id)}
           aria-pressed={selectedId === item.id}
           class:selected={selectedId === item.id}
           animate:flip={{ duration: 160 }}
         >
-          <div class="card-body items-center p-4">
-            <span class="text-5xl" aria-hidden="true">{item.emoji}</span>
-            <span class="text-sm sm:text-base font-semibold mt-2">{item.label}</span>
+          <div class="card-body items-center p-3 sm:p-4">
+            <span class="text-4xl sm:text-5xl" aria-hidden="true">{item.emoji}</span>
+            <span class="text-xs sm:text-sm md:text-base font-semibold mt-2 text-center leading-tight">{item.label}</span>
           </div>
         </button>
       {/each}
     </div>
 
-    <div class="flex gap-2">
-      <button class="btn btn-primary" on:click={checkOrder} disabled={completed}>Check Order</button>
-      <button class="btn btn-secondary" on:click={restart}>Shuffle</button>
+    <div class="flex flex-col sm:flex-row gap-3 mt-4">
+      <button class="btn btn-primary flex-1 btn-lg sm:btn-md" on:click={checkOrder} disabled={completed}>Check Order</button>
+      <button class="btn btn-secondary flex-1 btn-lg sm:btn-md" on:click={restart}>Shuffle</button>
     </div>
 
     {#if feedback}

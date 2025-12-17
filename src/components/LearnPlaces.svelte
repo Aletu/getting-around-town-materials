@@ -63,7 +63,7 @@
       <input 
         type="text" 
         placeholder="Search for a place..." 
-        class="input input-bordered w-full" 
+        class="input input-bordered w-full text-base" 
         bind:value={searchTerm}
       />
     </div>
@@ -71,7 +71,11 @@
 
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
     {#each filteredPlaces as place}
-      <div class="card bg-base-100 shadow hover:shadow-lg transition-all duration-200 hover:-translate-y-1 border border-base-200">
+      <button 
+        type="button"
+        class="card bg-base-100 shadow hover:shadow-lg transition-all duration-200 active:scale-95 sm:hover:-translate-y-1 border border-base-200 touch-manipulation cursor-pointer w-full text-left"
+        on:click={() => {/* Placeholder for future detail view */}}
+      >
         <div class="card-body items-center text-center p-6">
           <div class="text-6xl mb-2">{place.emoji}</div>
           <h2 class="card-title text-xl">{place.label}</h2>
@@ -79,7 +83,7 @@
             {descriptions[place.id] || "A place in our community."}
           </p>
         </div>
-      </div>
+      </button>
     {/each}
   </div>
   

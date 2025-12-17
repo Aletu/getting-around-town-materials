@@ -170,13 +170,13 @@
           {#each items[currentIndex].options as opt (opt.id)}
             <button
               type="button"
-              class="btn btn-outline justify-start flex gap-2"
+              class="btn btn-outline justify-start flex gap-3 h-auto py-3 min-h-[3.5rem] text-left touch-manipulation"
               class:btn-success={selectedId === opt.id && buttonStatus === 'correct'}
               class:btn-error={selectedId === opt.id && buttonStatus === 'incorrect'}
               on:click={() => selectOption(opt.id)}
               aria-label={`Answer option: ${opt.text}`}
             >
-              <span>{opt.text}</span>
+              <span class="whitespace-normal leading-snug">{opt.text}</span>
             </button>
           {/each}
         </div>

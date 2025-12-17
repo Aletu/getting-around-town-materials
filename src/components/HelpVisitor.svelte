@@ -246,17 +246,17 @@
           <div class="mb-2">
             <p class="mt-2 text-base-content text-base md:text-lg leading-relaxed" aria-live="polite">{current?.text}</p>
           </div>
-          <div class="grid gap-3 mt-4 sm:grid-cols-2 md:grid-cols-3">
+          <div class="grid gap-3 mt-4 grid-cols-2 sm:grid-cols-3">
             {#each options as opt (opt.id)}
             <button
-              class="btn btn-outline flex flex-col gap-1"
+              class="btn btn-outline flex flex-col gap-1 h-auto py-4 min-h-[6rem] touch-manipulation"
               class:btn-success={selectedId === opt.id && buttonStatus === 'correct'}
               class:btn-error={selectedId === opt.id && buttonStatus === 'incorrect'}
               on:click={() => selectPlace(opt.id)}
               aria-label={"Select " + opt.label}
             >
-              <span class="text-2xl">{opt.emoji}</span>
-              <span class="text-sm md:text-base">{opt.label}</span>
+              <span class="text-3xl sm:text-4xl mb-1">{opt.emoji}</span>
+              <span class="text-xs sm:text-sm md:text-base whitespace-normal leading-tight">{opt.label}</span>
             </button>
             {/each}
           </div>
