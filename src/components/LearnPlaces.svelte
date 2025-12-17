@@ -59,13 +59,16 @@
       There are so many important places in our town! Click on a card to learn more about what happens there.
     </p>
     
-    <div class="form-control max-w-md mx-auto">
+    <div class="form-control max-w-md mx-auto relative">
       <input 
         type="text" 
         placeholder="Search for a place..." 
-        class="input input-bordered w-full text-base" 
+        class="input input-bordered w-full text-base pl-10 focus:input-primary transition-colors shadow-sm" 
         bind:value={searchTerm}
       />
+      <div class="absolute left-3 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none text-lg">
+        🔍
+      </div>
     </div>
   </div>
 

@@ -3,6 +3,7 @@
   import { PLACES } from '../data/places.js';
   import { createEventDispatcher } from 'svelte';
   import { onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
 
   const dispatch = createEventDispatcher();
   let currentIndex = 0;
@@ -219,7 +220,7 @@
 {:else}
 <section class="space-y-4">
   <div class="flex items-center gap-2">
-    <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
+    <button class="btn btn-sm bg-base-100 border-base-300 shadow-sm hover:shadow-md hover:bg-base-200" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
     <h2 class="text-xl font-semibold">Help the Visitor – Scenarios</h2>
   </div>
   <p class="text-sm opacity-80">
@@ -249,22 +250,25 @@
           <div class="grid gap-3 mt-4 grid-cols-2 sm:grid-cols-3">
             {#each options as opt (opt.id)}
             <button
-              class="btn btn-outline flex flex-col gap-1 h-auto py-4 min-h-[6rem] touch-manipulation"
+              class="btn btn-outline flex flex-col gap-1 h-auto py-4 min-h-[6rem] touch-manipulation hover:scale-[1.02] hover:shadow-md transition-all duration-200"
               class:btn-success={selectedId === opt.id && buttonStatus === 'correct'}
               class:btn-error={selectedId === opt.id && buttonStatus === 'incorrect'}
               on:click={() => selectPlace(opt.id)}
               aria-label={"Select " + opt.label}
             >
-              <span class="text-3xl sm:text-4xl mb-1">{opt.emoji}</span>
+              <span class="text-3xl sm:text-4xl mb-1 transform transition-transform group-hover:scale-110">{opt.emoji}</span>
               <span class="text-xs sm:text-sm md:text-base whitespace-normal leading-tight">{opt.label}</span>
             </button>
             {/each}
           </div>
   {/key}
         {#if wrongAttemptsForCurrent >= 1 && current?.hint}
-          <div class="alert alert-info mt-3">
-            <span class="font-medium">Hint:</span>
-            <span class="ml-2">{current.hint}</span>
+          <div class="alert alert-info mt-4 shadow-sm border-l-4 border-info bg-info/10" in:fade>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              <h3 class="font-bold text-xs uppercase tracking-wide opacity-70">Hint</h3>
+              <div class="text-sm">{current.hint}</div>
+            </div>
           </div>
         {/if}
         <div class="mt-4 text-xs opacity-70">

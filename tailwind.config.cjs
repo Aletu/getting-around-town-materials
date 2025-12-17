@@ -5,7 +5,11 @@ module.exports = {
     "./src/**/*.{svelte,js,ts}"
   ],
   theme: {
-    extend: {}
+    extend: {
+      animation: {
+        'bounce-slow': 'bounce 3s infinite',
+      }
+    }
   },
   plugins: [require("daisyui")],
   daisyui: {

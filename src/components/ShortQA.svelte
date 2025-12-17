@@ -140,7 +140,7 @@
 {:else}
 <section class="space-y-4">
   <div class="flex items-center gap-2">
-    <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
+    <button class="btn btn-sm bg-base-100 border-base-300 shadow-sm hover:shadow-md hover:bg-base-200" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
     <h2 class="text-xl font-semibold">Short Q&A – Step-by-step directions</h2>
   </div>
   <p class="text-sm opacity-80">
@@ -170,7 +170,7 @@
           {#each items[currentIndex].options as opt (opt.id)}
             <button
               type="button"
-              class="btn btn-outline justify-start flex gap-3 h-auto py-3 min-h-[3.5rem] text-left touch-manipulation"
+              class="btn btn-outline justify-start flex gap-3 h-auto py-3 min-h-[3.5rem] text-left touch-manipulation hover:scale-[1.01] hover:shadow-md transition-all duration-200"
               class:btn-success={selectedId === opt.id && buttonStatus === 'correct'}
               class:btn-error={selectedId === opt.id && buttonStatus === 'incorrect'}
               on:click={() => selectOption(opt.id)}

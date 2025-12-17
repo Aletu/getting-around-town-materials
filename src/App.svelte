@@ -69,10 +69,10 @@
           <div class="text-9xl animate-bounce-slow select-none">🗺️</div>
           <div>
             <h1 class="text-4xl lg:text-5xl font-black text-primary mb-4">Explore Your Community!</h1>
-            <p class="py-2 text-lg opacity-80 max-w-xl">
+            <p class="py-2 text-lg opacity-80 max-w-xl leading-relaxed">
               Welcome to <strong>Getting Around Town</strong>! Learn how to navigate your city, help visitors find their way, and stay safe while walking. Choose a fun activity below to get started!
             </p>
-            <button class="btn btn-secondary btn-lg rounded-full mt-4 shadow-lg hover:scale-105 transition-transform" on:click={() => setView('learn')}>
+            <button class="btn btn-secondary btn-lg rounded-full mt-6 shadow-lg hover:scale-105 transition-transform hover:shadow-xl" on:click={() => setView('learn')}>
                 Start Learning Places ➜
             </button>
           </div>

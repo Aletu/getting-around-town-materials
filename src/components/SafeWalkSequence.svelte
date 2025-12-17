@@ -155,7 +155,7 @@
 {:else}
 <section class="space-y-4">
   <div class="flex items-center gap-2">
-    <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
+    <button class="btn btn-sm bg-base-100 border-base-300 shadow-sm hover:shadow-md hover:bg-base-200" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
     <h2 class="text-2xl font-bold">Safe Walk Sequence</h2>
   </div>
   <p class="text-base font-medium">
@@ -244,14 +244,10 @@
      transition: transform 160ms cubic-bezier(.2,.9,.3,1), box-shadow 160ms ease, opacity 120ms ease;
   }
   .card.selected {
-    box-shadow: 0 10px 22px rgba(0,0,0,0.14);
-     opacity: 0.985;
-    outline: 2px solid rgba(59,130,246,0.45); /* primary-blue outline */
-    outline-offset: 2px;
-    border-color: rgba(59,130,246,0.6);
+    @apply ring-2 ring-primary ring-offset-2 border-primary/60 shadow-lg opacity-100;
   }
   .card:focus-visible {
-    outline: 2px solid rgba(59,130,246,0.35);
-    outline-offset: 2px;
+    @apply ring-2 ring-primary ring-offset-2;
+    outline: none;
   }
 </style>
