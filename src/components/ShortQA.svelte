@@ -103,39 +103,66 @@
 </script>
 
 {#if $teacherMode}
-  <div class="space-y-4">
-    <div class="flex items-center gap-2">
-        <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-        <h2 class="text-xl font-semibold">Teacher Mode: Edit Q&A</h2>
+  <div class="bg-base-100 rounded-box shadow-lg p-6 mb-8 border border-base-300">
+    <div class="flex items-center justify-between mb-6 border-b pb-4">
+        <div class="flex items-center gap-3">
+            <button class="btn btn-circle btn-ghost btn-sm" on:click={() => dispatch('back')} aria-label="Go back">
+                <span class="text-xl">←</span>
+            </button>
+            <div>
+                <h2 class="text-2xl font-bold text-base-content">Q&A Editor</h2>
+                <p class="text-sm opacity-60">Manage the multiple choice questions.</p>
+            </div>
+        </div>
+        <div class="badge badge-primary badge-outline">{$shortQAStore.length} Questions</div>
     </div>
-    {#each $shortQAStore as item, i}
-      <div class="card bg-base-100 shadow p-4">
-        <div class="form-control">
-          <label class="label">Question</label>
-          <input type="text" class="input input-bordered" bind:value={item.question} />
-        </div>
-        <div class="form-control">
-            <label class="label">Correct Answer ID</label>
-            <select class="select select-bordered" bind:value={item.answer}>
-                {#each item.options as opt}
-                    <option value={opt.id}>{opt.id}</option>
-                {/each}
-            </select>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-            {#each item.options as opt}
-                <div class="form-control">
-                    <label class="label">Option {opt.id}</label>
-                    <input type="text" class="input input-bordered" bind:value={opt.text} />
+
+    <div class="space-y-3">
+        {#each $shortQAStore as item, i}
+        <div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-box">
+            <input type="checkbox" /> 
+            <div class="collapse-title text-lg font-medium flex items-center gap-3">
+                <span class="badge badge-neutral">{i + 1}</span>
+                <span class="truncate flex-1">{item.question || 'New Question'}</span>
+            </div>
+            <div class="collapse-content bg-base-100 pt-4 border-t border-base-200"> 
+                <div class="grid gap-4">
+                    <div class="form-control w-full">
+                        <label class="label font-bold">Question Text</label>
+                        <input type="text" class="input input-bordered w-full" bind:value={item.question} />
+                    </div>
+                    
+                    <div class="bg-base-200/50 p-4 rounded-xl">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="label font-bold">Answer Options</label>
+                            <div class="badge badge-info badge-outline">Select the correct answer below</div>
+                        </div>
+                        
+                        <div class="grid gap-3">
+                            {#each item.options as opt}
+                                <div class="flex items-center gap-2">
+                                    <input type="radio" name="correct-{i}" class="radio radio-success" checked={item.answer === opt.id} on:change={() => item.answer = opt.id} />
+                                    <span class="font-mono font-bold opacity-50 w-6">{opt.id}</span>
+                                    <input type="text" class="input input-bordered input-sm flex-1" bind:value={opt.text} />
+                                </div>
+                            {/each}
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button class="btn btn-ghost btn-sm text-error hover:bg-error/10" on:click={() => deleteItem(i)}>
+                            🗑️ Delete Question
+                        </button>
+                    </div>
                 </div>
-            {/each}
+            </div>
         </div>
-        <div class="mt-2 text-right">
-            <button class="btn btn-error btn-sm" on:click={() => deleteItem(i)}>Delete</button>
-        </div>
-      </div>
-    {/each}
-    <button class="btn btn-success w-full" on:click={addItem}>Add New Question</button>
+        {/each}
+    </div>
+
+    <button class="btn btn-primary w-full mt-6 shadow-lg" on:click={addItem}>
+        <span class="text-xl">+</span> Add New Question
+    </button>
   </div>
 {:else}
 <section class="space-y-4">

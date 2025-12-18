@@ -164,58 +164,95 @@
 </script>
 
 {#if $teacherMode}
-  <div class="space-y-4">
-    <div class="flex items-center gap-2">
-        <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-        <h2 class="text-xl font-semibold">Teacher Mode: Edit Scenarios</h2>
+  <div class="bg-base-100 rounded-box shadow-lg p-6 mb-8 border border-base-300">
+    <div class="flex items-center justify-between mb-6 border-b pb-4">
+        <div class="flex items-center gap-3">
+            <button class="btn btn-circle btn-ghost btn-sm" on:click={() => dispatch('back')} aria-label="Go back">
+                <span class="text-xl">←</span>
+            </button>
+            <div>
+                <h2 class="text-2xl font-bold text-base-content">Scenario Editor</h2>
+                <p class="text-sm opacity-60">Manage the questions and answers for the "Help Visitor" module.</p>
+            </div>
+        </div>
+        <div class="badge badge-primary badge-outline">{$scenariosStore.length} Scenarios</div>
     </div>
-    {#each $scenariosStore as scenario, i}
-      <div class="card bg-base-100 shadow p-4">
-        <div class="form-control">
-          <label class="label">Text</label>
-          <input type="text" class="input input-bordered" bind:value={scenario.text} />
-        </div>
-        <div class="form-control">
-            <label class="label">Hint</label>
-            <input type="text" class="input input-bordered" bind:value={scenario.hint} />
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div class="form-control">
-                <label class="label">Answer</label>
-                <select class="select select-bordered" bind:value={scenario.answer}>
-                    {#each PLACES as place}
-                        <option value={place.id}>{place.label}</option>
-                    {/each}
-                </select>
+
+    <div class="space-y-3">
+        {#each $scenariosStore as scenario, i}
+        <div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-box">
+            <input type="checkbox" /> 
+            <div class="collapse-title text-lg font-medium flex items-center gap-3">
+                <span class="badge badge-neutral">{i + 1}</span>
+                <span class="truncate flex-1">{scenario.text || 'New Scenario'}</span>
+                {#if !scenario.text}<span class="badge badge-warning badge-sm">Empty</span>{/if}
             </div>
-             <div class="form-control">
-                <label class="label">Distractors</label>
-                <div class="flex flex-wrap gap-2 mb-2">
-                    {#each scenario.distractors as distractor, dIndex}
-                        <div class="badge badge-secondary gap-2 p-3">
-                            {PLACES.find(p => p.id === distractor)?.label || distractor}
-                            <button class="btn btn-ghost btn-xs btn-circle text-white" on:click={() => removeDistractor(i, dIndex)}>✕</button>
+            <div class="collapse-content bg-base-100 pt-4 border-t border-base-200"> 
+                <div class="grid gap-4">
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text font-bold">Scenario Text</span>
+                            <span class="label-text-alt">What the visitor says</span>
+                        </label>
+                        <input type="text" placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full" bind:value={scenario.text} />
+                    </div>
+                    
+                    <div class="form-control w-full">
+                        <label class="label">
+                            <span class="label-text font-bold">Hint</span>
+                            <span class="label-text-alt">Helpful tip for the student</span>
+                        </label>
+                        <input type="text" placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full" bind:value={scenario.hint} />
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-base-200/50 p-4 rounded-xl">
+                        <div class="form-control">
+                            <label class="label font-bold text-success">Correct Answer</label>
+                            <select class="select select-bordered select-success w-full" bind:value={scenario.answer}>
+                                {#each PLACES as place}
+                                    <option value={place.id}>{place.emoji} {place.label}</option>
+                                {/each}
+                            </select>
                         </div>
-                    {/each}
-                </div>
-                <div class="flex gap-2">
-                    <select class="select select-bordered flex-1" on:change={(e) => addDistractor(i, e.target.value)} value="">
-                        <option value="" disabled selected>Add distractor...</option>
-                        {#each PLACES as place}
-                            {#if place.id !== scenario.answer && !scenario.distractors.includes(place.id)}
-                                <option value={place.id}>{place.label}</option>
-                            {/if}
-                        {/each}
-                    </select>
+
+                        <div class="form-control">
+                            <label class="label font-bold text-error">Distractors (Wrong Answers)</label>
+                            <div class="flex flex-wrap gap-2 mb-3 min-h-[2rem]">
+                                {#each scenario.distractors as distractor, dIndex}
+                                    <div class="badge badge-error gap-1 pl-3 pr-1 py-3">
+                                        {PLACES.find(p => p.id === distractor)?.label || distractor}
+                                        <button class="btn btn-ghost btn-xs btn-circle text-white hover:bg-white/20" on:click={() => removeDistractor(i, dIndex)}>✕</button>
+                                    </div>
+                                {/each}
+                                {#if scenario.distractors.length === 0}
+                                    <span class="text-xs opacity-50 italic py-1">No distractors added yet</span>
+                                {/if}
+                            </div>
+                            <select class="select select-bordered select-sm w-full" on:change={(e) => { addDistractor(i, e.target.value); e.target.value = ""; }}>
+                                <option value="" disabled selected>+ Add a wrong answer</option>
+                                {#each PLACES as place}
+                                    {#if place.id !== scenario.answer && !scenario.distractors.includes(place.id)}
+                                        <option value={place.id}>{place.emoji} {place.label}</option>
+                                    {/if}
+                                {/each}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end pt-2">
+                        <button class="btn btn-ghost btn-sm text-error hover:bg-error/10" on:click={() => deleteScenario(i)}>
+                            🗑️ Delete Scenario
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="mt-2 text-right">
-            <button class="btn btn-error btn-sm" on:click={() => deleteScenario(i)}>Delete</button>
-        </div>
-      </div>
-    {/each}
-    <button class="btn btn-success w-full" on:click={addScenario}>Add New Scenario</button>
+        {/each}
+    </div>
+
+    <button class="btn btn-primary w-full mt-6 shadow-lg" on:click={addScenario}>
+        <span class="text-xl">+</span> Add New Scenario
+    </button>
   </div>
 {:else}
 <section class="space-y-4">

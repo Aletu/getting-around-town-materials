@@ -4,13 +4,40 @@
   import ShortQA from './components/ShortQA.svelte';
   import LearnPlaces from './components/LearnPlaces.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
-  import { teacherMode } from './stores.js';
+  import { teacherMode, scenariosStore, shortQAStore, safeWalkStore } from './stores.js';
+  import { SCENARIOS } from './data/scenarios.js';
+  import { SHORT_QA_ITEMS } from './data/shortQA.js';
+  import { SAFE_WALK_SCENARIOS } from './data/sequenceText.js';
   import { fade, fly } from 'svelte/transition';
 
   let view = 'home';
   function setView(id) {
     view = id;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function resetAll() {
+    if(confirm('Are you sure you want to reset all content to the original defaults? This cannot be undone.')) {
+        scenariosStore.set(SCENARIOS);
+        shortQAStore.set(SHORT_QA_ITEMS);
+        safeWalkStore.set(SAFE_WALK_SCENARIOS);
+        alert('All content has been reset.');
+    }
+  }
+
+  function exportData() {
+    const data = {
+        scenarios: $scenariosStore,
+        shortQA: $shortQAStore,
+        safeWalk: $safeWalkStore
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'getting-around-town-content.json';
+    a.click();
+    URL.revokeObjectURL(url);
   }
 </script>
 
@@ -207,6 +234,27 @@
 </footer>
 
 </div>
+
+{#if $teacherMode}
+<div class="fixed bottom-0 left-0 right-0 bg-neutral text-neutral-content p-4 z-50 shadow-lg border-t-4 border-primary" transition:fly={{ y: 100, duration: 300 }}>
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+            <div class="badge badge-primary badge-lg gap-2">
+                <span>👨‍🏫</span> Teacher Mode Active
+            </div>
+            <span class="text-sm opacity-80 hidden sm:inline">You are editing the content. Changes are saved automatically.</span>
+        </div>
+        <div class="flex gap-2">
+            <button class="btn btn-sm btn-ghost text-error hover:bg-error/20" on:click={resetAll}>
+                Reset Defaults
+            </button>
+            <button class="btn btn-sm btn-primary" on:click={exportData}>
+                Export Content
+            </button>
+        </div>
+    </div>
+</div>
+{/if}
 
 <style>
   /* Custom animation for the hero emoji */

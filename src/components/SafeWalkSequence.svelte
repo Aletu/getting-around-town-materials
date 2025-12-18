@@ -115,42 +115,78 @@
 </script>
 
 {#if $teacherMode}
-  <div class="space-y-4">
-    <div class="flex items-center gap-2">
-        <button class="btn btn-sm" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-        <h2 class="text-xl font-semibold">Teacher Mode: Edit Sequences</h2>
-    </div>
-    {#each $safeWalkStore as scenario, i}
-      <div class="card bg-base-100 shadow p-4">
-        <div class="form-control">
-          <label class="label">Scenario Text</label>
-          <textarea class="textarea textarea-bordered" bind:value={scenario.text}></textarea>
+  <div class="bg-base-100 rounded-box shadow-lg p-6 mb-8 border border-base-300">
+    <div class="flex items-center justify-between mb-6 border-b pb-4">
+        <div class="flex items-center gap-3">
+            <button class="btn btn-circle btn-ghost btn-sm" on:click={() => dispatch('back')} aria-label="Go back">
+                <span class="text-xl">←</span>
+            </button>
+            <div>
+                <h2 class="text-2xl font-bold text-base-content">Sequence Editor</h2>
+                <p class="text-sm opacity-60">Create ordering activities for safe walking.</p>
+            </div>
         </div>
-        <div class="mt-2">
-            <h3 class="font-bold">Sequence Items (in correct order)</h3>
-            {#each scenario.sequence as item, j}
-                <div class="grid grid-cols-3 gap-2 mb-2 border p-2 rounded">
-                    <div class="form-control">
-                        <label class="label text-xs">Label</label>
-                        <input type="text" class="input input-sm input-bordered" bind:value={item.label} />
+        <div class="badge badge-primary badge-outline">{$safeWalkStore.length} Sequences</div>
+    </div>
+
+    <div class="space-y-3">
+        {#each $safeWalkStore as scenario, i}
+        <div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-box">
+            <input type="checkbox" /> 
+            <div class="collapse-title text-lg font-medium flex items-center gap-3">
+                <span class="badge badge-neutral">{i + 1}</span>
+                <span class="truncate flex-1">{scenario.text || 'New Sequence'}</span>
+            </div>
+            <div class="collapse-content bg-base-100 pt-4 border-t border-base-200"> 
+                <div class="grid gap-4">
+                    <div class="form-control w-full">
+                        <label class="label font-bold">Scenario Description</label>
+                        <textarea class="textarea textarea-bordered w-full h-24" placeholder="Describe the situation..." bind:value={scenario.text}></textarea>
                     </div>
-                    <div class="form-control">
-                        <label class="label text-xs">Emoji</label>
-                        <input type="text" class="input input-sm input-bordered" bind:value={item.emoji} />
+                    
+                    <div class="bg-base-200/50 p-4 rounded-xl">
+                        <div class="flex justify-between items-center mb-4">
+                            <label class="label font-bold">Sequence Steps (Correct Order)</label>
+                            <div class="badge badge-info badge-outline">Steps 1 to {scenario.sequence.length}</div>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            {#each scenario.sequence as item, j}
+                                <div class="flex items-start gap-3 bg-base-100 p-3 rounded-lg border border-base-200 shadow-sm">
+                                    <div class="badge badge-neutral mt-2">{j + 1}</div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
+                                        <div class="form-control">
+                                            <label class="label text-xs uppercase font-bold opacity-50">Label</label>
+                                            <input type="text" class="input input-sm input-bordered" placeholder="e.g. Stop" bind:value={item.label} />
+                                        </div>
+                                        <div class="form-control">
+                                            <label class="label text-xs uppercase font-bold opacity-50">Emoji</label>
+                                            <input type="text" class="input input-sm input-bordered" placeholder="e.g. 🛑" bind:value={item.emoji} />
+                                        </div>
+                                        <div class="form-control">
+                                            <label class="label text-xs uppercase font-bold opacity-50">Alt Text</label>
+                                            <input type="text" class="input input-sm input-bordered" placeholder="Description" bind:value={item.alt} />
+                                        </div>
+                                    </div>
+                                </div>
+                            {/each}
+                        </div>
                     </div>
-                    <div class="form-control">
-                        <label class="label text-xs">Alt Text</label>
-                        <input type="text" class="input input-sm input-bordered" bind:value={item.alt} />
+
+                    <div class="flex justify-end pt-2">
+                        <button class="btn btn-ghost btn-sm text-error hover:bg-error/10" on:click={() => deleteScenario(i)}>
+                            🗑️ Delete Sequence
+                        </button>
                     </div>
                 </div>
-            {/each}
+            </div>
         </div>
-        <div class="mt-2 text-right">
-            <button class="btn btn-error btn-sm" on:click={() => deleteScenario(i)}>Delete</button>
-        </div>
-      </div>
-    {/each}
-    <button class="btn btn-success w-full" on:click={addScenario}>Add New Scenario</button>
+        {/each}
+    </div>
+
+    <button class="btn btn-primary w-full mt-6 shadow-lg" on:click={addScenario}>
+        <span class="text-xl">+</span> Add New Sequence
+    </button>
   </div>
 {:else}
 <section class="space-y-4">
