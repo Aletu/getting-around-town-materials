@@ -255,108 +255,150 @@
     </button>
   </div>
 {:else}
-<section class="space-y-4">
-  <div class="flex items-center gap-2">
-    <button class="btn btn-sm bg-base-100 border-base-300 shadow-sm hover:shadow-md hover:bg-base-200" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-    <h2 class="text-xl font-semibold">Help the Visitor – Scenarios</h2>
+<section class="space-y-6 max-w-4xl mx-auto" in:fade={{ duration: 300 }}>
+  <div class="flex items-center gap-4">
+    <button class="btn btn-circle btn-ghost bg-base-100 shadow-sm hover:shadow-md hover:bg-base-200 hover:scale-105 transition-all" on:click={() => dispatch('back')} aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+    </button>
+    <div>
+        <h2 class="text-2xl font-bold text-base-content">Help the Visitor</h2>
+        <p class="text-sm opacity-70">Read the scenario and guide the visitor.</p>
+    </div>
   </div>
-  <p class="text-sm opacity-80">
-    Read the scenario. Click the correct place.
-  </p>
 
   {#if !finished}
-    <div class="card bg-base-100 shadow">
-      <div class="card-body">
-        <div class="mb-3 space-y-1">
-          <div class="flex items-center gap-2 text-primary font-semibold">
-            <span class="text-lg" aria-hidden="true">🧭</span>
-            <span>Scenario</span>
-            <span class="badge badge-info ml-auto py-4 px-3">{currentIndex + 1}/{messages.length}</span>
+    <div class="card bg-base-100 shadow-xl border-t-4 border-primary">
+      <div class="card-body p-6 sm:p-8">
+        <div class="mb-6 space-y-2">
+          <div class="flex items-center justify-between text-sm font-bold uppercase tracking-wider opacity-60">
+            <span>Progress</span>
+            <span>{currentIndex + 1} / {messages.length}</span>
           </div>
           <progress
-            class="progress progress-primary w-full"
+            class="progress progress-primary w-full h-3 rounded-full bg-base-200"
             value={currentIndex + 1}
             max={messages.length}
             aria-label={`Scenario progress: ${currentIndex + 1} of ${messages.length}`}
           ></progress>
         </div>
+        
         {#key current?.id}
-          <div class="mb-2">
-            <p class="mt-2 text-base-content text-base md:text-lg leading-relaxed" aria-live="polite">{current?.text}</p>
+          <div class="bg-base-200/50 p-6 rounded-2xl border border-base-200 mb-6 relative overflow-hidden" in:fade={{ duration: 300, delay: 150 }}>
+            <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+            <div class="flex gap-4">
+                <div class="text-4xl select-none">🗣️</div>
+                <div>
+                    <h3 class="font-bold text-sm uppercase text-primary mb-1">Visitor Says:</h3>
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-base-content/90" aria-live="polite">"{current?.text}"</p>
+                </div>
+            </div>
           </div>
-          <div class="grid gap-3 mt-4 grid-cols-2 sm:grid-cols-3">
+
+          <div class="grid gap-4 mt-6 grid-cols-1 sm:grid-cols-3">
             {#each options as opt (opt.id)}
             <button
-              class="btn btn-outline flex flex-col gap-1 h-auto py-4 min-h-[6rem] touch-manipulation hover:scale-[1.02] hover:shadow-md transition-all duration-200"
-              class:btn-success={selectedId === opt.id && buttonStatus === 'correct'}
-              class:btn-error={selectedId === opt.id && buttonStatus === 'incorrect'}
+              class="group relative flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-95
+              {selectedId !== opt.id ? 'border-base-200 bg-base-100 hover:border-primary hover:shadow-lg' : ''}
+              {selectedId === opt.id && buttonStatus === 'correct' ? 'border-success bg-success/10 text-success animate-pulse-green' : ''}
+              {selectedId === opt.id && buttonStatus === 'incorrect' ? 'border-error bg-error/10 text-error animate-shake' : ''}"
               on:click={() => selectPlace(opt.id)}
+              disabled={buttonStatus !== null}
               aria-label={"Select " + opt.label}
             >
-              <span class="text-3xl sm:text-4xl mb-1 transform transition-transform group-hover:scale-110">{opt.emoji}</span>
-              <span class="text-xs sm:text-sm md:text-base whitespace-normal leading-tight">{opt.label}</span>
+              disabled={buttonStatus !== null}
+              aria-label={"Select " + opt.label}
+            >
+              <div class="text-5xl transform transition-transform group-hover:scale-110 group-hover:rotate-3 duration-300 filter drop-shadow-sm">{opt.emoji}</div>
+              <span class="font-bold text-lg text-center">{opt.label}</span>
+              
+              {#if selectedId === opt.id && buttonStatus === 'correct'}
+                <div class="absolute top-2 right-2 text-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                </div>
+              {/if}
+              {#if selectedId === opt.id && buttonStatus === 'incorrect'}
+                <div class="absolute top-2 right-2 text-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                </div>
+              {/if}
             </button>
             {/each}
           </div>
-  {/key}
+        {/key}
+        
         {#if wrongAttemptsForCurrent >= 1 && current?.hint}
-          <div class="alert alert-info mt-4 shadow-sm border-l-4 border-info bg-info/10" in:fade>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <div class="alert alert-info mt-6 shadow-md border-l-4 border-info bg-info/10" in:fade>
+            <div class="flex-none text-info">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
             <div>
-              <h3 class="font-bold text-xs uppercase tracking-wide opacity-70">Hint</h3>
-              <div class="text-sm">{current.hint}</div>
+              <h3 class="font-bold text-xs uppercase tracking-wide opacity-70 mb-1">Hint</h3>
+              <div class="text-sm font-medium">{current.hint}</div>
             </div>
           </div>
         {/if}
-        <div class="mt-4 text-xs opacity-70">
-          Score: {score} / {messages.length} | Attempts: {attempts}
+        
+        <div class="mt-8 pt-6 border-t border-base-200 flex justify-between items-center text-sm font-medium opacity-60">
+          <span>Score: <span class="text-primary">{score}</span></span>
+          <span>Attempts: {attempts}</span>
         </div>
       </div>
     </div>
   {:else}
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body items-center text-center">
-        <div class="text-6xl mb-4 animate-bounce">🎉</div>
-        <h3 class="text-2xl font-bold mb-2">Great Work!</h3>
-        <p class="text-sm opacity-80 mb-4">You've completed all the scenarios</p>
+    <div class="card bg-base-100 shadow-xl border-t-4 border-success" in:fade>
+      <div class="card-body items-center text-center p-10">
+        <div class="w-24 h-24 rounded-full bg-success/10 flex items-center justify-center text-6xl mb-6 animate-bounce-slow">
+            🎉
+        </div>
+        <h3 class="text-3xl font-black mb-2">Great Work!</h3>
+        <p class="text-lg opacity-70 mb-8 max-w-md">You've completed all the scenarios for this session.</p>
         
-        <div class="stats stats-vertical sm:stats-horizontal shadow mb-6">
-          <div class="stat place-items-center">
-            <div class="stat-title">Correct Answers</div>
-            <div class="stat-value text-primary">{score}</div>
-            <div class="stat-desc">out of {messages.length}</div>
+        <div class="grid grid-cols-2 gap-4 w-full max-w-md mb-8">
+          <div class="bg-base-200/50 p-4 rounded-2xl">
+            <div class="text-sm uppercase font-bold opacity-60 mb-1">Correct</div>
+            <div class="text-3xl font-black text-success">{score}</div>
+            <div class="text-xs opacity-60">out of {messages.length}</div>
           </div>
           
-          <div class="stat place-items-center">
-            <div class="stat-title">Accuracy</div>
-            <div class="stat-value text-secondary">{Math.round((score / attempts) * 100)}%</div>
-            <div class="stat-desc">{attempts} total attempts</div>
+          <div class="bg-base-200/50 p-4 rounded-2xl">
+            <div class="text-sm uppercase font-bold opacity-60 mb-1">Accuracy</div>
+            <div class="text-3xl font-black text-primary">{Math.round((score / attempts) * 100)}%</div>
+            <div class="text-xs opacity-60">{attempts} attempts</div>
           </div>
         </div>
 
         {#if score === messages.length}
-          <div class="badge badge-success gap-2 p-4 mb-4">
-            <span class="text-lg">⭐</span>
-            <span>Perfect Score!</span>
+          <div class="alert alert-success shadow-sm mb-8 text-left max-w-md">
+            <span class="text-2xl">⭐</span>
+            <div>
+                <h3 class="font-bold">Perfect Score!</h3>
+                <div class="text-xs">You're a navigation expert!</div>
+            </div>
           </div>
         {:else if score >= messages.length * 0.8}
-          <div class="badge badge-info gap-2 p-4 mb-4">
-            <span class="text-lg">👏</span>
-            <span>Excellent!</span>
+          <div class="alert alert-info shadow-sm mb-8 text-left max-w-md">
+            <span class="text-2xl">👏</span>
+            <div>
+                <h3 class="font-bold">Excellent!</h3>
+                <div class="text-xs">You know your way around town very well.</div>
+            </div>
           </div>
         {:else if score >= messages.length * 0.6}
-          <div class="badge badge-warning gap-2 p-4 mb-4">
-            <span class="text-lg">👍</span>
-            <span>Good effort!</span>
+          <div class="alert alert-warning shadow-sm mb-8 text-left max-w-md">
+            <span class="text-2xl">👍</span>
+            <div>
+                <h3 class="font-bold">Good effort!</h3>
+                <div class="text-xs">Keep practicing to improve your score.</div>
+            </div>
           </div>
         {/if}
 
-        <div class="flex flex-col sm:flex-row gap-3 mt-2">
-          <button class="btn btn-primary" on:click={restart}>
+        <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+          <button class="btn btn-primary flex-1 rounded-xl shadow-lg hover:scale-105 transition-transform" on:click={restart}>
             <span class="text-lg mr-1">🔄</span>
-            Try Again
+            Play Again
           </button>
-          <button class="btn btn-outline" on:click={() => dispatch('back')}>
+          <button class="btn btn-outline flex-1 rounded-xl hover:bg-base-200" on:click={() => dispatch('back')}>
             <span class="text-lg mr-1">🏠</span>
             Back Home
           </button>

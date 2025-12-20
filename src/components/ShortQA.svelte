@@ -165,81 +165,113 @@
     </button>
   </div>
 {:else}
-<section class="space-y-4">
-  <div class="flex items-center gap-2">
-    <button class="btn btn-sm bg-base-100 border-base-300 shadow-sm hover:shadow-md hover:bg-base-200" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-    <h2 class="text-xl font-semibold">Short Q&A – Step-by-step directions</h2>
+<section class="space-y-6 max-w-4xl mx-auto" in:fade={{ duration: 300 }}>
+  <div class="flex items-center gap-4">
+    <button class="btn btn-circle btn-ghost bg-base-100 shadow-sm hover:shadow-md hover:bg-base-200 hover:scale-105 transition-all" on:click={() => dispatch('back')} aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+    </button>
+    <div>
+        <h2 class="text-2xl font-bold text-base-content">Short Q&A</h2>
+        <p class="text-sm opacity-70">Choose the best response.</p>
+    </div>
   </div>
-  <p class="text-sm opacity-80">
-    Read the question and choose the answer that makes the most sense.
-  </p>
 
   {#if !finished && items.length > 0 && items[currentIndex]}
-    <div class="card bg-base-100 shadow">
-      <div class="card-body">
-        <div class="mb-3 space-y-1">
-          <div class="flex items-center gap-2 text-primary font-semibold">
-            <span class="text-lg" aria-hidden="true">💬</span>
-            <span>Question</span>
-            <span class="badge badge-info ml-auto py-4 px-3">{currentIndex + 1}/{items.length}</span>
+    <div class="card bg-base-100 shadow-xl border-t-4 border-accent">
+      <div class="card-body p-6 sm:p-8">
+        <div class="mb-6 space-y-2">
+          <div class="flex items-center justify-between text-sm font-bold uppercase tracking-wider opacity-60">
+            <span>Progress</span>
+            <span>{currentIndex + 1} / {items.length}</span>
           </div>
           <progress
-            class="progress progress-primary w-full"
+            class="progress progress-accent w-full h-3 rounded-full bg-base-200"
             value={currentIndex + 1}
             max={items.length}
             aria-label={`Question progress: ${currentIndex + 1} of ${items.length}`}
           ></progress>
         </div>
 
-        <p class="mt-2 text-base-content text-base md:text-lg leading-relaxed" aria-live="polite">{items[currentIndex].question}</p>
+        <div class="bg-base-200/50 p-6 rounded-2xl border border-base-200 mb-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-1 h-full bg-accent"></div>
+            <div class="flex gap-4">
+                <div class="text-4xl select-none">❓</div>
+                <div>
+                    <h3 class="font-bold text-sm uppercase text-accent mb-1">Question:</h3>
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-base-content/90" aria-live="polite">{items[currentIndex].question}</p>
+                </div>
+            </div>
+        </div>
 
-        <div class="grid gap-3 mt-4 sm:grid-cols-2">
+        <div class="grid gap-4 mt-4 sm:grid-cols-2">
           {#each items[currentIndex].options as opt (opt.id)}
             <button
               type="button"
-              class="btn btn-outline justify-start flex gap-3 h-auto py-3 min-h-[3.5rem] text-left touch-manipulation hover:scale-[1.01] hover:shadow-md transition-all duration-200"
-              class:btn-success={selectedId === opt.id && buttonStatus === 'correct'}
-              class:btn-error={selectedId === opt.id && buttonStatus === 'incorrect'}
+              class="group relative flex items-center gap-4 p-5 rounded-xl border-2 transition-all duration-200 hover:scale-[1.01] active:scale-95 bg-base-100 text-left
+              {selectedId !== opt.id ? 'border-base-200 hover:border-accent hover:shadow-md' : ''}
+              {selectedId === opt.id && buttonStatus === 'correct' ? 'border-success bg-success/10 text-success animate-pulse-green' : ''}
+              {selectedId === opt.id && buttonStatus === 'incorrect' ? 'border-error bg-error/10 text-error animate-shake' : ''}"
               on:click={() => selectOption(opt.id)}
+              disabled={buttonStatus !== null}
               aria-label={`Answer option: ${opt.text}`}
             >
-              <span class="whitespace-normal leading-snug">{opt.text}</span>
+              disabled={buttonStatus !== null}
+              aria-label={`Answer option: ${opt.text}`}
+            >
+              <div class="w-8 h-8 rounded-full bg-base-200 flex items-center justify-center font-bold text-sm opacity-50 group-hover:bg-accent group-hover:text-white group-hover:opacity-100 transition-colors">
+                {opt.id.toUpperCase()}
+              </div>
+              <span class="text-lg font-medium leading-snug flex-1">{opt.text}</span>
+              
+              {#if selectedId === opt.id && buttonStatus === 'correct'}
+                <div class="text-success">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                </div>
+              {/if}
+              {#if selectedId === opt.id && buttonStatus === 'incorrect'}
+                <div class="text-error">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" /></svg>
+                </div>
+              {/if}
             </button>
           {/each}
         </div>
 
-        <div class="mt-4 text-xs opacity-70">
-          Score: {score} / {items.length} | Attempts: {attempts}
+        <div class="mt-8 pt-6 border-t border-base-200 flex justify-between items-center text-sm font-medium opacity-60">
+          <span>Score: <span class="text-accent">{score}</span></span>
+          <span>Attempts: {attempts}</span>
         </div>
       </div>
     </div>
   {:else if finished}
-    <div class="card bg-base-100 shadow-xl">
-      <div class="card-body items-center text-center">
-        <div class="text-6xl mb-4 animate-bounce">🌟</div>
-        <h3 class="text-2xl font-bold mb-2">Nice work!</h3>
-        <p class="text-sm opacity-80 mb-4">You answered all questions in this short Q&A session.</p>
+    <div class="card bg-base-100 shadow-xl border-t-4 border-success" in:fade>
+      <div class="card-body items-center text-center p-10">
+        <div class="w-24 h-24 rounded-full bg-success/10 flex items-center justify-center text-6xl mb-6 animate-bounce-slow">
+            🌟
+        </div>
+        <h3 class="text-3xl font-black mb-3">Nice work!</h3>
+        <p class="text-lg opacity-70 mb-8 max-w-md">You answered all questions in this short Q&A session.</p>
 
-        <div class="stats stats-vertical sm:stats-horizontal shadow mb-6">
-          <div class="stat place-items-center">
-            <div class="stat-title">Correct Answers</div>
-            <div class="stat-value text-primary">{score}</div>
-            <div class="stat-desc">out of {items.length}</div>
+        <div class="grid grid-cols-2 gap-4 w-full max-w-md mb-8">
+          <div class="bg-base-200/50 p-4 rounded-2xl">
+            <div class="text-sm uppercase font-bold opacity-60 mb-1">Correct</div>
+            <div class="text-3xl font-black text-success">{score}</div>
+            <div class="text-xs opacity-60">out of {items.length}</div>
           </div>
-
-          <div class="stat place-items-center">
-            <div class="stat-title">Accuracy</div>
-            <div class="stat-value text-secondary">{items.length ? Math.round((score / attempts) * 100) : 0}%</div>
-            <div class="stat-desc">{attempts} total attempts</div>
+          
+          <div class="bg-base-200/50 p-4 rounded-2xl">
+            <div class="text-sm uppercase font-bold opacity-60 mb-1">Accuracy</div>
+            <div class="text-3xl font-black text-accent">{items.length ? Math.round((score / attempts) * 100) : 0}%</div>
+            <div class="text-xs opacity-60">{attempts} attempts</div>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3 mt-2">
-          <button class="btn btn-primary" on:click={restart}>
+        <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+          <button class="btn btn-primary flex-1 rounded-xl shadow-lg hover:scale-105 transition-transform" on:click={restart}>
             <span class="text-lg mr-1">🔄</span>
             Try Another Set
           </button>
-          <button class="btn btn-outline" on:click={() => dispatch('back')}>
+          <button class="btn btn-outline flex-1 rounded-xl hover:bg-base-200" on:click={() => dispatch('back')}>
             <span class="text-lg mr-1">🏠</span>
             Back Home
           </button>
@@ -249,9 +281,10 @@
   {:else}
     <div class="card bg-base-100 shadow-xl">
         <div class="card-body items-center text-center">
-            <p class="text-lg">Loading questions...</p>
+            <span class="loading loading-spinner loading-lg text-primary"></span>
+            <p class="text-lg mt-4">Loading questions...</p>
             {#if Array.isArray($shortQAStore) && $shortQAStore.length === 0}
-                <p class="text-warning">No questions found. Please add some in Teacher Mode.</p>
+                <p class="text-warning mt-2">No questions found. Please add some in Teacher Mode.</p>
             {/if}
         </div>
     </div>

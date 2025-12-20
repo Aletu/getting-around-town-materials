@@ -64,11 +64,11 @@
 
     <!-- Mobile View (Hamburger) -->
     <div class="dropdown dropdown-end sm:hidden">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle" aria-label="Menu">
+      <button type="button" class="btn btn-ghost btn-circle" aria-label="Menu">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-      </div>
+      </button>
       <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 border border-base-200">
         <li>
           <label class="label cursor-pointer justify-between active:bg-base-200">
@@ -88,97 +88,101 @@
 
 <main class="flex-1 p-4 max-w-6xl mx-auto w-full">
   {#if view === 'home'}
-    <section class="space-y-8" in:fade={{ duration: 300 }}>
+    <section class="space-y-12" in:fade={{ duration: 400 }}>
       
       <!-- Hero Section -->
-      <div class="hero bg-base-100 rounded-3xl shadow-xl overflow-hidden">
-        <div class="hero-content flex-col lg:flex-row-reverse p-8 lg:p-12 gap-8">
-          <div class="text-9xl animate-bounce-slow select-none">🗺️</div>
+      <div class="hero bg-gradient-to-br from-base-100 to-base-200 rounded-[2.5rem] shadow-2xl overflow-hidden border border-base-300/50 relative">
+        <div class="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
+        <div class="hero-content flex-col lg:flex-row-reverse p-8 lg:p-16 gap-12 relative z-10">
+          <div class="text-9xl animate-float select-none filter drop-shadow-xl">🗺️</div>
           <div>
-            <h1 class="text-4xl lg:text-5xl font-black text-primary mb-4">Explore Your Community!</h1>
-            <p class="py-2 text-lg opacity-80 max-w-xl leading-relaxed">
+            <h1 class="text-5xl lg:text-6xl font-black mb-6 leading-tight">
+              <span class="text-gradient">Explore Your</span><br/>
+              <span class="text-base-content">Community!</span>
+            </h1>
+            <p class="py-2 text-xl opacity-80 max-w-xl leading-relaxed mb-8">
               Welcome to <strong>Getting Around Town</strong>! Learn how to navigate your city, help visitors find their way, and stay safe while walking. Choose a fun activity below to get started!
             </p>
-            <button class="btn btn-secondary btn-lg rounded-full mt-6 shadow-lg hover:scale-105 transition-transform hover:shadow-xl" on:click={() => setView('learn')}>
+            <button class="btn btn-primary btn-lg rounded-full shadow-lg hover:scale-105 transition-all duration-300 hover:shadow-primary/30 border-none bg-gradient-to-r from-primary to-secondary text-white" on:click={() => setView('learn')}>
                 Start Learning Places ➜
             </button>
           </div>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 mt-8 mb-4">
-        <h2 class="text-2xl font-bold text-base-content/80">Interactive Activities</h2>
-        <div class="h-1 flex-1 bg-base-300 rounded-full"></div>
+      <div class="flex items-center gap-4 mt-12 mb-8">
+        <div class="h-12 w-2 bg-primary rounded-full"></div>
+        <h2 class="text-3xl font-bold text-base-content">Interactive Activities</h2>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-6">
+      <div class="grid md:grid-cols-3 gap-8">
         <!-- Help Visitor Card -->
-        <article class="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-b-4 border-primary group overflow-hidden">
-          <div class="card-body relative">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-8xl pointer-events-none">💬</div>
-            <div class="flex flex-col h-full">
-              <div class="mb-4">
-                <div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+        <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-primary group overflow-hidden">
+          <div class="card-body relative p-8">
+            <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">💬</div>
+            <div class="flex flex-col h-full relative z-10">
+              <div class="mb-6">
+                <div class="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-sm">
                     💬
                 </div>
-                <h2 class="card-title text-2xl mb-2">Help the Visitor</h2>
-                <p class="text-sm opacity-70">Read scenarios and guide visitors to the right place.</p>
+                <h2 class="card-title text-2xl font-bold mb-3">Help the Visitor</h2>
+                <p class="text-base opacity-70 leading-relaxed">Read scenarios and guide visitors to the right place in town.</p>
               </div>
               
               <div class="mt-auto pt-4">
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span class="badge badge-ghost">10 Scenarios</span>
-                    <span class="badge badge-ghost">Scoring</span>
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="badge badge-lg badge-ghost">10 Scenarios</span>
+                    <span class="badge badge-lg badge-ghost">Scoring</span>
                 </div>
-                <button class="btn btn-primary w-full rounded-xl group-hover:btn-active" on:click={() => setView('help-visitor')}>Play Now</button>
+                <button class="btn btn-primary w-full rounded-xl shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('help-visitor')}>Play Now</button>
               </div>
             </div>
           </div>
         </article>
 
         <!-- Safe Walk Card -->
-        <article class="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-b-4 border-secondary group overflow-hidden">
-          <div class="card-body relative">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-8xl pointer-events-none">🚦</div>
-            <div class="flex flex-col h-full">
-              <div class="mb-4">
-                <div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+        <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-secondary group overflow-hidden">
+          <div class="card-body relative p-8">
+            <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">🚦</div>
+            <div class="flex flex-col h-full relative z-10">
+              <div class="mb-6">
+                <div class="w-20 h-20 rounded-3xl bg-secondary/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 shadow-sm">
                     🚦
                 </div>
-                <h2 class="card-title text-2xl mb-2">Safe Walk</h2>
-                <p class="text-sm opacity-70">Order the steps to show a safe walking sequence.</p>
+                <h2 class="card-title text-2xl font-bold mb-3">Safe Walk</h2>
+                <p class="text-base opacity-70 leading-relaxed">Order the steps to show a safe walking sequence.</p>
               </div>
               
               <div class="mt-auto pt-4">
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span class="badge badge-ghost">Drag & Drop</span>
-                    <span class="badge badge-ghost">Safety</span>
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="badge badge-lg badge-ghost">Drag & Drop</span>
+                    <span class="badge badge-lg badge-ghost">Safety</span>
                 </div>
-                <button class="btn btn-secondary w-full rounded-xl group-hover:btn-active" on:click={() => setView('safe-walk')}>Play Now</button>
+                <button class="btn btn-secondary w-full rounded-xl shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('safe-walk')}>Play Now</button>
               </div>
             </div>
           </div>
         </article>
 
         <!-- Short Q&A Card -->
-        <article class="card bg-base-100 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-b-4 border-accent group overflow-hidden">
-          <div class="card-body relative">
-            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-8xl pointer-events-none">❓</div>
-            <div class="flex flex-col h-full">
-              <div class="mb-4">
-                <div class="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">
+        <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-accent group overflow-hidden">
+          <div class="card-body relative p-8">
+            <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">❓</div>
+            <div class="flex flex-col h-full relative z-10">
+              <div class="mb-6">
+                <div class="w-20 h-20 rounded-3xl bg-accent/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-sm">
                     ❓
                 </div>
-                <h2 class="card-title text-2xl mb-2">Short Q&A</h2>
-                <p class="text-sm opacity-70">Choose the best response for everyday questions.</p>
+                <h2 class="card-title text-2xl font-bold mb-3">Short Q&A</h2>
+                <p class="text-base opacity-70 leading-relaxed">Choose the best response for everyday questions.</p>
               </div>
               
               <div class="mt-auto pt-4">
-                <div class="flex flex-wrap gap-2 mb-4">
-                    <span class="badge badge-ghost">5 Questions</span>
-                    <span class="badge badge-ghost">Logic</span>
+                <div class="flex flex-wrap gap-2 mb-6">
+                    <span class="badge badge-lg badge-ghost">5 Questions</span>
+                    <span class="badge badge-lg badge-ghost">Logic</span>
                 </div>
-                <button class="btn btn-accent w-full rounded-xl text-white group-hover:btn-active" on:click={() => setView('short-qa')}>Play Now</button>
+                <button class="btn btn-accent w-full rounded-xl text-white shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('short-qa')}>Play Now</button>
               </div>
             </div>
           </div>
@@ -255,14 +259,3 @@
     </div>
 </div>
 {/if}
-
-<style>
-  /* Custom animation for the hero emoji */
-  @keyframes bounce-slow {
-    0%, 100% { transform: translateY(-5%); }
-    50% { transform: translateY(5%); }
-  }
-  .animate-bounce-slow {
-    animation: bounce-slow 3s infinite ease-in-out;
-  }
-</style>

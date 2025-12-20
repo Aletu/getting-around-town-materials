@@ -189,81 +189,107 @@
     </button>
   </div>
 {:else}
-<section class="space-y-4">
-  <div class="flex items-center gap-2">
-    <button class="btn btn-sm bg-base-100 border-base-300 shadow-sm hover:shadow-md hover:bg-base-200" on:click={() => dispatch('back')} aria-label="Go back">← Back</button>
-    <h2 class="text-2xl font-bold">Safe Walk Sequence</h2>
+<section class="space-y-6 max-w-4xl mx-auto" in:fade={{ duration: 300 }}>
+  <div class="flex items-center gap-4">
+    <button class="btn btn-circle btn-ghost bg-base-100 shadow-sm hover:shadow-md hover:bg-base-200 hover:scale-105 transition-all" on:click={() => dispatch('back')} aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+    </button>
+    <div>
+        <h2 class="text-2xl font-bold text-base-content">Safe Walk Sequence</h2>
+        <p class="text-sm opacity-70">Order the steps correctly.</p>
+    </div>
   </div>
-  <p class="text-base font-medium">
-    Read the short text. Tap an item to select it, then tap another to swap their positions.
-  </p>
 
   {#if !completed}
-    <div class="card bg-base-100 border border-base-300">
-      <div class="card-body p-5">
-        <div class="mb-3 space-y-1">
-          <div class="flex items-center gap-2 text-primary font-semibold">
-            <span class="text-xl" aria-hidden="true">🧭</span>
-            <span>Scenario</span>
-            <span class="badge badge-info ml-auto py-4 px-3">{currentIndex + 1}/{SCENARIOS_PER_SESSION}</span>
+    <div class="card bg-base-100 shadow-xl border-t-4 border-secondary">
+      <div class="card-body p-6 sm:p-8">
+        <div class="mb-6 space-y-2">
+          <div class="flex items-center justify-between text-sm font-bold uppercase tracking-wider opacity-60">
+            <span>Progress</span>
+            <span>{currentIndex + 1} / {SCENARIOS_PER_SESSION}</span>
           </div>
           <progress
-            class="progress progress-primary w-full"
+            class="progress progress-secondary w-full h-3 rounded-full bg-base-200"
             value={currentIndex + 1}
             max={SCENARIOS_PER_SESSION}
             aria-label={`Scenario progress: ${currentIndex + 1} of ${SCENARIOS_PER_SESSION}`}
           ></progress>
         </div>
-        <p class="text-base-content text-lg md:text-xl leading-relaxed md:leading-loose">{currentScenario.text}</p>
+        
+        <div class="bg-base-200/50 p-6 rounded-2xl border border-base-200 mb-8 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+            <h3 class="font-bold text-sm uppercase text-secondary mb-2">Scenario:</h3>
+            <p class="text-xl md:text-2xl font-medium leading-relaxed text-base-content/90">{currentScenario.text}</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" role="list" aria-label="Safe walk sequence list">
+          {#each items as item (item.id)}
+            <button
+              type="button"
+              class="group relative flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-95 bg-base-100 shadow-sm hover:shadow-md cursor-pointer select-none touch-manipulation min-h-[10rem]
+              {selectedId !== item.id ? 'border-base-200 hover:border-secondary' : ''}
+              {selectedId === item.id ? 'border-secondary ring-2 ring-secondary ring-offset-2 bg-secondary/5' : ''}"
+              on:click={() => handleItemClick(item.id)}
+              aria-pressed={selectedId === item.id}
+              animate:flip={{ duration: 300 }}
+            >
+              <div class="text-5xl transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm">{item.emoji}</div>
+              <span class="font-bold text-sm sm:text-base text-center leading-tight">{item.label}</span>
+              {#if selectedId === item.id}
+                <div class="absolute top-2 right-2 text-secondary animate-pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                </div>
+              {/if}
+            </button>
+          {/each}
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 mt-8 pt-6 border-t border-base-200">
+          <button class="btn btn-secondary flex-1 btn-lg shadow-lg hover:scale-105 transition-transform" on:click={checkOrder} disabled={completed}>
+            <span class="mr-2">✅</span> Check Order
+          </button>
+          <button class="btn btn-ghost flex-1" on:click={restart}>
+            <span class="mr-2">🔄</span> Shuffle / Reset
+          </button>
+        </div>
+
+        {#if feedback}
+          <div class="mt-6 p-4 rounded-xl text-center font-bold text-lg animate-bounce-slow" 
+               class:bg-success={feedback.includes('Correct')} 
+               class:text-success-content={feedback.includes('Correct')}
+               class:bg-error={feedback.includes('Not')}
+               class:text-error-content={feedback.includes('Not')}
+               role="status" aria-live="polite">
+            {feedback}
+          </div>
+        {/if}
       </div>
     </div>
-
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4" role="list" aria-label="Safe walk sequence list">
-      {#each items as item (item.id)}
-        <button
-          type="button"
-          class="card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-base-300 select-none text-left active:scale-95 touch-manipulation"
-          on:click={() => handleItemClick(item.id)}
-          aria-pressed={selectedId === item.id}
-          class:selected={selectedId === item.id}
-          animate:flip={{ duration: 160 }}
-        >
-          <div class="card-body items-center p-3 sm:p-4">
-            <span class="text-4xl sm:text-5xl" aria-hidden="true">{item.emoji}</span>
-            <span class="text-xs sm:text-sm md:text-base font-semibold mt-2 text-center leading-tight">{item.label}</span>
-          </div>
-        </button>
-      {/each}
-    </div>
-
-    <div class="flex flex-col sm:flex-row gap-3 mt-4">
-      <button class="btn btn-primary flex-1 btn-lg sm:btn-md" on:click={checkOrder} disabled={completed}>Check Order</button>
-      <button class="btn btn-secondary flex-1 btn-lg sm:btn-md" on:click={restart}>Shuffle</button>
-    </div>
-
-    {#if feedback}
-      <div class="mt-2 text-base font-bold" role="status" aria-live="polite">{feedback}</div>
-    {/if}
   {/if}
 
   {#if completed}
-    <div class="card bg-base-100 shadow-xl mt-6">
-      <div class="card-body items-center text-center">
-        <div class="text-6xl mb-4 animate-bounce">🎊</div>
-        <h3 class="text-3xl font-bold mb-3">Session complete!</h3>
-        <p class="text-base mb-4">You successfully arranged all the steps in three different safe-walk scenarios.</p>
+    <div class="card bg-base-100 shadow-xl border-t-4 border-success" in:fade>
+      <div class="card-body items-center text-center p-10">
+        <div class="w-24 h-24 rounded-full bg-success/10 flex items-center justify-center text-6xl mb-6 animate-bounce-slow">
+            🎊
+        </div>
+        <h3 class="text-3xl font-black mb-3">Session Complete!</h3>
+        <p class="text-lg opacity-70 mb-8 max-w-md">You successfully arranged all the steps in three different safe-walk scenarios.</p>
 
-        <div class="alert alert-info mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <span class="text-base font-medium">You've demonstrated understanding of safe walking procedures!</span>
+        <div class="alert alert-success shadow-sm mb-8 text-left max-w-md">
+          <span class="text-2xl">🛡️</span>
+          <div>
+              <h3 class="font-bold">Safety Expert!</h3>
+              <div class="text-xs">You've demonstrated understanding of safe walking procedures!</div>
+          </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3">
-          <button class="btn btn-primary" on:click={restart}>
+        <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+          <button class="btn btn-primary flex-1 rounded-xl shadow-lg hover:scale-105 transition-transform" on:click={restart}>
             <span class="text-lg mr-1">🔄</span>
-            Try Again
+            Play Again
           </button>
-          <button class="btn btn-outline" on:click={() => dispatch('back')}>
+          <button class="btn btn-outline flex-1 rounded-xl hover:bg-base-200" on:click={() => dispatch('back')}>
             <span class="text-lg mr-1">🏠</span>
             Back Home
           </button>
@@ -272,18 +298,4 @@
     </div>
   {/if}
 </section>
-{/if}  
-
-<style>
-  /* smooth transitions for reorder and selected item */
-  .card {
-     transition: transform 160ms cubic-bezier(.2,.9,.3,1), box-shadow 160ms ease, opacity 120ms ease;
-  }
-  .card.selected {
-    @apply ring-2 ring-primary ring-offset-2 border-primary/60 shadow-lg opacity-100;
-  }
-  .card:focus-visible {
-    @apply ring-2 ring-primary ring-offset-2;
-    outline: none;
-  }
-</style>
+{/if}
