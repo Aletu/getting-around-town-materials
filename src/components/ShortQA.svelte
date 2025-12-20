@@ -215,9 +215,6 @@
               disabled={buttonStatus !== null}
               aria-label={`Answer option: ${opt.text}`}
             >
-              disabled={buttonStatus !== null}
-              aria-label={`Answer option: ${opt.text}`}
-            >
               <div class="w-8 h-8 rounded-full bg-base-200 flex items-center justify-center font-bold text-sm opacity-50 group-hover:bg-accent group-hover:text-white group-hover:opacity-100 transition-colors">
                 {opt.id.toUpperCase()}
               </div>

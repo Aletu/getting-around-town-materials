@@ -305,9 +305,6 @@
               disabled={buttonStatus !== null}
               aria-label={"Select " + opt.label}
             >
-              disabled={buttonStatus !== null}
-              aria-label={"Select " + opt.label}
-            >
               <div class="text-5xl transform transition-transform group-hover:scale-110 group-hover:rotate-3 duration-300 filter drop-shadow-sm">{opt.emoji}</div>
               <span class="font-bold text-lg text-center">{opt.label}</span>
               
