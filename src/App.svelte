@@ -3,17 +3,38 @@
   import SafeWalkSequence from './components/SafeWalkSequence.svelte';
   import ShortQA from './components/ShortQA.svelte';
   import LearnPlaces from './components/LearnPlaces.svelte';
+  import SettingsModal from './components/SettingsModal.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
-  import { teacherMode, scenariosStore, shortQAStore, safeWalkStore } from './stores.js';
+  import { teacherMode, scenariosStore, shortQAStore, safeWalkStore, themeStore, fontSizeStore, reducedMotionStore, dyslexiaFontStore } from './stores.js';
   import { SCENARIOS } from './data/scenarios.js';
   import { SHORT_QA_ITEMS } from './data/shortQA.js';
   import { SAFE_WALK_SCENARIOS } from './data/sequenceText.js';
   import { fade, fly } from 'svelte/transition';
 
   let view = 'home';
+  let showSettings = false;
+
   function setView(id) {
     view = id;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Apply settings
+  $: {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', $themeStore);
+      
+      // Reset classes on html/body
+      document.documentElement.classList.remove('text-scale-large', 'text-scale-xlarge');
+      document.body.classList.remove('font-dyslexic', 'motion-reduce');
+      
+      // Apply new classes
+      if ($fontSizeStore === 'large') document.documentElement.classList.add('text-scale-large');
+      if ($fontSizeStore === 'xlarge') document.documentElement.classList.add('text-scale-xlarge');
+      
+      if ($dyslexiaFontStore) document.body.classList.add('font-dyslexic');
+      if ($reducedMotionStore) document.body.classList.add('motion-reduce');
+    }
   }
 
   function resetAll() {
@@ -53,7 +74,12 @@
         <button class="btn btn-sm rounded-full px-6" class:btn-primary={view === 'learn'} class:btn-ghost={view !== 'learn'} on:click={() => setView('learn')}>Learn</button>
     </div>
   </div>
-  <div class="flex-none">
+  <div class="flex-none flex items-center gap-2">
+    <button class="btn btn-ghost btn-circle" on:click={() => showSettings = true} aria-label="Settings">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+      </svg>
+    </button>
     <!-- Desktop View -->
     <div class="hidden sm:block">
       <label class="label cursor-pointer gap-2 bg-base-200 px-3 py-1 rounded-full hover:bg-base-300 transition-colors">
@@ -258,4 +284,8 @@
         </div>
     </div>
 </div>
+{/if}
+
+{#if showSettings}
+  <SettingsModal on:close={() => showSettings = false} />
 {/if}

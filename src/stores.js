@@ -25,3 +25,9 @@ export const teacherMode = writable(false);
 export const scenariosStore = createPersistentStore('scenariosData', SCENARIOS);
 export const shortQAStore = createPersistentStore('shortQAData', SHORT_QA_ITEMS);
 export const safeWalkStore = createPersistentStore('safeWalkData', SAFE_WALK_SCENARIOS);
+
+// Settings Stores
+export const themeStore = createPersistentStore('theme', 'gettingaround');
+export const fontSizeStore = createPersistentStore('fontSize', 'normal'); // normal, large, xlarge
+export const reducedMotionStore = createPersistentStore('reducedMotion', false);
+export const dyslexiaFontStore = createPersistentStore('dyslexiaFont', false);

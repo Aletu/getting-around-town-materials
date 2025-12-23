@@ -15,6 +15,9 @@ module.exports = {
   daisyui: {
     themes: [
       "cupcake",
+      "light",
+      "dark",
+      "bumblebee",
       {
         gettingaround: {
           "primary": "#65c3c8",
