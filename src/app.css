@@ -6,6 +6,7 @@ html, body {
   @apply bg-base-200 text-base-content;
   font-family: 'Nunito', system-ui, sans-serif; /* Use a friendly font if available, or fallback */
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 /* Custom Background Pattern */

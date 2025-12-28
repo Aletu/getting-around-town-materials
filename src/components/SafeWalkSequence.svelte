@@ -1,6 +1,7 @@
 <script>
   import { safeWalkStore, teacherMode } from '../stores.js';
   import { createEventDispatcher } from 'svelte';
+  import { fade } from 'svelte/transition';
   import { flip } from 'svelte/animate';
   import { tick } from 'svelte';
 

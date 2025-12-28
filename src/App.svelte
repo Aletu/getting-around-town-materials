@@ -67,7 +67,7 @@
   }
 </script>
 
-<div class="min-h-screen flex flex-col bg-base-200 font-sans">
+<div class="min-h-screen flex flex-col bg-base-200 font-sans overflow-x-hidden">
 <header class="navbar bg-base-100 px-4 shadow-md sticky top-0 z-50">
   <div class="flex-1 flex items-center gap-4">
     <div class="flex items-center gap-2">
@@ -117,160 +117,164 @@
     <button class="btn btn-sm flex-1 rounded-full" class:btn-primary={view === 'learn'} class:btn-ghost={view !== 'learn'} on:click={() => setView('learn')}>Learn</button>
 </div>
 
-<main class="flex-1 p-4 max-w-6xl mx-auto w-full">
+<div class="flex-1 grid grid-cols-1 grid-rows-1 relative">
   {#if view === 'home'}
-    <section class="space-y-12" in:fade={{ duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
-      
-      <!-- Hero Section -->
-      <div class="hero relative rounded-[2.5rem] shadow-2xl border border-base-300/50 isolate">
-        <!-- Background with overflow hidden to clip the gradient/pattern but not the content -->
-        <div class="absolute inset-0 bg-gradient-to-br from-base-100 to-base-200 rounded-[2.5rem] overflow-hidden -z-10">
-            <div class="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
-        </div>
-        
-        <div class="hero-content flex-col lg:flex-row-reverse p-8 lg:p-16 gap-12 relative z-10">
-          <div class="text-9xl animate-float select-none filter drop-shadow-xl">🗺️</div>
-          <div>
-            <h1 class="text-5xl lg:text-6xl font-black mb-6 leading-tight">
-              <span class="text-gradient">Explore Your</span><br/>
-              <span class="text-base-content">Community!</span>
-            </h1>
-            <p class="py-2 text-xl opacity-80 max-w-xl leading-relaxed mb-8">
-              Welcome to <strong>Getting Around Town</strong>! Learn how to navigate your city, help visitors find their way, and stay safe while walking. Choose a fun activity below to get started!
-            </p>
-            <button class="btn btn-primary btn-lg rounded-full shadow-lg hover:scale-105 transition-all duration-300 hover:shadow-primary/30 border-none bg-gradient-to-r from-primary to-secondary text-white" on:click={() => setView('learn')}>
-                Start Learning Places ➜
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex items-center gap-4 mt-12 mb-8">
-        <div class="h-12 w-2 bg-primary rounded-full"></div>
-        <h2 class="text-3xl font-bold text-base-content">Interactive Activities</h2>
-      </div>
-
-      <div class="grid md:grid-cols-3 gap-8">
-        <!-- Help Visitor Card -->
-        <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-primary group overflow-hidden">
-          <div class="card-body relative p-8">
-            <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">💬</div>
-            <div class="flex flex-col h-full relative z-10">
-              <div class="mb-6">
-                <div class="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-sm">
-                    💬
-                </div>
-                <h2 class="card-title text-2xl font-bold mb-3">Help the Visitor</h2>
-                <p class="text-base opacity-70 leading-relaxed">Read scenarios and guide visitors to the right place in town.</p>
-              </div>
-              
-              <div class="mt-auto pt-4">
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <span class="badge badge-lg badge-ghost">10 Scenarios</span>
-                    <span class="badge badge-lg badge-ghost">Scoring</span>
-                </div>
-                <button class="btn btn-primary w-full rounded-xl shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('help-visitor')}>Play Now</button>
+    <div class="flex-1 flex flex-col col-start-1 row-start-1 w-full" in:fade={{ duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
+      <main class="flex-1 p-4 max-w-6xl mx-auto w-full">
+        <section class="space-y-12">
+          
+          <!-- Hero Section -->
+          <div class="hero relative rounded-[2.5rem] shadow-2xl border border-base-300/50 isolate">
+            <!-- Background with overflow hidden to clip the gradient/pattern but not the content -->
+            <div class="absolute inset-0 bg-gradient-to-br from-base-100 to-base-200 rounded-[2.5rem] overflow-hidden -z-10">
+                <div class="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
+            </div>
+            
+            <div class="hero-content flex-col lg:flex-row-reverse p-8 lg:p-16 gap-12 relative z-10">
+              <div class="text-9xl animate-float select-none filter drop-shadow-xl">🗺️</div>
+              <div>
+                <h1 class="text-5xl lg:text-6xl font-black mb-6 leading-tight">
+                  <span class="text-gradient">Explore Your</span><br/>
+                  <span class="text-base-content">Community!</span>
+                </h1>
+                <p class="py-2 text-xl opacity-80 max-w-xl leading-relaxed mb-8">
+                  Welcome to <strong>Getting Around Town</strong>! Learn how to navigate your city, help visitors find their way, and stay safe while walking. Choose a fun activity below to get started!
+                </p>
+                <button class="btn btn-primary btn-lg rounded-full shadow-lg hover:scale-105 transition-all duration-300 hover:shadow-primary/30 border-none bg-gradient-to-r from-primary to-secondary text-white" on:click={() => setView('learn')}>
+                    Start Learning Places ➜
+                </button>
               </div>
             </div>
           </div>
-        </article>
 
-        <!-- Safe Walk Card -->
-        <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-secondary group overflow-hidden">
-          <div class="card-body relative p-8">
-            <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">🚦</div>
-            <div class="flex flex-col h-full relative z-10">
-              <div class="mb-6">
-                <div class="w-20 h-20 rounded-3xl bg-secondary/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 shadow-sm">
-                    🚦
+          <div class="flex items-center gap-4 mt-12 mb-8">
+            <div class="h-12 w-2 bg-primary rounded-full"></div>
+            <h2 class="text-3xl font-bold text-base-content">Interactive Activities</h2>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-8">
+            <!-- Help Visitor Card -->
+            <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-primary group overflow-hidden">
+              <div class="card-body relative p-8">
+                <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">💬</div>
+                <div class="flex flex-col h-full relative z-10">
+                  <div class="mb-6">
+                    <div class="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-sm">
+                        💬
+                    </div>
+                    <h2 class="card-title text-2xl font-bold mb-3">Help the Visitor</h2>
+                    <p class="text-base opacity-70 leading-relaxed">Read scenarios and guide visitors to the right place in town.</p>
+                  </div>
+                  
+                  <div class="mt-auto pt-4">
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="badge badge-lg badge-ghost">10 Scenarios</span>
+                        <span class="badge badge-lg badge-ghost">Scoring</span>
+                    </div>
+                    <button class="btn btn-primary w-full rounded-xl shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('help-visitor')}>Play Now</button>
+                  </div>
                 </div>
-                <h2 class="card-title text-2xl font-bold mb-3">Safe Walk</h2>
-                <p class="text-base opacity-70 leading-relaxed">Order the steps to show a safe walking sequence.</p>
               </div>
-              
-              <div class="mt-auto pt-4">
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <span class="badge badge-lg badge-ghost">Drag & Drop</span>
-                    <span class="badge badge-lg badge-ghost">Safety</span>
+            </article>
+
+            <!-- Safe Walk Card -->
+            <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-secondary group overflow-hidden">
+              <div class="card-body relative p-8">
+                <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">🚦</div>
+                <div class="flex flex-col h-full relative z-10">
+                  <div class="mb-6">
+                    <div class="w-20 h-20 rounded-3xl bg-secondary/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 shadow-sm">
+                        🚦
+                    </div>
+                    <h2 class="card-title text-2xl font-bold mb-3">Safe Walk</h2>
+                    <p class="text-base opacity-70 leading-relaxed">Order the steps to show a safe walking sequence.</p>
+                  </div>
+                  
+                  <div class="mt-auto pt-4">
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="badge badge-lg badge-ghost">Drag & Drop</span>
+                        <span class="badge badge-lg badge-ghost">Safety</span>
+                    </div>
+                    <button class="btn btn-secondary w-full rounded-xl shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('safe-walk')}>Play Now</button>
+                  </div>
                 </div>
-                <button class="btn btn-secondary w-full rounded-xl shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('safe-walk')}>Play Now</button>
+              </div>
+            </article>
+
+            <!-- Short Q&A Card -->
+            <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-accent group overflow-hidden">
+              <div class="card-body relative p-8">
+                <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">❓</div>
+                <div class="flex flex-col h-full relative z-10">
+                  <div class="mb-6">
+                    <div class="w-20 h-20 rounded-3xl bg-accent/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-sm">
+                        ❓
+                    </div>
+                    <h2 class="card-title text-2xl font-bold mb-3">Short Q&A</h2>
+                    <p class="text-base opacity-70 leading-relaxed">Choose the best response for everyday questions.</p>
+                  </div>
+                  
+                  <div class="mt-auto pt-4">
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="badge badge-lg badge-ghost">5 Questions</span>
+                        <span class="badge badge-lg badge-ghost">Logic</span>
+                    </div>
+                    <button class="btn btn-accent w-full rounded-xl text-white shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('short-qa')}>Play Now</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+        </section>
+      </main>
+
+      <footer class="mt-12 bg-neutral text-neutral-content">
+          <div class="max-w-6xl mx-auto p-10">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+              <div class="flex items-center gap-6">
+                  <img src={ucrLogo} alt="University of Costa Rica" class="h-20 w-auto brightness-0 invert opacity-90" />
+                  <div class="h-12 w-px bg-white/20 hidden md:block"></div>
+                  <div>
+                      <p class="font-bold text-lg">TCU-501 Project</p>
+                      <p class="text-sm opacity-70">Escuela de Lenguas Modernas</p>
+                  </div>
+              </div>
+              <div class="flex gap-4">
+                  <a
+                  href="https://lenguasmodernas.ucr.ac.cr/tcu-501/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-outline btn-sm text-white hover:bg-white hover:text-neutral"
+                >
+                  Visit TCU-501 Website
+                </a>
               </div>
             </div>
-          </div>
-        </article>
-
-        <!-- Short Q&A Card -->
-        <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-accent group overflow-hidden">
-          <div class="card-body relative p-8">
-            <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">❓</div>
-            <div class="flex flex-col h-full relative z-10">
-              <div class="mb-6">
-                <div class="w-20 h-20 rounded-3xl bg-accent/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-sm">
-                    ❓
-                </div>
-                <h2 class="card-title text-2xl font-bold mb-3">Short Q&A</h2>
-                <p class="text-base opacity-70 leading-relaxed">Choose the best response for everyday questions.</p>
-              </div>
-              
-              <div class="mt-auto pt-4">
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <span class="badge badge-lg badge-ghost">5 Questions</span>
-                    <span class="badge badge-lg badge-ghost">Logic</span>
-                </div>
-                <button class="btn btn-accent w-full rounded-xl text-white shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('short-qa')}>Play Now</button>
-              </div>
+            <div class="mt-8 pt-8 border-t border-white/10 text-center text-xs opacity-50">
+              <p>&copy; {new Date().getFullYear()} Getting Around Town Materials. All rights reserved.</p>
             </div>
           </div>
-        </article>
-      </div>
-
-    </section>
+      </footer>
+    </div>
   {:else if view === 'help-visitor'}
-    <div in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
+    <main class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1" in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
         <HelpVisitor on:back={() => setView('home')} />
-    </div>
+    </main>
   {:else if view === 'safe-walk'}
-    <div in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
+    <main class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1" in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
         <SafeWalkSequence on:back={() => setView('home')} />
-    </div>
+    </main>
   {:else if view === 'short-qa'}
-    <div in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
+    <main class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1" in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
         <ShortQA on:back={() => setView('home')} />
-    </div>
+    </main>
   {:else if view === 'learn'}
-    <div in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
+    <main class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1" in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
         <LearnPlaces />
-    </div>
+    </main>
   {/if}
-</main>
-
-<footer class="mt-12 bg-neutral text-neutral-content">
-    <div class="max-w-6xl mx-auto p-10">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-        <div class="flex items-center gap-6">
-            <img src={ucrLogo} alt="University of Costa Rica" class="h-20 w-auto brightness-0 invert opacity-90" />
-            <div class="h-12 w-px bg-white/20 hidden md:block"></div>
-            <div>
-                <p class="font-bold text-lg">TCU-501 Project</p>
-                <p class="text-sm opacity-70">Escuela de Lenguas Modernas</p>
-            </div>
-        </div>
-        <div class="flex gap-4">
-            <a
-            href="https://lenguasmodernas.ucr.ac.cr/tcu-501/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-outline btn-sm text-white hover:bg-white hover:text-neutral"
-          >
-            Visit TCU-501 Website
-          </a>
-        </div>
-      </div>
-      <div class="mt-8 pt-8 border-t border-white/10 text-center text-xs opacity-50">
-        <p>&copy; {new Date().getFullYear()} Getting Around Town Materials. All rights reserved.</p>
-      </div>
-    </div>
-</footer>
+</div>
 
 </div>
 

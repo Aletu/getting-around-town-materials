@@ -1,6 +1,7 @@
 <script>
   import { shortQAStore, teacherMode } from '../stores.js';
   import { createEventDispatcher, onMount } from 'svelte';
+  import { fade } from 'svelte/transition';
   import { SHORT_QA_ITEMS } from '../data/shortQA.js';
   import confetti from 'canvas-confetti';
 
