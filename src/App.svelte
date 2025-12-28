@@ -18,6 +18,10 @@
   function setView(id) {
     view = id;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Ensure we are at the top after the transition
+    setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'auto' });
+    }, 350);
   }
 
   // Apply settings
@@ -118,8 +122,12 @@
     <section class="space-y-12" in:fade={{ duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
       
       <!-- Hero Section -->
-      <div class="hero bg-gradient-to-br from-base-100 to-base-200 rounded-[2.5rem] shadow-2xl overflow-hidden border border-base-300/50 relative">
-        <div class="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
+      <div class="hero relative rounded-[2.5rem] shadow-2xl border border-base-300/50 isolate">
+        <!-- Background with overflow hidden to clip the gradient/pattern but not the content -->
+        <div class="absolute inset-0 bg-gradient-to-br from-base-100 to-base-200 rounded-[2.5rem] overflow-hidden -z-10">
+            <div class="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
+        </div>
+        
         <div class="hero-content flex-col lg:flex-row-reverse p-8 lg:p-16 gap-12 relative z-10">
           <div class="text-9xl animate-float select-none filter drop-shadow-xl">🗺️</div>
           <div>

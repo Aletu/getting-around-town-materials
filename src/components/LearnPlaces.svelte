@@ -82,22 +82,22 @@
     {#each filteredPlaces as place (place.id)}
       <button 
         type="button"
-        class="card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-base-200 touch-manipulation cursor-pointer w-full text-left group overflow-hidden h-full"
+        class="card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-base-200 touch-manipulation cursor-pointer w-full text-left group overflow-visible h-full"
         on:click={() => openPlace(place)}
         animate:flip={{ duration: 300 }}
         aria-label={`View details for ${place.label}`}
       >
         <div class="card-body items-center text-center p-6 relative h-full">
-          <div class="absolute inset-0 bg-gradient-to-b from-base-200/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div class="absolute inset-0 bg-gradient-to-b from-base-200/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-box"></div>
           
           <!-- Category Badge -->
           <div class="absolute top-2 right-2 badge badge-ghost badge-sm opacity-50 group-hover:opacity-100 transition-opacity">
             {place.category}
           </div>
 
-          <div class="text-7xl mb-4 transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm">{place.emoji}</div>
-          <h2 class="card-title text-xl font-bold mb-2">{place.label}</h2>
-          <p class="text-sm opacity-70 line-clamp-2 leading-relaxed">
+          <div class="text-7xl mb-4 transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm z-10">{place.emoji}</div>
+          <h2 class="card-title text-xl font-bold mb-2 relative z-10">{place.label}</h2>
+          <p class="text-sm opacity-70 line-clamp-2 leading-relaxed relative z-10">
             {place.description}
           </p>
           
@@ -133,18 +133,20 @@
       on:click|stopPropagation 
       transition:scale={{ duration: 200, start: 0.95 }}
     >
-      <div class="relative h-40 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center overflow-hidden">
-        <!-- Decorative circles -->
-        <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
+      <div class="relative h-40 bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
+        <!-- Decorative circles wrapper with overflow hidden -->
+        <div class="absolute inset-0 overflow-hidden">
+            <div class="absolute -top-10 -left-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
+        </div>
 
         <button 
-          class="btn btn-circle btn-sm btn-ghost absolute top-2 right-2 bg-base-100/50 hover:bg-base-100 z-10" 
+          class="btn btn-circle btn-sm btn-ghost absolute top-2 right-2 bg-base-100/50 hover:bg-base-100 z-20" 
           on:click={closePlace}
           aria-label="Close modal"
         >✕</button>
         
-        <div class="text-9xl shadow-2xl rounded-3xl bg-base-100 p-4 transform translate-y-10 rotate-3 transition-transform hover:rotate-0 duration-500">
+        <div class="text-9xl shadow-2xl rounded-3xl bg-base-100 p-4 transform translate-y-10 transition-transform duration-500 relative z-10">
           {selectedPlace.emoji}
         </div>
       </div>

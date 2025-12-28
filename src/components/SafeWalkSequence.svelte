@@ -222,22 +222,21 @@
             <p class="text-xl md:text-2xl font-medium leading-relaxed text-base-content/90">{currentScenario.text}</p>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" role="list" aria-label="Safe walk sequence list">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" role="list" aria-label="Safe walk sequence list">
           {#each items as item (item.id)}
             <button
               type="button"
-              class="group relative flex flex-col items-center justify-center gap-3 p-4 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-95 bg-base-100 shadow-sm hover:shadow-md cursor-pointer select-none touch-manipulation min-h-[10rem]
-              {selectedId !== item.id ? 'border-base-200 hover:border-secondary' : ''}
-              {selectedId === item.id ? 'border-secondary ring-2 ring-secondary ring-offset-2 bg-secondary/5' : ''}"
+              class="group relative flex items-center justify-center p-8 rounded-xl border-2 transition-all duration-200 hover:scale-[1.01] active:scale-95 shadow-sm hover:shadow-md cursor-pointer select-none touch-manipulation min-h-[8rem]
+              {selectedId !== item.id ? 'bg-base-100 border-base-200 hover:border-secondary/50' : ''}
+              {selectedId === item.id ? 'bg-secondary text-secondary-content border-secondary ring-4 ring-secondary/20' : ''}"
               on:click={() => handleItemClick(item.id)}
               aria-pressed={selectedId === item.id}
               animate:flip={{ duration: 300 }}
             >
-              <div class="text-5xl transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm">{item.emoji}</div>
-              <span class="font-bold text-sm sm:text-base text-center leading-tight">{item.label}</span>
+              <span class="text-6xl transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm">{item.emoji}</span>
               {#if selectedId === item.id}
-                <div class="absolute top-2 right-2 text-secondary animate-pulse">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                <div class="absolute top-2 right-2 animate-pulse">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                 </div>
               {/if}
             </button>
@@ -245,11 +244,11 @@
         </div>
 
         <div class="flex flex-col sm:flex-row gap-4 mt-8 pt-6 border-t border-base-200">
-          <button class="btn btn-secondary flex-1 btn-lg shadow-lg hover:scale-105 transition-transform" on:click={checkOrder} disabled={completed}>
-            <span class="mr-2">✅</span> Check Order
+          <button class="btn btn-secondary flex-1 btn-lg rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-bold tracking-wide text-lg" on:click={checkOrder} disabled={completed}>
+            Check Order
           </button>
-          <button class="btn btn-ghost flex-1" on:click={restart}>
-            <span class="mr-2">🔄</span> Shuffle / Reset
+          <button class="btn btn-neutral btn-outline flex-1 btn-lg rounded-xl hover:bg-neutral hover:text-neutral-content transition-all font-bold tracking-wide text-lg" on:click={restart}>
+            Shuffle / Reset
           </button>
         </div>
 
