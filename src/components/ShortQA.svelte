@@ -2,6 +2,7 @@
   import { shortQAStore, teacherMode } from '../stores.js';
   import { createEventDispatcher, onMount } from 'svelte';
   import { SHORT_QA_ITEMS } from '../data/shortQA.js';
+  import confetti from 'canvas-confetti';
 
   const dispatch = createEventDispatcher();
 
@@ -62,6 +63,13 @@
           currentIndex += 1;
         } else {
           finished = true;
+          if (score === items.length) {
+            confetti({
+              particleCount: 150,
+              spread: 70,
+              origin: { y: 0.6 }
+            });
+          }
         }
       }, 700);
     } else {

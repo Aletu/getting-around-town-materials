@@ -4,8 +4,9 @@
   import ShortQA from './components/ShortQA.svelte';
   import LearnPlaces from './components/LearnPlaces.svelte';
   import SettingsModal from './components/SettingsModal.svelte';
+  import Toast from './components/Toast.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
-  import { teacherMode, scenariosStore, shortQAStore, safeWalkStore, themeStore, fontSizeStore, reducedMotionStore, dyslexiaFontStore } from './stores.js';
+  import { teacherMode, scenariosStore, shortQAStore, safeWalkStore, themeStore, fontSizeStore, reducedMotionStore, dyslexiaFontStore, toastStore } from './stores.js';
   import { SCENARIOS } from './data/scenarios.js';
   import { SHORT_QA_ITEMS } from './data/shortQA.js';
   import { SAFE_WALK_SCENARIOS } from './data/sequenceText.js';
@@ -42,7 +43,7 @@
         scenariosStore.set(SCENARIOS);
         shortQAStore.set(SHORT_QA_ITEMS);
         safeWalkStore.set(SAFE_WALK_SCENARIOS);
-        alert('All content has been reset.');
+        toastStore.add('All content has been reset to defaults.', 'success');
     }
   }
 
@@ -114,7 +115,7 @@
 
 <main class="flex-1 p-4 max-w-6xl mx-auto w-full">
   {#if view === 'home'}
-    <section class="space-y-12" in:fade={{ duration: 400 }}>
+    <section class="space-y-12" in:fade={{ duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
       
       <!-- Hero Section -->
       <div class="hero bg-gradient-to-br from-base-100 to-base-200 rounded-[2.5rem] shadow-2xl overflow-hidden border border-base-300/50 relative">
@@ -217,19 +218,19 @@
 
     </section>
   {:else if view === 'help-visitor'}
-    <div in:fly={{ y: 20, duration: 300, delay: 100 }}>
+    <div in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
         <HelpVisitor on:back={() => setView('home')} />
     </div>
   {:else if view === 'safe-walk'}
-    <div in:fly={{ y: 20, duration: 300, delay: 100 }}>
+    <div in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
         <SafeWalkSequence on:back={() => setView('home')} />
     </div>
   {:else if view === 'short-qa'}
-    <div in:fly={{ y: 20, duration: 300, delay: 100 }}>
+    <div in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
         <ShortQA on:back={() => setView('home')} />
     </div>
   {:else if view === 'learn'}
-    <div in:fly={{ y: 20, duration: 300, delay: 100 }}>
+    <div in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
         <LearnPlaces />
     </div>
   {/if}
@@ -289,3 +290,5 @@
 {#if showSettings}
   <SettingsModal on:close={() => showSettings = false} />
 {/if}
+
+<Toast />

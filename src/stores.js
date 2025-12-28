@@ -31,3 +31,25 @@ export const themeStore = createPersistentStore('theme', 'gettingaround');
 export const fontSizeStore = createPersistentStore('fontSize', 'normal'); // normal, large, xlarge
 export const reducedMotionStore = createPersistentStore('reducedMotion', false);
 export const dyslexiaFontStore = createPersistentStore('dyslexiaFont', false);
+
+// Toast Store
+function createToastStore() {
+    const { subscribe, update } = writable([]);
+
+    return {
+        subscribe,
+        add: (message, type = 'info', duration = 3000) => {
+            const id = Date.now();
+            update(toasts => [...toasts, { id, message, type }]);
+            setTimeout(() => {
+                update(toasts => toasts.filter(t => t.id !== id));
+            }, duration);
+        },
+        remove: (id) => {
+            update(toasts => toasts.filter(t => t.id !== id));
+        }
+    };
+}
+
+export const toastStore = createToastStore();
+
