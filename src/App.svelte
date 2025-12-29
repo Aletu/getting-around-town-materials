@@ -3,6 +3,7 @@
   import SafeWalkSequence from './components/SafeWalkSequence.svelte';
   import ShortQA from './components/ShortQA.svelte';
   import LearnPlaces from './components/LearnPlaces.svelte';
+  import PlanTrip from './components/PlanTrip.svelte';
   import SettingsModal from './components/SettingsModal.svelte';
   import Toast from './components/Toast.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
@@ -152,7 +153,7 @@
             <h2 class="text-3xl font-bold text-base-content">Interactive Activities</h2>
           </div>
 
-          <div class="grid md:grid-cols-3 gap-8">
+          <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
             <!-- Help Visitor Card -->
             <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-primary group overflow-hidden">
               <div class="card-body relative p-8">
@@ -224,6 +225,30 @@
                 </div>
               </div>
             </article>
+
+            <!-- Plan Trip Card -->
+            <article class="card bg-base-100 shadow-xl hover-lift border-t-8 border-info group overflow-hidden">
+              <div class="card-body relative p-8">
+                <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity text-9xl pointer-events-none select-none">🎒</div>
+                <div class="flex flex-col h-full relative z-10">
+                  <div class="mb-6">
+                    <div class="w-20 h-20 rounded-3xl bg-info/10 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 shadow-sm">
+                        🎒
+                    </div>
+                    <h2 class="card-title text-2xl font-bold mb-3">Plan Your Trip</h2>
+                    <p class="text-base opacity-70 leading-relaxed">Pack your bag and choose how to travel.</p>
+                  </div>
+                  
+                  <div class="mt-auto pt-4">
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="badge badge-lg badge-ghost">Step-by-Step</span>
+                        <span class="badge badge-lg badge-ghost">Planning</span>
+                    </div>
+                    <button class="btn btn-info w-full rounded-xl text-white shadow-md group-hover:shadow-lg transition-all" on:click={() => setView('plan-trip')}>Start Planning</button>
+                  </div>
+                </div>
+              </div>
+            </article>
           </div>
 
         </section>
@@ -268,6 +293,10 @@
   {:else if view === 'short-qa'}
     <main class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1" in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
         <ShortQA on:back={() => setView('home')} />
+    </main>
+  {:else if view === 'plan-trip'}
+    <main class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1" in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
+        <PlanTrip />
     </main>
   {:else if view === 'learn'}
     <main class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1" in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>

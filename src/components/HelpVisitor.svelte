@@ -228,7 +228,7 @@
                                     <span class="text-xs opacity-50 italic py-1">No distractors added yet</span>
                                 {/if}
                             </div>
-                            <select class="select select-bordered select-sm w-full" on:change={(e) => { addDistractor(i, e.target.value); e.target.value = ""; }}>
+                            <select class="select select-bordered select-sm w-full" on:change={(e) => { addDistractor(i, e.currentTarget.value); e.currentTarget.value = ""; }}>
                                 <option value="" disabled selected>+ Add a wrong answer</option>
                                 {#each PLACES as place}
                                     {#if place.id !== scenario.answer && !scenario.distractors.includes(place.id)}
