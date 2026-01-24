@@ -5,12 +5,10 @@
   import LearnPlaces from './components/LearnPlaces.svelte';
   import PlanTrip from './components/PlanTrip.svelte';
   import SettingsModal from './components/SettingsModal.svelte';
+  import TeacherPanel from './components/TeacherPanel.svelte';
   import Toast from './components/Toast.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
-  import { teacherMode, scenariosStore, shortQAStore, safeWalkStore, themeStore, fontSizeStore, reducedMotionStore, dyslexiaFontStore, toastStore } from './stores.js';
-  import { SCENARIOS } from './data/scenarios.js';
-  import { SHORT_QA_ITEMS } from './data/shortQA.js';
-  import { SAFE_WALK_SCENARIOS } from './data/sequenceText.js';
+  import { teacherMode, themeStore, fontSizeStore, reducedMotionStore, dyslexiaFontStore } from './stores.js';
   import { fade, fly } from 'svelte/transition';
 
   let view = 'home';
@@ -42,33 +40,13 @@
       if ($reducedMotionStore) document.body.classList.add('motion-reduce');
     }
   }
-
-  function resetAll() {
-    if(confirm('Are you sure you want to reset all content to the original defaults? This cannot be undone.')) {
-        scenariosStore.set(SCENARIOS);
-        shortQAStore.set(SHORT_QA_ITEMS);
-        safeWalkStore.set(SAFE_WALK_SCENARIOS);
-        toastStore.add('All content has been reset to defaults.', 'success');
-    }
-  }
-
-  function exportData() {
-    const data = {
-        scenarios: $scenariosStore,
-        shortQA: $shortQAStore,
-        safeWalk: $safeWalkStore
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'getting-around-town-content.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  }
 </script>
 
 <div class="min-h-screen flex flex-col bg-base-200 font-sans overflow-x-hidden">
+<!-- Skip to main content link for keyboard users -->
+<a href="#main-content" class="skip-link">
+  Skip to main content
+</a>
 <header class="navbar bg-base-100 px-4 shadow-md sticky top-0 z-50">
   <div class="flex-1 flex items-center gap-4">
     <div class="flex items-center gap-2">
@@ -118,7 +96,7 @@
     <button class="btn btn-sm flex-1 rounded-full" class:btn-primary={view === 'learn'} class:btn-ghost={view !== 'learn'} on:click={() => setView('learn')}>Learn</button>
 </div>
 
-<div class="flex-1 grid grid-cols-1 grid-rows-1 relative">
+<div id="main-content" class="flex-1 grid grid-cols-1 grid-rows-1 relative" class:pb-28={$teacherMode} tabindex="-1">
   {#if view === 'home'}
     <div class="flex-1 flex flex-col col-start-1 row-start-1 w-full" in:fade={{ duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
       <main class="flex-1 p-4 max-w-6xl mx-auto w-full">
@@ -308,24 +286,7 @@
 </div>
 
 {#if $teacherMode}
-<div class="fixed bottom-0 left-0 right-0 bg-neutral text-neutral-content p-4 z-50 shadow-lg border-t-4 border-primary" transition:fly={{ y: 100, duration: 300 }}>
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-            <div class="badge badge-primary badge-lg gap-2">
-                <span>👨‍🏫</span> Teacher Mode Active
-            </div>
-            <span class="text-sm opacity-80 hidden sm:inline">You are editing the content. Changes are saved automatically.</span>
-        </div>
-        <div class="flex gap-2">
-            <button class="btn btn-sm btn-ghost text-error hover:bg-error/20" on:click={resetAll}>
-                Reset Defaults
-            </button>
-            <button class="btn btn-sm btn-primary" on:click={exportData}>
-                Export Content
-            </button>
-        </div>
-    </div>
-</div>
+  <TeacherPanel />
 {/if}
 
 {#if showSettings}

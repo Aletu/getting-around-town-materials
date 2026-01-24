@@ -6,6 +6,9 @@
   import { tick } from 'svelte';
 
   const dispatch = createEventDispatcher();
+  
+  // Track focused index for keyboard navigation
+  let focusedIndex = -1;
 
   // Session state: we play through 3 distinct scenarios before the module is "fully" completed
   const SCENARIOS_PER_SESSION = 3;
@@ -68,6 +71,69 @@
       // Reset selection and feedback after the swap.
       selectedId = null;
       feedback = '';
+    }
+  }
+
+  // Keyboard navigation handler
+  async function handleKeydown(event, index) {
+    if (completed || scenarioDone) return;
+    
+    const id = items[index].id;
+    
+    switch (event.key) {
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        handleItemClick(id);
+        break;
+      case 'ArrowUp':
+      case 'ArrowLeft':
+        event.preventDefault();
+        if (selectedId === id && index > 0) {
+          // Move selected item up
+          await swapItems(index, index - 1);
+          focusedIndex = index - 1;
+          await tick();
+          focusItem(focusedIndex);
+        } else {
+          // Navigate to previous item
+          focusedIndex = Math.max(0, index - 1);
+          focusItem(focusedIndex);
+        }
+        break;
+      case 'ArrowDown':
+      case 'ArrowRight':
+        event.preventDefault();
+        if (selectedId === id && index < items.length - 1) {
+          // Move selected item down
+          await swapItems(index, index + 1);
+          focusedIndex = index + 1;
+          await tick();
+          focusItem(focusedIndex);
+        } else {
+          // Navigate to next item
+          focusedIndex = Math.min(items.length - 1, index + 1);
+          focusItem(focusedIndex);
+        }
+        break;
+      case 'Escape':
+        event.preventDefault();
+        selectedId = null;
+        break;
+    }
+  }
+
+  async function swapItems(fromIndex, toIndex) {
+    [items[fromIndex], items[toIndex]] = [items[toIndex], items[fromIndex]];
+    items = [...items];
+    await tick();
+  }
+
+  function focusItem(index) {
+    /** @type {NodeListOf<HTMLElement>} */
+    const buttons = document.querySelectorAll('[data-sequence-item]');
+    if (buttons[index]) {
+      buttons[index].focus();
     }
   }
 
@@ -223,20 +289,27 @@
             <p class="text-xl md:text-2xl font-medium leading-relaxed text-base-content/90">{currentScenario.text}</p>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" role="list" aria-label="Safe walk sequence list">
-          {#each items as item (item.id)}
+        <p class="text-sm text-base-content/60 mb-2">💡 <strong>Tip:</strong> Click to select, then click another to swap. <kbd class="kbd kbd-sm">↑↓←→</kbd> to move selected item.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" role="listbox" aria-label="Reorder these steps into the correct sequence" aria-describedby="sequence-instructions">
+          <span id="sequence-instructions" class="sr-only">Use arrow keys to move a selected item. Press Enter or Space to select an item, then use arrow keys to move it. Press Escape to deselect.</span>
+          {#each items as item, index (item.id)}
             <button
               type="button"
-              class="group relative flex items-center justify-center p-8 rounded-xl border-2 transition-all duration-200 hover:scale-[1.01] active:scale-95 shadow-sm hover:shadow-md cursor-pointer select-none touch-manipulation min-h-[8rem]
+              data-sequence-item
+              class="group relative flex flex-col items-center justify-center p-8 rounded-xl border-2 transition-all duration-200 hover:scale-[1.01] active:scale-95 shadow-sm hover:shadow-md cursor-pointer select-none touch-manipulation min-h-[8rem]
               {selectedId !== item.id ? 'bg-base-100 border-base-200 hover:border-secondary/50' : ''}
               {selectedId === item.id ? 'bg-secondary text-secondary-content border-secondary ring-4 ring-secondary/20' : ''}"
               on:click={() => handleItemClick(item.id)}
-              aria-pressed={selectedId === item.id}
+              on:keydown={(e) => handleKeydown(e, index)}
+              aria-label="{item.label || item.alt}. Position {index + 1} of {items.length}. {selectedId === item.id ? 'Selected. Use arrow keys to move.' : 'Press Enter to select.'}"
+              role="option"
+              aria-selected={selectedId === item.id}
               animate:flip={{ duration: 300 }}
             >
-              <span class="text-6xl transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm">{item.emoji}</span>
+              <span class="text-6xl transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm" aria-hidden="true">{item.emoji}</span>
+              <span class="text-sm mt-2 font-medium opacity-80">{item.label || ''}</span>
               {#if selectedId === item.id}
-                <div class="absolute top-2 right-2 animate-pulse">
+                <div class="absolute top-2 right-2 animate-pulse" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                 </div>
               {/if}
