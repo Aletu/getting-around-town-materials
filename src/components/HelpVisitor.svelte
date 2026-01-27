@@ -190,25 +190,25 @@
             <div class="collapse-content bg-base-100 pt-4 border-t border-base-200"> 
                 <div class="grid gap-4">
                     <div class="form-control w-full">
-                        <label class="label">
+                        <div class="label">
                             <span class="label-text font-bold">Scenario Text</span>
                             <span class="label-text-alt">What the visitor says</span>
-                        </label>
-                        <input type="text" placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full" bind:value={scenario.text} />
+                        </div>
+                        <input type="text" placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full" bind:value={scenario.text} aria-label="Scenario text" />
                     </div>
                     
                     <div class="form-control w-full">
-                        <label class="label">
+                        <div class="label">
                             <span class="label-text font-bold">Hint</span>
                             <span class="label-text-alt">Helpful tip for the student</span>
-                        </label>
-                        <input type="text" placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full" bind:value={scenario.hint} />
+                        </div>
+                        <input type="text" placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full" bind:value={scenario.hint} aria-label="Hint" />
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-base-200/50 p-4 rounded-xl">
                         <div class="form-control">
-                            <label class="label font-bold text-success">Correct Answer</label>
-                            <select class="select select-bordered select-success w-full" bind:value={scenario.answer}>
+                            <div class="label font-bold text-success">Correct Answer</div>
+                            <select class="select select-bordered select-success w-full" bind:value={scenario.answer} aria-label="Correct answer">
                                 {#each PLACES as place}
                                     <option value={place.id}>{place.emoji} {place.label}</option>
                                 {/each}
@@ -216,7 +216,7 @@
                         </div>
 
                         <div class="form-control">
-                            <label class="label font-bold text-error">Distractors (Wrong Answers)</label>
+                            <div class="label font-bold text-error">Distractors (Wrong Answers)</div>
                             <div class="flex flex-wrap gap-2 mb-3 min-h-[2rem]">
                                 {#each scenario.distractors as distractor, dIndex}
                                     <div class="badge badge-error gap-1 pl-3 pr-1 py-3">

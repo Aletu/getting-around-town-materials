@@ -120,14 +120,17 @@
 
 <!-- Modal -->
 {#if selectedPlace}
+  <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
   <div 
     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-base-content/60 backdrop-blur-sm" 
-    on:click={closePlace} 
+    on:click={closePlace}
+    on:keydown={(e) => e.key === 'Escape' && closePlace()}
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-title"
     transition:fade={{ duration: 200 }}
   >
+    <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
     <div 
       class="card w-full max-w-lg bg-base-100 shadow-2xl overflow-hidden cursor-default relative" 
       on:click|stopPropagation 

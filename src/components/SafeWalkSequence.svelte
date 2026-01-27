@@ -207,13 +207,13 @@
             <div class="collapse-content bg-base-100 pt-4 border-t border-base-200"> 
                 <div class="grid gap-4">
                     <div class="form-control w-full">
-                        <label class="label font-bold">Scenario Description</label>
-                        <textarea class="textarea textarea-bordered w-full h-24" placeholder="Describe the situation..." bind:value={scenario.text}></textarea>
+                        <div class="label font-bold">Scenario Description</div>
+                        <textarea class="textarea textarea-bordered w-full h-24" placeholder="Describe the situation..." bind:value={scenario.text} aria-label="Scenario description"></textarea>
                     </div>
                     
                     <div class="bg-base-200/50 p-4 rounded-xl">
                         <div class="flex justify-between items-center mb-4">
-                            <label class="label font-bold">Sequence Steps (Correct Order)</label>
+                            <div class="label font-bold">Sequence Steps (Correct Order)</div>
                             <div class="badge badge-info badge-outline">Steps 1 to {scenario.sequence.length}</div>
                         </div>
                         
@@ -223,16 +223,16 @@
                                     <div class="badge badge-neutral mt-2">{j + 1}</div>
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
                                         <div class="form-control">
-                                            <label class="label text-xs uppercase font-bold opacity-50">Label</label>
-                                            <input type="text" class="input input-sm input-bordered" placeholder="e.g. Stop" bind:value={item.label} />
+                                            <div class="label text-xs uppercase font-bold opacity-50">Label</div>
+                                            <input type="text" class="input input-sm input-bordered" placeholder="e.g. Stop" bind:value={item.label} aria-label="Step label" />
                                         </div>
                                         <div class="form-control">
-                                            <label class="label text-xs uppercase font-bold opacity-50">Emoji</label>
-                                            <input type="text" class="input input-sm input-bordered" placeholder="e.g. 🛑" bind:value={item.emoji} />
+                                            <div class="label text-xs uppercase font-bold opacity-50">Emoji</div>
+                                            <input type="text" class="input input-sm input-bordered" placeholder="e.g. 🛑" bind:value={item.emoji} aria-label="Step emoji" />
                                         </div>
                                         <div class="form-control">
-                                            <label class="label text-xs uppercase font-bold opacity-50">Alt Text</label>
-                                            <input type="text" class="input input-sm input-bordered" placeholder="Description" bind:value={item.alt} />
+                                            <div class="label text-xs uppercase font-bold opacity-50">Alt Text</div>
+                                            <input type="text" class="input input-sm input-bordered" placeholder="Description" bind:value={item.alt} aria-label="Step alt text" />
                                         </div>
                                     </div>
                                 </div>
