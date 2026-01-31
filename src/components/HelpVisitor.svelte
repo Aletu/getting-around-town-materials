@@ -255,41 +255,46 @@
     </button>
   </div>
 {:else}
-<section class="space-y-6 max-w-4xl mx-auto" in:fade={{ duration: 300 }}>
+<section class="space-y-6 max-w-3xl mx-auto" in:fade={{ duration: 300 }}>
+  <!-- Header -->
   <div class="flex items-center gap-4">
-    <button class="btn btn-circle btn-ghost bg-base-100 shadow-sm hover:shadow-md hover:bg-base-200 hover:scale-105 transition-all" on:click={() => dispatch('back')} aria-label="Go back">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+    <button class="btn btn-circle btn-ghost bg-base-100 shadow-sm hover:shadow-md hover:bg-base-200 transition-all" on:click={() => dispatch('back')} aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
     </button>
     <div>
-        <h2 class="text-2xl font-bold text-base-content">Help the Visitor</h2>
-        <p class="text-sm opacity-70">Read the scenario and guide the visitor.</p>
+        <h2 class="text-xl lg:text-2xl font-bold text-base-content">Help the Visitor</h2>
+        <p class="text-sm text-base-content/60">Read the scenario and guide the visitor.</p>
     </div>
   </div>
 
   {#if !finished}
-    <div class="card bg-base-100 shadow-xl border-t-4 border-primary">
-      <div class="card-body p-6 sm:p-8">
-        <div class="mb-6 space-y-2">
-          <div class="flex items-center justify-between text-sm font-bold uppercase tracking-wider opacity-60">
-            <span>Progress</span>
-            <span>{currentIndex + 1} / {messages.length}</span>
+    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50">
+      <!-- Progress Bar -->
+      <div class="h-1 bg-base-200 w-full">
+        <div class="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 ease-out" style="width: {((currentIndex + 1) / messages.length) * 100}%"></div>
+      </div>
+      
+      <div class="card-body p-5 sm:p-7 lg:p-8">
+        <!-- Progress Indicator -->
+        <div class="flex items-center justify-between text-sm mb-5">
+          <span class="text-base-content/50 font-medium">Scenario {currentIndex + 1} of {messages.length}</span>
+          <div class="flex items-center gap-4">
+            <span class="flex items-center gap-1.5 text-success">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+              <span class="font-semibold">{score}</span>
+            </span>
           </div>
-          <progress
-            class="progress progress-primary w-full h-3 rounded-full bg-base-200"
-            value={currentIndex + 1}
-            max={messages.length}
-            aria-label={`Scenario progress: ${currentIndex + 1} of ${messages.length}`}
-          ></progress>
         </div>
         
         {#key current?.id}
-          <div class="bg-base-200/50 p-6 rounded-2xl border border-base-200 mb-6 relative overflow-hidden" in:fade={{ duration: 300, delay: 150 }}>
-            <div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
-            <div class="flex gap-4">
-                <div class="text-4xl select-none">🗣️</div>
+          <!-- Scenario Card -->
+          <div class="bg-gradient-to-br from-base-200/60 to-base-200/30 p-5 sm:p-6 rounded-2xl border border-base-300/50 mb-6 relative overflow-hidden" in:fade={{ duration: 300, delay: 150 }}>
+            <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-accent rounded-full"></div>
+            <div class="flex gap-4 pl-3">
+                <div class="text-3xl select-none flex-shrink-0">🗣️</div>
                 <div>
-                    <h3 class="font-bold text-sm uppercase text-primary mb-1">Visitor Says:</h3>
-                    <p class="text-xl md:text-2xl font-medium leading-relaxed text-base-content/90" aria-live="polite">"{current?.text}"</p>
+                    <h3 class="font-semibold text-xs uppercase text-primary/70 mb-1.5 tracking-wide">Visitor says:</h3>
+                    <p class="text-lg sm:text-xl font-medium leading-relaxed text-base-content" aria-live="polite">"{current?.text}"</p>
                 </div>
             </div>
           </div>
@@ -324,79 +329,75 @@
         {/key}
         
         {#if wrongAttemptsForCurrent >= 1 && current?.hint}
-          <div class="alert alert-info mt-6 shadow-md border-l-4 border-info bg-info/10" in:fade>
-            <div class="flex-none text-info">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <div class="flex items-start gap-3 mt-6 p-4 bg-info/10 rounded-xl border border-info/20" in:fade>
+            <div class="flex-shrink-0 w-8 h-8 rounded-full bg-info/20 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
             <div>
-              <h3 class="font-bold text-xs uppercase tracking-wide opacity-70 mb-1">Hint</h3>
-              <div class="text-sm font-medium">{current.hint}</div>
+              <h3 class="font-semibold text-xs uppercase tracking-wide text-info/70 mb-0.5">Hint</h3>
+              <p class="text-sm font-medium text-base-content/80">{current.hint}</p>
             </div>
           </div>
         {/if}
-        
-        <div class="mt-8 pt-6 border-t border-base-200 flex justify-between items-center text-sm font-medium opacity-60">
-          <span>Score: <span class="text-primary">{score}</span></span>
-          <span>Attempts: {attempts}</span>
-        </div>
       </div>
     </div>
   {:else}
-    <div class="card bg-base-100 shadow-xl border-t-4 border-success" in:fade>
-      <div class="card-body items-center text-center p-10">
-        <div class="w-24 h-24 rounded-full bg-success/10 flex items-center justify-center text-6xl mb-6 animate-bounce-slow">
+    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50" in:fade>
+      <div class="h-1.5 bg-gradient-to-r from-success via-primary to-accent"></div>
+      <div class="card-body items-center text-center p-8 sm:p-10">
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-success/20 to-primary/10 flex items-center justify-center text-5xl mb-5 shadow-inner">
             🎉
         </div>
-        <h3 class="text-3xl font-black mb-2">Great Work!</h3>
-        <p class="text-lg opacity-70 mb-8 max-w-md">You've completed all the scenarios for this session.</p>
+        <h3 class="text-2xl sm:text-3xl font-bold mb-2 text-base-content">Great Work!</h3>
+        <p class="text-base-content/60 mb-8 max-w-sm">You've completed all the scenarios for this session.</p>
         
-        <div class="grid grid-cols-2 gap-4 w-full max-w-md mb-8">
-          <div class="bg-base-200/50 p-4 rounded-2xl">
-            <div class="text-sm uppercase font-bold opacity-60 mb-1">Correct</div>
-            <div class="text-3xl font-black text-success">{score}</div>
-            <div class="text-xs opacity-60">out of {messages.length}</div>
+        <div class="grid grid-cols-2 gap-4 w-full max-w-sm mb-8">
+          <div class="bg-gradient-to-br from-success/10 to-success/5 p-5 rounded-2xl border border-success/20 text-center">
+            <div class="text-xs uppercase font-semibold text-success/70 mb-1 tracking-wide">Correct</div>
+            <div class="text-3xl font-bold text-success">{score}</div>
+            <div class="text-xs text-base-content/50">out of {messages.length}</div>
           </div>
           
-          <div class="bg-base-200/50 p-4 rounded-2xl">
-            <div class="text-sm uppercase font-bold opacity-60 mb-1">Accuracy</div>
-            <div class="text-3xl font-black text-primary">{Math.round((score / attempts) * 100)}%</div>
-            <div class="text-xs opacity-60">{attempts} attempts</div>
+          <div class="bg-gradient-to-br from-primary/10 to-primary/5 p-5 rounded-2xl border border-primary/20 text-center">
+            <div class="text-xs uppercase font-semibold text-primary/70 mb-1 tracking-wide">Accuracy</div>
+            <div class="text-3xl font-bold text-primary">{Math.round((score / attempts) * 100)}%</div>
+            <div class="text-xs text-base-content/50">{attempts} attempts</div>
           </div>
         </div>
 
         {#if score === messages.length}
-          <div class="alert alert-success shadow-sm mb-8 text-left max-w-md">
+          <div class="flex items-center gap-3 p-4 bg-success/10 rounded-xl border border-success/20 mb-6 w-full max-w-sm">
             <span class="text-2xl">⭐</span>
-            <div>
-                <h3 class="font-bold">Perfect Score!</h3>
-                <div class="text-xs">You're a navigation expert!</div>
+            <div class="text-left">
+                <h3 class="font-semibold text-success">Perfect Score!</h3>
+                <p class="text-xs text-base-content/60">You're a navigation expert!</p>
             </div>
           </div>
         {:else if score >= messages.length * 0.8}
-          <div class="alert alert-info shadow-sm mb-8 text-left max-w-md">
+          <div class="flex items-center gap-3 p-4 bg-info/10 rounded-xl border border-info/20 mb-6 w-full max-w-sm">
             <span class="text-2xl">👏</span>
-            <div>
-                <h3 class="font-bold">Excellent!</h3>
-                <div class="text-xs">You know your way around town very well.</div>
+            <div class="text-left">
+                <h3 class="font-semibold text-info">Excellent!</h3>
+                <p class="text-xs text-base-content/60">You know your way around town very well.</p>
             </div>
           </div>
         {:else if score >= messages.length * 0.6}
-          <div class="alert alert-warning shadow-sm mb-8 text-left max-w-md">
+          <div class="flex items-center gap-3 p-4 bg-warning/10 rounded-xl border border-warning/20 mb-6 w-full max-w-sm">
             <span class="text-2xl">👍</span>
-            <div>
-                <h3 class="font-bold">Good effort!</h3>
-                <div class="text-xs">Keep practicing to improve your score.</div>
+            <div class="text-left">
+                <h3 class="font-semibold text-warning">Good effort!</h3>
+                <p class="text-xs text-base-content/60">Keep practicing to improve your score.</p>
             </div>
           </div>
         {/if}
 
-        <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
-          <button class="btn btn-primary flex-1 rounded-xl shadow-lg hover:scale-105 transition-transform" on:click={restart}>
-            <span class="text-lg mr-1">🔄</span>
+        <div class="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
+          <button class="btn btn-primary flex-1 rounded-xl gap-2" on:click={restart}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
             Play Again
           </button>
-          <button class="btn btn-outline flex-1 rounded-xl hover:bg-base-200" on:click={() => dispatch('back')}>
-            <span class="text-lg mr-1">🏠</span>
+          <button class="btn btn-ghost flex-1 rounded-xl border border-base-300 hover:bg-base-200" on:click={() => dispatch('back')}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
             Back Home
           </button>
         </div>

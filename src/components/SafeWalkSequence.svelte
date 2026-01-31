@@ -182,57 +182,57 @@
 </script>
 
 {#if $teacherMode}
-  <div class="bg-base-100 rounded-box shadow-lg p-6 mb-8 border border-base-300">
-    <div class="flex items-center justify-between mb-6 border-b pb-4">
+  <div class="bg-base-100 rounded-2xl shadow-soft p-6 border border-base-200/50">
+    <div class="flex items-center justify-between mb-6 pb-4 border-b border-base-200">
         <div class="flex items-center gap-3">
-            <button class="btn btn-circle btn-ghost btn-sm" on:click={() => dispatch('back')} aria-label="Go back">
-                <span class="text-xl">←</span>
+            <button class="btn btn-circle btn-ghost btn-sm hover:bg-base-200" on:click={() => dispatch('back')} aria-label="Go back">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             </button>
             <div>
-                <h2 class="text-2xl font-bold text-base-content">Sequence Editor</h2>
-                <p class="text-sm opacity-60">Create ordering activities for safe walking.</p>
+                <h2 class="text-xl font-bold text-base-content">Sequence Editor</h2>
+                <p class="text-sm text-base-content/60">Create ordering activities for safe walking.</p>
             </div>
         </div>
-        <div class="badge badge-primary badge-outline">{$safeWalkStore.length} Sequences</div>
+        <div class="badge badge-secondary">{$safeWalkStore.length} Sequences</div>
     </div>
 
     <div class="space-y-3">
         {#each $safeWalkStore as scenario, i}
-        <div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-box">
+        <div class="collapse collapse-arrow bg-base-200/50 border border-base-200 rounded-xl overflow-hidden">
             <input type="checkbox" /> 
-            <div class="collapse-title text-lg font-medium flex items-center gap-3">
-                <span class="badge badge-neutral">{i + 1}</span>
-                <span class="truncate flex-1">{scenario.text || 'New Sequence'}</span>
+            <div class="collapse-title font-medium flex items-center gap-3">
+                <span class="w-6 h-6 rounded-full bg-secondary/20 text-secondary text-xs flex items-center justify-center font-semibold">{i + 1}</span>
+                <span class="truncate flex-1 text-base-content/80">{scenario.text || 'New Sequence'}</span>
             </div>
             <div class="collapse-content bg-base-100 pt-4 border-t border-base-200"> 
                 <div class="grid gap-4">
                     <div class="form-control w-full">
-                        <div class="label font-bold">Scenario Description</div>
-                        <textarea class="textarea textarea-bordered w-full h-24" placeholder="Describe the situation..." bind:value={scenario.text} aria-label="Scenario description"></textarea>
+                        <span class="text-xs font-semibold uppercase text-base-content/50 mb-1.5">Scenario Description</span>
+                        <textarea class="textarea textarea-bordered w-full h-24 rounded-xl bg-base-100 focus:border-secondary focus:ring-2 focus:ring-secondary/20" placeholder="Describe the situation..." bind:value={scenario.text} aria-label="Scenario description"></textarea>
                     </div>
                     
-                    <div class="bg-base-200/50 p-4 rounded-xl">
+                    <div class="bg-base-200/30 p-4 rounded-xl border border-base-200">
                         <div class="flex justify-between items-center mb-4">
-                            <div class="label font-bold">Sequence Steps (Correct Order)</div>
-                            <div class="badge badge-info badge-outline">Steps 1 to {scenario.sequence.length}</div>
+                            <span class="text-xs font-semibold uppercase text-base-content/50">Sequence Steps (Correct Order)</span>
+                            <span class="text-xs text-base-content/50">Steps 1 to {scenario.sequence.length}</span>
                         </div>
                         
                         <div class="space-y-3">
                             {#each scenario.sequence as item, j}
-                                <div class="flex items-start gap-3 bg-base-100 p-3 rounded-lg border border-base-200 shadow-sm">
-                                    <div class="badge badge-neutral mt-2">{j + 1}</div>
+                                <div class="flex items-start gap-3 bg-base-100 p-3 rounded-xl border border-base-200/50">
+                                    <div class="w-6 h-6 rounded-full bg-secondary/20 text-secondary text-xs flex items-center justify-center font-semibold mt-2">{j + 1}</div>
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 flex-1">
                                         <div class="form-control">
-                                            <div class="label text-xs uppercase font-bold opacity-50">Label</div>
-                                            <input type="text" class="input input-sm input-bordered" placeholder="e.g. Stop" bind:value={item.label} aria-label="Step label" />
+                                            <span class="text-xs font-medium text-base-content/50 mb-1">Label</span>
+                                            <input type="text" class="input input-sm input-bordered rounded-lg bg-base-100" placeholder="e.g. Stop" bind:value={item.label} aria-label="Step label" />
                                         </div>
                                         <div class="form-control">
-                                            <div class="label text-xs uppercase font-bold opacity-50">Emoji</div>
-                                            <input type="text" class="input input-sm input-bordered" placeholder="e.g. 🛑" bind:value={item.emoji} aria-label="Step emoji" />
+                                            <span class="text-xs font-medium text-base-content/50 mb-1">Emoji</span>
+                                            <input type="text" class="input input-sm input-bordered rounded-lg bg-base-100" placeholder="e.g. 🛑" bind:value={item.emoji} aria-label="Step emoji" />
                                         </div>
                                         <div class="form-control">
-                                            <div class="label text-xs uppercase font-bold opacity-50">Alt Text</div>
-                                            <input type="text" class="input input-sm input-bordered" placeholder="Description" bind:value={item.alt} aria-label="Step alt text" />
+                                            <span class="text-xs font-medium text-base-content/50 mb-1">Alt Text</span>
+                                            <input type="text" class="input input-sm input-bordered rounded-lg bg-base-100" placeholder="Description" bind:value={item.alt} aria-label="Step alt text" />
                                         </div>
                                     </div>
                                 </div>
@@ -241,8 +241,9 @@
                     </div>
 
                     <div class="flex justify-end pt-2">
-                        <button class="btn btn-ghost btn-sm text-error hover:bg-error/10" on:click={() => deleteScenario(i)}>
-                            🗑️ Delete Sequence
+                        <button class="btn btn-ghost btn-sm text-error hover:bg-error/10 gap-1.5" on:click={() => deleteScenario(i)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            Delete Sequence
                         </button>
                     </div>
                 </div>
@@ -251,53 +252,53 @@
         {/each}
     </div>
 
-    <button class="btn btn-primary w-full mt-6 shadow-lg" on:click={addScenario}>
-        <span class="text-xl">+</span> Add New Sequence
+    <button class="btn btn-secondary w-full mt-6 rounded-xl gap-2" on:click={addScenario}>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+        Add New Sequence
     </button>
   </div>
 {:else}
-<section class="space-y-6 max-w-4xl mx-auto" in:fade={{ duration: 300 }}>
+<section class="space-y-6 max-w-3xl mx-auto" in:fade={{ duration: 300 }}>
   <div class="flex items-center gap-4">
-    <button class="btn btn-circle btn-ghost bg-base-100 shadow-sm hover:shadow-md hover:bg-base-200 hover:scale-105 transition-all" on:click={() => dispatch('back')} aria-label="Go back">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+    <button class="btn btn-circle btn-ghost bg-base-100 shadow-sm hover:shadow-md hover:bg-base-200 transition-all" on:click={() => dispatch('back')} aria-label="Go back">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
     </button>
     <div>
-        <h2 class="text-2xl font-bold text-base-content">Safe Walk Sequence</h2>
-        <p class="text-sm opacity-70">Order the steps correctly.</p>
+        <h2 class="text-xl lg:text-2xl font-bold text-base-content">Safe Walk Sequence</h2>
+        <p class="text-sm text-base-content/60">Order the steps correctly.</p>
     </div>
   </div>
 
   {#if !completed}
-    <div class="card bg-base-100 shadow-xl border-t-4 border-secondary">
-      <div class="card-body p-6 sm:p-8">
-        <div class="mb-6 space-y-2">
-          <div class="flex items-center justify-between text-sm font-bold uppercase tracking-wider opacity-60">
-            <span>Progress</span>
-            <span>{currentIndex + 1} / {SCENARIOS_PER_SESSION}</span>
-          </div>
-          <progress
-            class="progress progress-secondary w-full h-3 rounded-full bg-base-200"
-            value={currentIndex + 1}
-            max={SCENARIOS_PER_SESSION}
-            aria-label={`Scenario progress: ${currentIndex + 1} of ${SCENARIOS_PER_SESSION}`}
-          ></progress>
+    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50">
+      <!-- Progress Bar -->
+      <div class="h-1 bg-base-200 w-full">
+        <div class="h-full bg-gradient-to-r from-secondary to-accent transition-all duration-500 ease-out" style="width: {((currentIndex + 1) / SCENARIOS_PER_SESSION) * 100}%"></div>
+      </div>
+      
+      <div class="card-body p-5 sm:p-7 lg:p-8">
+        <!-- Progress Indicator -->
+        <div class="flex items-center justify-between text-sm mb-5">
+          <span class="text-base-content/50 font-medium">Scenario {currentIndex + 1} of {SCENARIOS_PER_SESSION}</span>
         </div>
         
-        <div class="bg-base-200/50 p-6 rounded-2xl border border-base-200 mb-8 relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
-            <h3 class="font-bold text-sm uppercase text-secondary mb-2">Scenario:</h3>
-            <p class="text-xl md:text-2xl font-medium leading-relaxed text-base-content/90">{currentScenario.text}</p>
+        <div class="bg-gradient-to-br from-base-200/60 to-base-200/30 p-5 sm:p-6 rounded-2xl border border-base-300/50 mb-6 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-secondary to-accent rounded-full"></div>
+            <div class="pl-3">
+              <h3 class="font-semibold text-xs uppercase text-secondary/70 mb-1.5 tracking-wide">Scenario:</h3>
+              <p class="text-lg sm:text-xl font-medium leading-relaxed text-base-content">{currentScenario.text}</p>
+            </div>
         </div>
 
-        <p class="text-sm text-base-content/60 mb-2">💡 <strong>Tip:</strong> Click to select, then click another to swap. <kbd class="kbd kbd-sm">↑↓←→</kbd> to move selected item.</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" role="listbox" aria-label="Reorder these steps into the correct sequence" aria-describedby="sequence-instructions">
+        <p class="text-sm text-base-content/60 mb-3">💡 <strong>Tip:</strong> Click to select, then click another to swap. <kbd class="kbd kbd-xs">↑↓</kbd> to move selected item.</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" role="listbox" aria-label="Reorder these steps into the correct sequence" aria-describedby="sequence-instructions">
           <span id="sequence-instructions" class="sr-only">Use arrow keys to move a selected item. Press Enter or Space to select an item, then use arrow keys to move it. Press Escape to deselect.</span>
           {#each items as item, index (item.id)}
             <button
               type="button"
               data-sequence-item
-              class="group relative flex flex-col items-center justify-center p-8 rounded-xl border-2 transition-all duration-200 hover:scale-[1.01] active:scale-95 shadow-sm hover:shadow-md cursor-pointer select-none touch-manipulation min-h-[8rem]
-              {selectedId !== item.id ? 'bg-base-100 border-base-200 hover:border-secondary/50' : ''}
+              class="group relative flex flex-col items-center justify-center p-5 sm:p-6 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer select-none touch-manipulation min-h-[7rem]
+              {selectedId !== item.id ? 'bg-base-100 border-base-200/80 hover:border-secondary/50 hover:shadow-md' : ''}
               {selectedId === item.id ? 'bg-secondary text-secondary-content border-secondary ring-4 ring-secondary/20' : ''}"
               on:click={() => handleItemClick(item.id)}
               on:keydown={(e) => handleKeydown(e, index)}
@@ -306,32 +307,32 @@
               aria-selected={selectedId === item.id}
               animate:flip={{ duration: 300 }}
             >
-              <span class="text-6xl transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm" aria-hidden="true">{item.emoji}</span>
+              <span class="text-4xl sm:text-5xl transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm" aria-hidden="true">{item.emoji}</span>
               <span class="text-sm mt-2 font-medium opacity-80">{item.label || ''}</span>
               {#if selectedId === item.id}
                 <div class="absolute top-2 right-2 animate-pulse" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
                 </div>
               {/if}
             </button>
           {/each}
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 mt-8 pt-6 border-t border-base-200">
-          <button class="btn btn-secondary flex-1 btn-lg rounded-xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all font-bold tracking-wide text-lg" on:click={checkOrder} disabled={completed}>
+        <div class="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-base-200/50">
+          <button class="btn btn-secondary flex-1 rounded-xl gap-2" on:click={checkOrder} disabled={completed}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             Check Order
           </button>
-          <button class="btn btn-neutral btn-outline flex-1 btn-lg rounded-xl hover:bg-neutral hover:text-neutral-content transition-all font-bold tracking-wide text-lg" on:click={restart}>
+          <button class="btn btn-ghost flex-1 rounded-xl border border-base-300 gap-2" on:click={restart}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
             Shuffle / Reset
           </button>
         </div>
 
         {#if feedback}
-          <div class="mt-6 p-4 rounded-xl text-center font-bold text-lg animate-bounce-slow" 
-               class:bg-success={feedback.includes('Correct')} 
-               class:text-success-content={feedback.includes('Correct')}
-               class:bg-error={feedback.includes('Not')}
-               class:text-error-content={feedback.includes('Not')}
+          <div class="mt-6 p-4 rounded-xl text-center font-semibold border
+            {feedback.includes('Correct') ? 'bg-success/10 text-success border-success/20' : ''}
+            {feedback.includes('Not') ? 'bg-error/10 text-error border-error/20' : ''}"
                role="status" aria-live="polite">
             {feedback}
           </div>
@@ -341,29 +342,30 @@
   {/if}
 
   {#if completed}
-    <div class="card bg-base-100 shadow-xl border-t-4 border-success" in:fade>
-      <div class="card-body items-center text-center p-10">
-        <div class="w-24 h-24 rounded-full bg-success/10 flex items-center justify-center text-6xl mb-6 animate-bounce-slow">
+    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50" in:fade>
+      <div class="h-1.5 bg-gradient-to-r from-success via-secondary to-accent"></div>
+      <div class="card-body items-center text-center p-8 sm:p-10">
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-success/20 to-secondary/10 flex items-center justify-center text-5xl mb-5 shadow-inner">
             🎊
         </div>
-        <h3 class="text-3xl font-black mb-3">Session Complete!</h3>
-        <p class="text-lg opacity-70 mb-8 max-w-md">You successfully arranged all the steps in three different safe-walk scenarios.</p>
+        <h3 class="text-2xl sm:text-3xl font-bold mb-2 text-base-content">Session Complete!</h3>
+        <p class="text-base-content/60 mb-8 max-w-sm">You successfully arranged all the steps in three different safe-walk scenarios.</p>
 
-        <div class="alert alert-success shadow-sm mb-8 text-left max-w-md">
+        <div class="flex items-center gap-3 p-4 bg-success/10 rounded-xl border border-success/20 mb-6 w-full max-w-sm">
           <span class="text-2xl">🛡️</span>
-          <div>
-              <h3 class="font-bold">Safety Expert!</h3>
-              <div class="text-xs">You've demonstrated understanding of safe walking procedures!</div>
+          <div class="text-left">
+              <h3 class="font-semibold text-success">Safety Expert!</h3>
+              <p class="text-xs text-base-content/60">You've demonstrated understanding of safe walking procedures!</p>
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
-          <button class="btn btn-primary flex-1 rounded-xl shadow-lg hover:scale-105 transition-transform" on:click={restart}>
-            <span class="text-lg mr-1">🔄</span>
+        <div class="flex flex-col sm:flex-row gap-3 w-full max-w-sm">
+          <button class="btn btn-secondary flex-1 rounded-xl gap-2" on:click={restart}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
             Play Again
           </button>
-          <button class="btn btn-outline flex-1 rounded-xl hover:bg-base-200" on:click={() => dispatch('back')}>
-            <span class="text-lg mr-1">🏠</span>
+          <button class="btn btn-ghost flex-1 rounded-xl border border-base-300 hover:bg-base-200 gap-2" on:click={() => dispatch('back')}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
             Back Home
           </button>
         </div>
