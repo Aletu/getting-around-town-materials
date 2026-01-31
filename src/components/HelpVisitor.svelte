@@ -164,51 +164,50 @@
 </script>
 
 {#if $teacherMode}
-  <div class="bg-base-100 rounded-box shadow-lg p-6 mb-8 border border-base-300">
-    <div class="flex items-center justify-between mb-6 border-b pb-4">
+  <div class="bg-base-100 rounded-2xl shadow-soft p-6 lg:p-8 border border-base-200/50">
+    <div class="flex items-center justify-between mb-6 pb-5 border-b border-base-200">
         <div class="flex items-center gap-3">
-            <button class="btn btn-circle btn-ghost btn-sm" on:click={() => dispatch('back')} aria-label="Go back">
-                <span class="text-xl">←</span>
+            <button class="btn btn-circle btn-ghost btn-sm hover:bg-base-200" on:click={() => dispatch('back')} aria-label="Go back">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
             </button>
             <div>
-                <h2 class="text-2xl font-bold text-base-content">Scenario Editor</h2>
-                <p class="text-sm opacity-60">Manage the questions and answers for the "Help Visitor" module.</p>
+                <h2 class="text-xl lg:text-2xl font-bold text-base-content">Scenario Editor</h2>
+                <p class="text-sm text-base-content/60">Manage the questions and answers for the "Help Visitor" module.</p>
             </div>
         </div>
-        <div class="badge badge-primary badge-outline">{$scenariosStore.length} Scenarios</div>
+        <div class="badge badge-primary font-semibold">{$scenariosStore.length} Scenarios</div>
     </div>
 
     <div class="space-y-3">
         {#each $scenariosStore as scenario, i}
-        <div class="collapse collapse-arrow bg-base-200 border border-base-300 rounded-box">
+        <div class="collapse collapse-arrow bg-base-200/50 border border-base-200 rounded-xl hover:border-base-300 transition-colors">
             <input type="checkbox" /> 
-            <div class="collapse-title text-lg font-medium flex items-center gap-3">
-                <span class="badge badge-neutral">{i + 1}</span>
-                <span class="truncate flex-1">{scenario.text || 'New Scenario'}</span>
-                {#if !scenario.text}<span class="badge badge-warning badge-sm">Empty</span>{/if}
+            <div class="collapse-title text-base font-semibold flex items-center gap-3 pr-12">
+                <span class="badge badge-neutral badge-sm font-mono">{i + 1}</span>
+                <span class="truncate flex-1 text-base-content/90">{scenario.text || 'New Scenario'}</span>
+                {#if !scenario.text}<span class="badge badge-warning badge-xs">Empty</span>{/if}
             </div>
-            <div class="collapse-content bg-base-100 pt-4 border-t border-base-200"> 
-                <div class="grid gap-4">
+            <div class="collapse-content bg-base-100 pt-4 border-t border-base-200 rounded-b-xl"> 
+                <div class="grid gap-5 p-1">
                     <div class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text font-bold">Scenario Text</span>
-                            <span class="label-text-alt">What the visitor says</span>
-                        </div>
-                        <input type="text" placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full" bind:value={scenario.text} aria-label="Scenario text" />
+                        <span class="text-sm font-semibold text-base-content/70 mb-1.5">Scenario Text</span>
+                        <span class="text-xs text-base-content/50 mb-2">What the visitor says</span>
+                        <input type="text" placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full focus:input-primary transition-all" bind:value={scenario.text} aria-label="Scenario text" />
                     </div>
                     
                     <div class="form-control w-full">
-                        <div class="label">
-                            <span class="label-text font-bold">Hint</span>
-                            <span class="label-text-alt">Helpful tip for the student</span>
-                        </div>
-                        <input type="text" placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full" bind:value={scenario.hint} aria-label="Hint" />
+                        <span class="text-sm font-semibold text-base-content/70 mb-1.5">Hint</span>
+                        <span class="text-xs text-base-content/50 mb-2">Helpful tip for the student</span>
+                        <input type="text" placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full focus:input-primary transition-all" bind:value={scenario.hint} aria-label="Hint" />
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-base-200/50 p-4 rounded-xl">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 bg-base-200/30 p-4 rounded-xl border border-base-200/50">
                         <div class="form-control">
-                            <div class="label font-bold text-success">Correct Answer</div>
-                            <select class="select select-bordered select-success w-full" bind:value={scenario.answer} aria-label="Correct answer">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-2 h-2 rounded-full bg-success"></div>
+                                <span class="text-sm font-semibold text-base-content/70">Correct Answer</span>
+                            </div>
+                            <select class="select select-bordered w-full focus:select-success transition-all" bind:value={scenario.answer} aria-label="Correct answer">
                                 {#each PLACES as place}
                                     <option value={place.id}>{place.emoji} {place.label}</option>
                                 {/each}
@@ -216,16 +215,21 @@
                         </div>
 
                         <div class="form-control">
-                            <div class="label font-bold text-error">Distractors (Wrong Answers)</div>
-                            <div class="flex flex-wrap gap-2 mb-3 min-h-[2rem]">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-2 h-2 rounded-full bg-error"></div>
+                                <span class="text-sm font-semibold text-base-content/70">Distractors (Wrong Answers)</span>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5 mb-3 min-h-[2rem]">
                                 {#each scenario.distractors as distractor, dIndex}
-                                    <div class="badge badge-error gap-1 pl-3 pr-1 py-3">
+                                    <div class="badge badge-error gap-1 pl-2.5 pr-1 py-2.5 text-xs">
                                         {PLACES.find(p => p.id === distractor)?.label || distractor}
-                                        <button class="btn btn-ghost btn-xs btn-circle text-white hover:bg-white/20" on:click={() => removeDistractor(i, dIndex)}>✕</button>
+                                        <button class="btn btn-ghost btn-xs btn-circle hover:bg-white/20" on:click={() => removeDistractor(i, dIndex)} aria-label="Remove distractor">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                        </button>
                                     </div>
                                 {/each}
                                 {#if scenario.distractors.length === 0}
-                                    <span class="text-xs opacity-50 italic py-1">No distractors added yet</span>
+                                    <span class="text-xs text-base-content/40 italic py-1">No distractors added yet</span>
                                 {/if}
                             </div>
                             <select class="select select-bordered select-sm w-full" on:change={(e) => { addDistractor(i, e.currentTarget.value); e.currentTarget.value = ""; }}>
@@ -240,8 +244,9 @@
                     </div>
 
                     <div class="flex justify-end pt-2">
-                        <button class="btn btn-ghost btn-sm text-error hover:bg-error/10" on:click={() => deleteScenario(i)}>
-                            🗑️ Delete Scenario
+                        <button class="btn btn-ghost btn-sm text-error hover:bg-error/10 gap-2 font-medium" on:click={() => deleteScenario(i)}>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            Delete Scenario
                         </button>
                     </div>
                 </div>
@@ -250,8 +255,9 @@
         {/each}
     </div>
 
-    <button class="btn btn-primary w-full mt-6 shadow-lg" on:click={addScenario}>
-        <span class="text-xl">+</span> Add New Scenario
+    <button class="btn btn-primary w-full mt-6 rounded-xl shadow-sm hover:shadow-md transition-all gap-2 font-semibold" on:click={addScenario}>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+        Add New Scenario
     </button>
   </div>
 {:else}
