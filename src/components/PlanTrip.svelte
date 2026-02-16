@@ -2,12 +2,16 @@
   import { PLACES } from '../data/places.js';
   import { PACKING_ITEMS, TRANSPORT_OPTIONS } from '../data/tripData.js';
   import { fade, fly, slide, scale } from 'svelte/transition';
+  import { createEventDispatcher } from 'svelte';
   import { toastStore } from '../stores.js';
+
+  const dispatch = createEventDispatcher();
 
   let step = 1;
   let selectedPlace = null;
   let selectedItems = [];
   let selectedTransport = null;
+  let safetyTipIndex = 0;
 
   // Filter places to only show physical locations (exclude some abstract ones if needed, but PLACES seems fine)
   const destinations = PLACES.filter(p => p.category !== 'Transport'); // Exclude 'Bus Stop' as a destination if it's in there
@@ -38,6 +42,9 @@
     }
     
     step += 1;
+    if (step === 4 && selectedTransport) {
+      safetyTipIndex = Math.floor(Math.random() * selectedTransport.tips.length);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -93,11 +100,18 @@
 <div class="max-w-3xl mx-auto space-y-8">
   
   <!-- Header -->
-  <div class="text-center space-y-2">
-    <h1 class="text-3xl sm:text-4xl font-black text-base-content">
-      <span class="text-gradient">Trip</span> Planner
-    </h1>
-    <p class="text-base sm:text-lg text-base-content/60">Let's get ready for an outing!</p>
+  <div class="space-y-2">
+    <div class="flex items-center gap-4 mb-2">
+      <button class="btn btn-circle btn-ghost bg-base-100 shadow-sm hover:shadow-md hover:bg-base-200 transition-all" on:click={() => dispatch('back')} aria-label="Go back">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+      </button>
+      <div>
+        <h1 class="text-3xl sm:text-4xl font-black text-base-content">
+          <span class="text-gradient">Trip</span> Planner
+        </h1>
+        <p class="text-base sm:text-lg text-base-content/60">Let's get ready for an outing!</p>
+      </div>
+    </div>
   </div>
 
   <!-- Steps Indicator -->
@@ -267,7 +281,7 @@
             <div>
                 <h3 class="font-bold text-sm text-info">Safety Tip</h3>
                 <div class="text-xs text-base-content/70">
-                    {selectedTransport.tips[Math.floor(Math.random() * selectedTransport.tips.length)]}
+                    {selectedTransport.tips[safetyTipIndex]}
                 </div>
             </div>
         </div>

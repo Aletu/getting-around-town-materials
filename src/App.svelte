@@ -326,7 +326,7 @@
     </main>
   {:else if view === 'plan-trip'}
     <main class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1" in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
-        <PlanTrip />
+        <PlanTrip on:back={() => setView('home')} />
     </main>
   {:else if view === 'learn'}
     <main class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1" in:fly={{ y: 20, duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>

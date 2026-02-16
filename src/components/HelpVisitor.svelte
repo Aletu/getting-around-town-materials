@@ -104,7 +104,7 @@
     const data = { currentIndex, score, attempts };
     window.localStorage.setItem('helpVisitorProgress', JSON.stringify(data));
   }
-  $: persist(); // reactive persistence on changes
+  $: if (currentIndex || score || attempts) { persist(); }
 
   onMount(() => {
     if (typeof window === 'undefined') return;
@@ -366,7 +366,7 @@
           
           <div class="bg-gradient-to-br from-primary/10 to-primary/5 p-5 rounded-2xl border border-primary/20 text-center">
             <div class="text-xs uppercase font-semibold text-primary/70 mb-1 tracking-wide">Accuracy</div>
-            <div class="text-3xl font-bold text-primary">{Math.round((score / attempts) * 100)}%</div>
+            <div class="text-3xl font-bold text-primary">{attempts > 0 ? Math.round((score / attempts) * 100) : 0}%</div>
             <div class="text-xs text-base-content/50">{attempts} attempts</div>
           </div>
         </div>

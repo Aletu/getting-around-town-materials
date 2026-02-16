@@ -2,7 +2,7 @@
   import { PLACES } from '../data/places.js';
   import { fade, scale, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
 
   let searchTerm = '';
   let selectedPlace = null;
@@ -35,6 +35,13 @@
       closePlace();
     }
   }
+
+  onDestroy(() => {
+    // Ensure body scroll is restored if component unmounts while modal is open
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+    }
+  });
 </script>
 
 <svelte:window on:keydown={handleKeydown} />

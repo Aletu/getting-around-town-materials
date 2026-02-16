@@ -6,9 +6,9 @@
   import { toastStore } from '../stores.js';
 
   function resetAllData() {
-    $scenariosStore = [...SCENARIOS];
-    $shortQAStore = [...SHORT_QA_ITEMS];
-    $safeWalkStore = [...SAFE_WALK_SCENARIOS];
+    $scenariosStore = JSON.parse(JSON.stringify(SCENARIOS));
+    $shortQAStore = JSON.parse(JSON.stringify(SHORT_QA_ITEMS));
+    $safeWalkStore = JSON.parse(JSON.stringify(SAFE_WALK_SCENARIOS));
     toastStore.add('All data has been reset to defaults!', 'success');
   }
 </script>

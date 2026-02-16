@@ -14,7 +14,12 @@ function createPersistentStore(key, startValue) {
     const initial = storedValue ? JSON.parse(storedValue) : startValue;
     const store = writable(initial);
     
+    let isFirst = true;
     store.subscribe(value => {
+        if (isFirst) {
+            isFirst = false;
+            return;
+        }
         localStorage.setItem(key, JSON.stringify(value));
     });
     

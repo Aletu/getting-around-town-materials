@@ -9,6 +9,10 @@
     dispatch('close');
   }
 
+  function handleKeydown(e) {
+    if (e.key === 'Escape') close();
+  }
+
   const themes = [
     { id: 'gettingaround', name: 'Default' },
     { id: 'light', name: 'Light' },
@@ -22,6 +26,8 @@
     { id: 'xlarge', name: 'Extra Large' }
   ];
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 <div class="modal modal-open z-[100]">
   <div class="modal-box relative max-w-md bg-base-100 shadow-2xl border border-base-200/50 rounded-2xl p-0 overflow-hidden" in:scale={{start: 0.95, duration: 200}} out:fade={{duration: 150}}>
