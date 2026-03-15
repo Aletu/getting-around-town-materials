@@ -129,7 +129,7 @@
     
     <!-- Step 1: Destination -->
     {#if step === 1}
-      <div in:fade class="space-y-5">
+      <div in:fly={{ y: 12, duration: 250 }} class="space-y-5">
         <h2 class="text-xl font-bold text-center text-base-content">Where do you want to go today?</h2>
         
         <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
@@ -153,7 +153,7 @@
 
     <!-- Step 2: Packing -->
     {#if step === 2}
-      <div in:fade class="space-y-5">
+      <div in:fly={{ y: 12, duration: 250 }} class="space-y-5">
         <div class="text-center space-y-1">
             <h2 class="text-xl font-bold text-base-content">What do you need to bring?</h2>
             <p class="text-sm text-base-content/60">Select the items to put in your bag.</p>
@@ -190,7 +190,7 @@
 
     <!-- Step 3: Transport -->
     {#if step === 3}
-      <div in:fade class="space-y-5">
+      <div in:fly={{ y: 12, duration: 250 }} class="space-y-5">
         <h2 class="text-xl font-bold text-center text-base-content">How will you get there?</h2>
         
         <div class="grid gap-3">
@@ -224,7 +224,7 @@
 
     <!-- Step 4: Summary -->
     {#if step === 4}
-      <div in:fade class="space-y-6 text-center">
+      <div in:fly={{ y: 12, duration: 250 }} class="space-y-6 text-center">
         <div class="space-y-2">
             <div class="text-4xl mb-2">🎉</div>
             <h2 class="text-2xl font-bold text-base-content">You're ready to go!</h2>

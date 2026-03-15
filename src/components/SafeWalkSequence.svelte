@@ -1,9 +1,11 @@
 <script>
   import { safeWalkStore, teacherMode } from '../stores.js';
   import { createEventDispatcher } from 'svelte';
-  import { fade } from 'svelte/transition';
+  import { fade, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
   import { tick } from 'svelte';
+  import SpeakButton from './SpeakButton.svelte';
+  import { progressStore, addStars, awardSticker } from '../stores/progressStore.js';
 
   const dispatch = createEventDispatcher();
   
@@ -201,6 +203,35 @@
     scenario.sequence = scenario.sequence.map((step, idx) => ({ ...step, correctIndex: idx }));
     $safeWalkStore = $safeWalkStore;
   }
+
+  // Award progress when completion screen is shown
+  function awardSafeWalkProgress(node) {
+    // Award 3 stars for completing session
+    addStars('safeWalk', 3);
+    
+    // Update progress store
+    progressStore.update(p => ({
+      ...p,
+      safeWalk: {
+        ...p.safeWalk,
+        scenariosCompleted: p.safeWalk.scenariosCompleted + SCENARIOS_PER_SESSION,
+        perfectSequences: p.safeWalk.perfectSequences + SCENARIOS_PER_SESSION,
+        totalAttempts: p.safeWalk.totalAttempts + 1
+      }
+    }));
+    
+    // Check for achievements
+    awardSticker('firstAdventure');
+    
+    // Check for Safety Champion badge (3+ sessions)
+    progressStore.subscribe(p => {
+      if (p.safeWalk.totalAttempts >= 3) {
+        awardSticker('safetyChampion');
+      }
+    })();
+    
+    return {};
+  }
 </script>
 
 {#if $teacherMode}
@@ -335,7 +366,14 @@
         <div class="bg-gradient-to-br from-base-200/60 to-base-200/30 p-5 sm:p-6 rounded-2xl border border-base-300/50 mb-6 relative overflow-hidden">
             <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-secondary to-accent rounded-full"></div>
             <div class="pl-3">
-              <h3 class="font-semibold text-xs uppercase text-secondary/70 mb-1.5 tracking-wide">Scenario:</h3>
+              <div class="flex items-center justify-between mb-1.5">
+                <h3 class="font-semibold text-xs uppercase text-secondary/70 tracking-wide">Scenario:</h3>
+                <SpeakButton 
+                  text={currentScenario.text} 
+                  label="Listen to scenario"
+                  size="sm"
+                />
+              </div>
               <p class="text-lg sm:text-xl font-medium leading-relaxed text-base-content">{currentScenario.text}</p>
             </div>
         </div>
@@ -383,6 +421,7 @@
           <div class="mt-6 p-4 rounded-xl text-center font-semibold border
             {feedback.includes('Correct') ? 'bg-success/10 text-success border-success/20' : ''}
             {feedback.includes('Not') ? 'bg-error/10 text-error border-error/20' : ''}"
+               in:fly={{ y: 10, duration: 250 }}
                role="status" aria-live="polite">
             {feedback}
           </div>
@@ -392,20 +431,29 @@
   {/if}
 
   {#if completed}
-    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50" in:fade>
+    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50" in:fly={{ y: 20, duration: 350 }}
+      use:awardSafeWalkProgress
+    >
       <div class="h-1.5 bg-gradient-to-r from-success via-secondary to-accent"></div>
       <div class="card-body items-center text-center p-8 sm:p-10">
-        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-success/20 to-secondary/10 flex items-center justify-center text-5xl mb-5 shadow-inner">
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-success/20 to-secondary/10 flex items-center justify-center text-5xl mb-5 shadow-inner animate-celebrate">
             🎊
         </div>
         <h3 class="text-2xl sm:text-3xl font-bold mb-2 text-base-content">Session Complete!</h3>
-        <p class="text-base-content/60 mb-8 max-w-sm">You successfully arranged all the steps in three different safe-walk scenarios.</p>
+        <p class="text-base-content/60 mb-4 max-w-sm">You successfully arranged all the steps in three different safe-walk scenarios.</p>
+        
+        <!-- Stars Earned -->
+        <div class="flex items-center justify-center gap-1 mb-6">
+          <span class="text-4xl animate-star-burst" style="animation-delay: 100ms;">⭐</span>
+          <span class="text-4xl animate-star-burst" style="animation-delay: 200ms;">⭐</span>
+          <span class="text-4xl animate-star-burst" style="animation-delay: 300ms;">⭐</span>
+        </div>
 
         <div class="flex items-center gap-3 p-4 bg-success/10 rounded-xl border border-success/20 mb-6 w-full max-w-sm">
           <span class="text-2xl">🛡️</span>
           <div class="text-left">
               <h3 class="font-semibold text-success">Safety Expert!</h3>
-              <p class="text-xs text-base-content/60">You've demonstrated understanding of safe walking procedures!</p>
+              <p class="text-xs text-base-content/60">You've demonstrated understanding of safe walking. +3 stars</p>
           </div>
         </div>
 

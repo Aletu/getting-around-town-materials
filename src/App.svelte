@@ -7,12 +7,43 @@
   import SettingsModal from './components/SettingsModal.svelte';
   import TeacherPanel from './components/TeacherPanel.svelte';
   import Toast from './components/Toast.svelte';
+  import StickerBook from './components/StickerBook.svelte';
+  import Celebration from './components/Celebration.svelte';
   import ucrLogo from './assets/firma-ucr-vertical.svg';
   import { teacherMode, themeStore, fontSizeStore, reducedMotionStore, dyslexiaFontStore } from './stores.js';
+  import { stickersStore, updateStreak } from './stores/progressStore.js';
   import { fade, fly } from 'svelte/transition';
+  import { onMount } from 'svelte';
 
   let view = 'home';
   let showSettings = false;
+  let showStickerBook = false;
+  let showCelebration = false;
+  let celebrationType = 'success';
+  let celebrationMessage = '';
+
+  // Update streak on load
+  onMount(() => {
+    updateStreak();
+    
+    // Listen for sticker earned events
+    window.addEventListener('sticker-earned', handleStickerEarned);
+    return () => window.removeEventListener('sticker-earned', handleStickerEarned);
+  });
+
+  function handleStickerEarned(event) {
+    celebrationType = 'badge';
+    celebrationMessage = 'New Badge Earned!';
+    showCelebration = true;
+  }
+
+  // Calculate total stars for display
+  $: totalStars = 
+    ($stickersStore?.helpVisitorStars || 0) +
+    ($stickersStore?.safeWalkStars || 0) +
+    ($stickersStore?.shortQAStars || 0) +
+    ($stickersStore?.tripPlannerStars || 0) +
+    ($stickersStore?.learnPlacesStars || 0);
 
   function setView(id) {
     view = id;
@@ -78,6 +109,17 @@
     </nav>
   </div>
   <div class="flex-none flex items-center gap-2">
+    <!-- Sticker Book Button (Gamification) -->
+    <button 
+      class="btn btn-ghost gap-1.5 hover:bg-accent/10 transition-colors rounded-lg px-3"
+      on:click={() => showStickerBook = true}
+      aria-label="Open Sticker Book"
+    >
+      <span class="text-xl">📚</span>
+      <span class="font-bold text-accent hidden sm:inline">{totalStars}</span>
+      <span class="text-xl">⭐</span>
+    </button>
+    
     <button class="btn btn-ghost btn-circle hover:bg-base-200 transition-colors" on:click={() => showSettings = true} aria-label="Open Settings">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -126,12 +168,12 @@
 
 <div id="main-content" class="flex-1 grid grid-cols-1 grid-rows-1 relative" class:pb-28={$teacherMode} tabindex="-1">
   {#if view === 'home'}
-    <div class="flex-1 flex flex-col col-start-1 row-start-1 w-full" in:fade={{ duration: 300, delay: 200 }} out:fade={{ duration: 200 }}>
+    <div class="flex-1 flex flex-col col-start-1 row-start-1 w-full" in:fade={{ duration: 250 }} out:fade={{ duration: 150 }}>
       <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
         <section class="space-y-12 lg:space-y-16">
           
           <!-- Hero Section -->
-          <div class="hero relative rounded-3xl lg:rounded-4xl shadow-soft-lg border border-base-300/30 isolate overflow-hidden">
+          <div class="hero relative rounded-3xl lg:rounded-4xl shadow-soft-lg border border-base-300/30 isolate overflow-hidden animate-fade-slide-up">
             <!-- Background with gradient -->
             <div class="absolute inset-0 bg-gradient-to-br from-base-100 via-base-100 to-primary/5 -z-10">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(101,195,200,0.08),transparent_50%)]"></div>
@@ -160,7 +202,7 @@
           </div>
 
           <!-- Section Header -->
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 animate-fade-slide-up" style="animation-delay: 100ms">
             <div class="h-10 w-1.5 bg-gradient-to-b from-primary to-secondary rounded-full"></div>
             <div>
               <h2 class="text-2xl sm:text-3xl font-bold text-base-content">Interactive Activities</h2>
@@ -171,7 +213,7 @@
           <!-- Activity Cards Grid -->
           <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 lg:gap-6">
             <!-- Help Visitor Card -->
-            <article class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50">
+            <article class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50 animate-fade-slide-up" style="animation-delay: 150ms">
               <div class="h-1.5 bg-gradient-to-r from-primary to-primary/70"></div>
               <div class="card-body relative p-6 lg:p-7">
                 <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-[8rem] pointer-events-none select-none">💬</div>
@@ -198,7 +240,7 @@
             </article>
 
             <!-- Safe Walk Card -->
-            <article class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50">
+            <article class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50 animate-fade-slide-up" style="animation-delay: 225ms">
               <div class="h-1.5 bg-gradient-to-r from-secondary to-secondary/70"></div>
               <div class="card-body relative p-6 lg:p-7">
                 <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-[8rem] pointer-events-none select-none">🚦</div>
@@ -225,7 +267,7 @@
             </article>
 
             <!-- Short Q&A Card -->
-            <article class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50">
+            <article class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50 animate-fade-slide-up" style="animation-delay: 300ms">
               <div class="h-1.5 bg-gradient-to-r from-accent to-accent/70"></div>
               <div class="card-body relative p-6 lg:p-7">
                 <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-[8rem] pointer-events-none select-none">❓</div>
@@ -252,7 +294,7 @@
             </article>
 
             <!-- Plan Trip Card -->
-            <article class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50">
+            <article class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50 animate-fade-slide-up" style="animation-delay: 375ms">
               <div class="h-1.5 bg-gradient-to-r from-info to-info/70"></div>
               <div class="card-body relative p-6 lg:p-7">
                 <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-[8rem] pointer-events-none select-none">🎒</div>
@@ -337,12 +379,19 @@
 
 </div>
 
-{#if $teacherMode}
-  <TeacherPanel />
-{/if}
+<TeacherPanel />
 
 {#if showSettings}
   <SettingsModal on:close={() => showSettings = false} />
 {/if}
+
+<StickerBook isOpen={showStickerBook} onClose={() => showStickerBook = false} />
+
+<Celebration 
+  show={showCelebration} 
+  type={celebrationType} 
+  message={celebrationMessage}
+  onComplete={() => showCelebration = false}
+/>
 
 <Toast />

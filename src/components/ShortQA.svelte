@@ -1,9 +1,11 @@
 <script>
   import { shortQAStore, teacherMode } from '../stores.js';
   import { createEventDispatcher, onMount } from 'svelte';
-  import { fade } from 'svelte/transition';
+  import { fade, fly } from 'svelte/transition';
   import { SHORT_QA_ITEMS } from '../data/shortQA.js';
   import confetti from 'canvas-confetti';
+  import SpeakButton from './SpeakButton.svelte';
+  import { progressStore, addStars, awardSticker } from '../stores/progressStore.js';
 
   const dispatch = createEventDispatcher();
 
@@ -108,6 +110,45 @@
     const newItems = [...$shortQAStore];
     newItems.splice(index, 1);
     $shortQAStore = newItems;
+  }
+
+  // Award progress when completion screen is shown
+  function awardQAProgress(node) {
+    // Calculate stars based on score
+    let starsEarned = 0;
+    if (score >= items.length * 0.9) starsEarned = 3;
+    else if (score >= items.length * 0.6) starsEarned = 2;
+    else if (score > 0) starsEarned = 1;
+    
+    // Award stars
+    addStars('shortQA', starsEarned);
+    
+    // Update progress store
+    progressStore.update(p => ({
+      ...p,
+      shortQA: {
+        ...p.shortQA,
+        questionsAnswered: p.shortQA.questionsAnswered + items.length,
+        correctAnswers: p.shortQA.correctAnswers + score,
+        streakBest: Math.max(p.shortQA.streakBest, score)
+      }
+    }));
+    
+    // Check for achievements
+    awardSticker('firstAdventure');
+    
+    if (score === items.length) {
+      awardSticker('perfectScore');
+    }
+    
+    // Check for Question Master badge (30+ correct)
+    progressStore.subscribe(p => {
+      if (p.shortQA.correctAnswers >= 30) {
+        awardSticker('questionMaster');
+      }
+    })();
+    
+    return {};
   }
 </script>
 
@@ -215,7 +256,14 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
                 <div class="flex-1">
-                    <p class="text-lg sm:text-xl font-semibold leading-relaxed text-base-content" aria-live="polite">{items[currentIndex].question}</p>
+                    <div class="flex items-start justify-between gap-2">
+                      <p class="text-lg sm:text-xl font-semibold leading-relaxed text-base-content" aria-live="polite">{items[currentIndex].question}</p>
+                      <SpeakButton 
+                        text={items[currentIndex].question} 
+                        label="Listen to the question"
+                        size="sm"
+                      />
+                    </div>
                 </div>
             </div>
         </div>
@@ -261,16 +309,29 @@
       </div>
     </div>
   {:else if finished}
-    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50" in:fade>
+    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50" in:fly={{ y: 20, duration: 350 }}
+      use:awardQAProgress
+    >
       <div class="h-1.5 bg-gradient-to-r from-success via-primary to-accent"></div>
       <div class="card-body items-center text-center p-6 sm:p-8 lg:p-10">
         <!-- Success Icon -->
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-success/20 to-success/5 flex items-center justify-center mb-4 border border-success/20">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-success/20 to-success/5 flex items-center justify-center mb-4 border border-success/20 animate-celebrate">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </div>
         
         <h3 class="text-2xl sm:text-3xl font-bold mb-2 text-base-content">Well Done!</h3>
-        <p class="text-base-content/60 mb-6 max-w-sm">You've completed this practice session.</p>
+        <p class="text-base-content/60 mb-4 max-w-sm">You've completed this practice session.</p>
+        
+        <!-- Stars Earned -->
+        <div class="flex items-center justify-center gap-1 mb-6">
+          <span class="text-4xl animate-star-burst" style="animation-delay: 100ms;">⭐</span>
+          {#if score >= items.length * 0.6}
+            <span class="text-4xl animate-star-burst" style="animation-delay: 200ms;">⭐</span>
+          {/if}
+          {#if score >= items.length * 0.9}
+            <span class="text-4xl animate-star-burst" style="animation-delay: 300ms;">⭐</span>
+          {/if}
+        </div>
 
         <!-- Stats Grid -->
         <div class="grid grid-cols-2 gap-3 w-full max-w-xs mb-6">

@@ -3,7 +3,9 @@
   import { PLACES } from '../data/places.js';
   import { createEventDispatcher } from 'svelte';
   import { onMount } from 'svelte';
-  import { fade } from 'svelte/transition';
+  import { fade, fly } from 'svelte/transition';
+  import SpeakButton from './SpeakButton.svelte';
+  import { progressStore, addStars, awardSticker } from '../stores/progressStore.js';
 
   const dispatch = createEventDispatcher();
   let currentIndex = 0;
@@ -161,6 +163,45 @@
     scenario.distractors = scenario.distractors; // trigger reactivity
     $scenariosStore = $scenariosStore;
   }
+
+  // Award progress when completion screen is shown
+  function awardProgressOnMount(node) {
+    // Calculate stars based on score
+    let starsEarned = 0;
+    if (score >= messages.length * 0.9) starsEarned = 3;
+    else if (score >= messages.length * 0.6) starsEarned = 2;
+    else if (score > 0) starsEarned = 1;
+    
+    // Award stars
+    addStars('helpVisitor', starsEarned);
+    
+    // Update progress store
+    progressStore.update(p => ({
+      ...p,
+      helpVisitor: {
+        ...p.helpVisitor,
+        totalCompleted: p.helpVisitor.totalCompleted + 1,
+        bestScore: Math.max(p.helpVisitor.bestScore, score),
+        perfectRounds: p.helpVisitor.perfectRounds + (score === messages.length ? 1 : 0)
+      }
+    }));
+    
+    // Check for achievements
+    awardSticker('firstAdventure');
+    
+    if (score === messages.length) {
+      awardSticker('perfectScore');
+    }
+    
+    // Check for Helpful Hero badge (20+ completions)
+    progressStore.subscribe(p => {
+      if (p.helpVisitor.totalCompleted >= 20) {
+        awardSticker('helpfulHero');
+      }
+    })();
+    
+    return {};
+  }
 </script>
 
 {#if $teacherMode}
@@ -298,8 +339,16 @@
             <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-primary to-accent rounded-full"></div>
             <div class="flex gap-4 pl-3">
                 <div class="text-3xl select-none flex-shrink-0">🗣️</div>
-                <div>
-                    <h3 class="font-semibold text-xs uppercase text-primary/70 mb-1.5 tracking-wide">Visitor says:</h3>
+                <div class="flex-1">
+                    <div class="flex items-center justify-between mb-1.5">
+                      <h3 class="font-semibold text-xs uppercase text-primary/70 tracking-wide">Visitor says:</h3>
+                      <!-- Text-to-Speech Button -->
+                      <SpeakButton 
+                        text={current?.text} 
+                        label="Listen to the question"
+                        size="sm"
+                      />
+                    </div>
                     <p class="text-lg sm:text-xl font-medium leading-relaxed text-base-content" aria-live="polite">"{current?.text}"</p>
                 </div>
             </div>
@@ -348,14 +397,27 @@
       </div>
     </div>
   {:else}
-    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50" in:fade>
+    <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50" in:fly={{ y: 20, duration: 350 }}
+      use:awardProgressOnMount
+    >
       <div class="h-1.5 bg-gradient-to-r from-success via-primary to-accent"></div>
       <div class="card-body items-center text-center p-8 sm:p-10">
-        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-success/20 to-primary/10 flex items-center justify-center text-5xl mb-5 shadow-inner">
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-success/20 to-primary/10 flex items-center justify-center text-5xl mb-5 shadow-inner animate-celebrate">
             🎉
         </div>
         <h3 class="text-2xl sm:text-3xl font-bold mb-2 text-base-content">Great Work!</h3>
-        <p class="text-base-content/60 mb-8 max-w-sm">You've completed all the scenarios for this session.</p>
+        <p class="text-base-content/60 mb-4 max-w-sm">You've completed all the scenarios for this session.</p>
+        
+        <!-- Stars Earned -->
+        <div class="flex items-center justify-center gap-1 mb-6">
+          <span class="text-4xl animate-star-burst" style="animation-delay: 100ms;">⭐</span>
+          {#if score >= messages.length * 0.6}
+            <span class="text-4xl animate-star-burst" style="animation-delay: 200ms;">⭐</span>
+          {/if}
+          {#if score >= messages.length * 0.9}
+            <span class="text-4xl animate-star-burst" style="animation-delay: 300ms;">⭐</span>
+          {/if}
+        </div>
         
         <div class="grid grid-cols-2 gap-4 w-full max-w-sm mb-8">
           <div class="bg-gradient-to-br from-success/10 to-success/5 p-5 rounded-2xl border border-success/20 text-center">
@@ -373,10 +435,10 @@
 
         {#if score === messages.length}
           <div class="flex items-center gap-3 p-4 bg-success/10 rounded-xl border border-success/20 mb-6 w-full max-w-sm">
-            <span class="text-2xl">⭐</span>
+            <span class="text-2xl">🏆</span>
             <div class="text-left">
                 <h3 class="font-semibold text-success">Perfect Score!</h3>
-                <p class="text-xs text-base-content/60">You're a navigation expert!</p>
+                <p class="text-xs text-base-content/60">You're a navigation expert! +3 stars</p>
             </div>
           </div>
         {:else if score >= messages.length * 0.8}
@@ -384,7 +446,7 @@
             <span class="text-2xl">👏</span>
             <div class="text-left">
                 <h3 class="font-semibold text-info">Excellent!</h3>
-                <p class="text-xs text-base-content/60">You know your way around town very well.</p>
+                <p class="text-xs text-base-content/60">You know your way around town very well. +2 stars</p>
             </div>
           </div>
         {:else if score >= messages.length * 0.6}
@@ -392,7 +454,7 @@
             <span class="text-2xl">👍</span>
             <div class="text-left">
                 <h3 class="font-semibold text-warning">Good effort!</h3>
-                <p class="text-xs text-base-content/60">Keep practicing to improve your score.</p>
+                <p class="text-xs text-base-content/60">Keep practicing to improve your score. +1 star</p>
             </div>
           </div>
         {/if}

@@ -4,6 +4,7 @@
   import { SHORT_QA_ITEMS } from '../data/shortQA.js';
   import { SAFE_WALK_SCENARIOS } from '../data/sequenceText.js';
   import { toastStore } from '../stores.js';
+  import { fly } from 'svelte/transition';
 
   function resetAllData() {
     $scenariosStore = JSON.parse(JSON.stringify(SCENARIOS));
@@ -14,7 +15,7 @@
 </script>
 
 {#if $teacherMode}
-<div class="fixed bottom-0 left-0 right-0 bg-base-100/95 backdrop-blur-md border-t border-base-200 shadow-lg z-40">
+<div class="fixed bottom-0 left-0 right-0 bg-base-100/95 backdrop-blur-md border-t border-base-200 shadow-lg z-40" transition:fly={{ y: 60, duration: 300 }}>
   <div class="max-w-6xl mx-auto px-4 py-3">
     <div class="flex items-center justify-between gap-4 flex-wrap">
       <div class="flex items-center gap-3">
