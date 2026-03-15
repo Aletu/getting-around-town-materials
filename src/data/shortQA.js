@@ -7,9 +7,9 @@ export const SHORT_QA_ITEMS = [
     question: 'Excuse me, I am lost. Can you help me find my way?',
     options: [
       { id: 'a', text: 'Sure! Where do you need to go?' },
-      { id: 'b', text: 'I like to eat pizza for lunch.' },
-      { id: 'c', text: 'My favorite color is blue.' },
-      { id: 'd', text: 'I am seven years old.' }
+      { id: 'b', text: 'I brought a soccer ball today.' },
+      { id: 'c', text: 'Blue is my favorite color.' },
+      { id: 'd', text: 'I have a math test tomorrow.' }
     ],
     answer: 'a'
   },
@@ -18,9 +18,9 @@ export const SHORT_QA_ITEMS = [
     question: 'I want to buy this toy. How much money do I need?',
     options: [
       { id: 'a', text: 'It costs five dollars.' },
-      { id: 'b', text: 'I live in a big house.' },
-      { id: 'c', text: 'Yes, I have a dog.' },
-      { id: 'd', text: 'Turn right at the corner.' }
+      { id: 'b', text: 'My backpack is very heavy.' },
+      { id: 'c', text: 'I can jump rope fast.' },
+      { id: 'd', text: 'The sun is bright today.' }
     ],
     answer: 'a'
   },
@@ -29,9 +29,9 @@ export const SHORT_QA_ITEMS = [
     question: 'May I please have a chocolate bar?',
     options: [
       { id: 'a', text: 'Here you go! Enjoy it.' },
-      { id: 'b', text: 'I am very tired today.' },
-      { id: 'c', text: 'The park is next to the school.' },
-      { id: 'd', text: 'Walk straight down the street.' }
+      { id: 'b', text: 'I forgot my pencil at home.' },
+      { id: 'c', text: 'The park is near my house.' },
+      { id: 'd', text: 'My shoes are new and blue.' }
     ],
     answer: 'a'
   },
@@ -40,9 +40,9 @@ export const SHORT_QA_ITEMS = [
     question: 'I need to catch the bus. Do you know where it stops?',
     options: [
       { id: 'a', text: 'The stop is right in front of the school.' },
-      { id: 'b', text: 'I have English class on Monday.' },
-      { id: 'c', text: 'Yes, I can swim very fast.' },
-      { id: 'd', text: 'That car is very expensive.' }
+      { id: 'b', text: 'I have music class today.' },
+      { id: 'c', text: 'My favorite game is tag.' },
+      { id: 'd', text: 'My bike has two lights.' }
     ],
     answer: 'a'
   },
@@ -51,9 +51,9 @@ export const SHORT_QA_ITEMS = [
     question: 'Do you have the time? My watch is broken.',
     options: [
       { id: 'a', text: "It is three o'clock right now." },
-      { id: 'b', text: 'The bakery is behind the hospital.' },
-      { id: 'c', text: 'I am from Costa Rica.' },
-      { id: 'd', text: 'Go past the big park.' }
+      { id: 'b', text: 'My lunchbox is on the table.' },
+      { id: 'c', text: 'I live with my grandparents.' },
+      { id: 'd', text: 'I read comics after school.' }
     ],
     answer: 'a'
   },
@@ -61,10 +61,10 @@ export const SHORT_QA_ITEMS = [
     id: 6,
     question: 'Is it okay if I sit in this chair?',
     options: [
-      { id: 'a', text: 'No, thank you.' },
+      { id: 'a', text: 'I have two apples in my bag.' },
       { id: 'b', text: 'Yes, of course you can.' },
-      { id: 'c', text: 'The store is on the corner.' },
-      { id: 'd', text: 'I study at that school over there.' }
+      { id: 'c', text: 'The playground opens at noon.' },
+      { id: 'd', text: 'My favorite subject is science.' }
     ],
     answer: 'b'
   },
@@ -73,9 +73,9 @@ export const SHORT_QA_ITEMS = [
     question: 'Would you like some ice cream for dessert?',
     options: [
       { id: 'a', text: 'Yes, please! I love ice cream.' },
-      { id: 'b', text: 'The building is very tall.' },
-      { id: 'c', text: 'Turn left at the supermarket.' },
-      { id: 'd', text: 'I wake up at six in the morning.' }
+      { id: 'b', text: 'I sharpened my pencil twice.' },
+      { id: 'c', text: 'The bus is yellow and big.' },
+      { id: 'd', text: 'My desk is by the window.' }
     ],
     answer: 'a'
   },
@@ -84,9 +84,9 @@ export const SHORT_QA_ITEMS = [
     question: 'I did not hear you. Could you say that again?',
     options: [
       { id: 'a', text: 'Sure, I can repeat it for you.' },
-      { id: 'b', text: 'The library is very far away.' },
-      { id: 'c', text: 'I have two brothers and one sister.' },
-      { id: 'd', text: 'Walk to the next street.' }
+      { id: 'b', text: 'My favorite fruit is mango.' },
+      { id: 'c', text: 'I have homework in my folder.' },
+      { id: 'd', text: 'The clouds look like cotton.' }
     ],
     answer: 'a'
   },
@@ -95,20 +95,20 @@ export const SHORT_QA_ITEMS = [
     question: 'The bus is here! Are you ready to go?',
     options: [
       { id: 'a', text: 'Yes, I am coming now!' },
-      { id: 'b', text: 'The bank is next to the library.' },
-      { id: 'c', text: 'I usually go by car.' },
-      { id: 'd', text: 'I like playing basketball with friends.' }
+      { id: 'b', text: 'My sandwich is peanut butter.' },
+      { id: 'c', text: 'I have four stickers at home.' },
+      { id: 'd', text: 'My dog likes to nap on rugs.' }
     ],
     answer: 'a'
   },
   {
     id: 10,
-    question: 'I do not have cash. Can I use my credit card?',
+    question: 'I do not have cash. Can I use my card to pay?',
     options: [
       { id: 'a', text: 'Sorry, we only take cash here.' },
-      { id: 'b', text: 'I am twelve years old.' },
-      { id: 'c', text: 'The museum is on your right.' },
-      { id: 'd', text: 'I go there every single day.' }
+      { id: 'b', text: 'I wore my red hat today.' },
+      { id: 'c', text: 'The park has tall trees.' },
+      { id: 'd', text: 'I read before bedtime.' }
     ],
     answer: 'a'
   },
@@ -117,9 +117,9 @@ export const SHORT_QA_ITEMS = [
     question: 'Hi! How are you doing today?',
     options: [
       { id: 'a', text: "I am doing well, thank you!" },
-      { id: 'b', text: 'The park is behind the bank.' },
-      { id: 'c', text: 'Turn right at the corner.' },
-      { id: 'd', text: 'I have English class on Friday.' }
+      { id: 'b', text: 'I forgot my ruler in class.' },
+      { id: 'c', text: 'My shoes are by the door.' },
+      { id: 'd', text: 'I like drawing comic heroes.' }
     ],
     answer: 'a'
   },
@@ -128,9 +128,9 @@ export const SHORT_QA_ITEMS = [
     question: 'Do you speak English?',
     options: [
       { id: 'a', text: 'Yes, I speak a little bit.' },
-      { id: 'b', text: 'That shirt is too expensive.' },
-      { id: 'c', text: 'I have math homework today.' },
-      { id: 'd', text: 'Go straight past the park.' }
+      { id: 'b', text: 'My lunch is in my backpack.' },
+      { id: 'c', text: 'I like to race my scooter.' },
+      { id: 'd', text: 'The moon looks bright tonight.' }
     ],
     answer: 'a'
   },
@@ -139,20 +139,20 @@ export const SHORT_QA_ITEMS = [
     question: 'Welcome to the cafe! What would you like to eat?',
     options: [
       { id: 'a', text: 'I would like a sandwich, please.' },
-      { id: 'b', text: 'I walk to school every day.' },
-      { id: 'c', text: 'The street is very noisy.' },
-      { id: 'd', text: 'I am in fifth grade.' }
+      { id: 'b', text: 'My notebook is under the desk.' },
+      { id: 'c', text: 'I play tag at recess.' },
+      { id: 'd', text: 'I cleaned my room yesterday.' }
     ],
     answer: 'a'
   },
   {
     id: 14,
-    question: 'I like these pants. Can I put them on to see if they fit?',
+    question: 'I like these pants. Can I try them on to see if they fit?',
     options: [
       { id: 'a', text: 'Yes, the fitting rooms are over there.' },
-      { id: 'b', text: 'The toy store is on the second floor.' },
-      { id: 'c', text: 'I am very hungry for lunch.' },
-      { id: 'd', text: 'I finish school at two o\'clock.' }
+      { id: 'b', text: 'My socks are striped and green.' },
+      { id: 'c', text: 'I have a spelling quiz tomorrow.' },
+      { id: 'd', text: 'The lake has many ducks.' }
     ],
     answer: 'a'
   },
@@ -161,9 +161,9 @@ export const SHORT_QA_ITEMS = [
     question: 'Where is your house located?',
     options: [
       { id: 'a', text: 'I live near the big park.' },
-      { id: 'b', text: 'It is a red book on the desk.' },
-      { id: 'c', text: 'Turn left at the bus stop.' },
-      { id: 'd', text: 'I like riding my bike fast.' }
+      { id: 'b', text: 'My crayons are in this box.' },
+      { id: 'c', text: 'I made a paper airplane.' },
+      { id: 'd', text: 'My cat sleeps on a pillow.' }
     ],
     answer: 'a'
   },
@@ -172,9 +172,9 @@ export const SHORT_QA_ITEMS = [
     question: 'We are finished eating. Can we pay now?',
     options: [
       { id: 'a', text: 'Yes, I will bring the bill right away.' },
-      { id: 'b', text: 'The bakery is next to the cinema.' },
-      { id: 'c', text: 'I am from Mexico.' },
-      { id: 'd', text: 'Go to the traffic light and stop.' }
+      { id: 'b', text: 'I love reading mystery books.' },
+      { id: 'c', text: 'My class starts at eight.' },
+      { id: 'd', text: 'I water plants on Saturdays.' }
     ],
     answer: 'a'
   },
@@ -183,9 +183,9 @@ export const SHORT_QA_ITEMS = [
     question: 'Is anyone sitting in this seat?',
     options: [
       { id: 'a', text: 'No, it is free. You can sit there.' },
-      { id: 'b', text: 'I have a blue school bag.' },
-      { id: 'c', text: 'Go straight ahead for two blocks.' },
-      { id: 'd', text: 'I take the bus to school.' }
+      { id: 'b', text: 'I packed grapes for lunch.' },
+      { id: 'c', text: 'My eraser is in my pocket.' },
+      { id: 'd', text: 'I wrote a poem this morning.' }
     ],
     answer: 'a'
   },
@@ -193,10 +193,10 @@ export const SHORT_QA_ITEMS = [
     id: 18,
     question: 'I cannot find the museum. Can you show me where it is?',
     options: [
-      { id: 'a', text: 'Yes, look at this map. It is right here.' },
-      { id: 'b', text: 'The food is very delicious.' },
-      { id: 'c', text: 'I like playing soccer.' },
-      { id: 'd', text: 'It is across from the bank.' }
+      { id: 'a', text: 'Yes, it is across from the bank. Let me show you on the map.' },
+      { id: 'b', text: 'I have two stickers on my folder.' },
+      { id: 'c', text: 'My favorite sport is soccer.' },
+      { id: 'd', text: 'I brushed my teeth this morning.' }
     ],
     answer: 'a'
   },
@@ -205,9 +205,9 @@ export const SHORT_QA_ITEMS = [
     question: 'Do you need a bag for your groceries?',
     options: [
       { id: 'a', text: 'Yes, please. I have too many things to carry.' },
-      { id: 'b', text: 'The store is on the corner.' },
-      { id: 'c', text: 'I am ten years old.' },
-      { id: 'd', text: 'I walk to school in the morning.' }
+      { id: 'b', text: 'I made toast for breakfast.' },
+      { id: 'c', text: 'My pencil case is yellow.' },
+      { id: 'd', text: 'I played outside after class.' }
     ],
     answer: 'a'
   },
@@ -216,9 +216,9 @@ export const SHORT_QA_ITEMS = [
     question: 'Is there anything else you want to buy?',
     options: [
       { id: 'a', text: 'No, that is all for today, thanks.' },
-      { id: 'b', text: 'This toy is very cheap.' },
-      { id: 'c', text: 'I take the train to the city.' },
-      { id: 'd', text: 'I have lunch at home.' }
+      { id: 'b', text: 'My water bottle is on my desk.' },
+      { id: 'c', text: 'I help my mom set the table.' },
+      { id: 'd', text: 'The weather is sunny and warm.' }
     ],
     answer: 'a'
   }
