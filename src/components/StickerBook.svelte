@@ -4,7 +4,7 @@
   Designed for 3rd graders - visual, fun, rewarding
 -->
 <script>
-  import { stickersStore, progressStore, calculateOverallProgress } from '../stores/progressStore.js';
+  import { stickersStore, progressStore, studentProfile, calculateOverallProgress } from '../stores/progressStore.js';
   import { fade, scale, fly } from 'svelte/transition';
   import { onMount } from 'svelte';
   
@@ -165,7 +165,11 @@
         </div>
         
         <!-- Progress Overview -->
-        <div class="mt-4 grid grid-cols-3 gap-4 text-center">
+        <div class="mt-4 grid grid-cols-4 gap-4 text-center">
+          <div class="bg-base-100/60 rounded-xl p-3">
+            <div class="text-2xl font-black text-warning">{$studentProfile.level || 1}</div>
+            <div class="text-xs text-base-content/60 font-medium">Player Level</div>
+          </div>
           <div class="bg-base-100/60 rounded-xl p-3">
             <div class="text-2xl font-black text-accent">{totalStars}</div>
             <div class="text-xs text-base-content/60 font-medium">Total Stars</div>

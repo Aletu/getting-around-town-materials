@@ -28,7 +28,9 @@ export const studentProfile = createPersistentStore('studentProfile', {
     name: '',
     avatar: '🧒',
     characterName: 'Explorer',
-    joinedAt: null
+    joinedAt: null,
+    level: 1, // 1: Principiante, 2: Intermedio, 3: Avanzado
+    xp: 0     // Experience points
 });
 
 // Achievement Sticker Book - Kids love collecting!
@@ -119,6 +121,26 @@ export function addStars(moduleKey, stars) {
         }
         return stickers;
     });
+
+    // Subir XP y Nivel automáticamente!
+    studentProfile.update(profile => {
+        profile.xp = (profile.xp || 0) + (stars * 10);
+        let oldLevel = profile.level || 1;
+        
+        if (profile.xp >= 100 && oldLevel === 1) {
+            profile.level = 2; // Unlock level 2
+        } else if (profile.xp >= 250 && oldLevel === 2) {
+            profile.level = 3; // Unlock level 3
+        }
+        
+        // Disparar evento de subida de nivel
+        if (profile.level > oldLevel && typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('level-up', { 
+                detail: { level: profile.level }
+            }));
+        }
+        return profile;
+    });
 }
 
 // Check daily streak
@@ -176,4 +198,61 @@ export function calculateOverallProgress(progress) {
     score += Math.min(progress.learnPlaces.placesViewed.length / 20, 1) * weights.learnPlaces;
     
     return Math.round(score);
+}
+
+// Restablecer el progreso de un estudiante
+export function resetAllProgress() {
+    studentProfile.update(() => ({
+        name: '',
+        avatar: '🧒',
+        characterName: 'Explorer',
+        joinedAt: null,
+        level: 1, 
+        xp: 0
+    }));
+
+    stickersStore.update(() => ({
+        helpVisitorStars: 0,
+        safeWalkStars: 0,
+        shortQAStars: 0,
+        tripPlannerStars: 0,
+        learnPlacesStars: 0,
+        
+        firstAdventure: false,
+        perfectScore: false,
+        explorerBadge: false,
+        safetyChampion: false,
+        helpfulHero: false,
+        superNavigator: false,
+        questionMaster: false,
+        completionist: false,
+        
+        dailyStreak: 0,
+        bestStreak: 0,
+        lastPlayDate: null
+    }));
+
+    progressStore.update(() => ({
+        helpVisitor: { totalCompleted: 0, bestScore: 0, hintsUsed: 0, perfectRounds: 0 },
+        safeWalk: { scenariosCompleted: 0, perfectSequences: 0, totalAttempts: 0 },
+        shortQA: { questionsAnswered: 0, correctAnswers: 0, streakBest: 0 },
+        tripPlanner: { tripsPlanned: 0, uniqueDestinations: [], safetyTipsRead: 0 },
+        learnPlaces: { placesViewed: [], quizzesTaken: 0, favoritePlace: null }
+    }));
+
+    storyProgress.update(() => ({
+        chapter: 1,
+        unlockedAreas: ['downtown'],
+        currentMission: null,
+        completedMissions: [],
+        detectiveBadgeLevel: 'Junior'
+    }));
+
+    // Reset local storage directly
+    if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('studentProfile');
+        localStorage.removeItem('stickersEarned');
+        localStorage.removeItem('moduleProgress');
+        localStorage.removeItem('storyProgress');
+    }
 }

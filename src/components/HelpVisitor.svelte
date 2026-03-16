@@ -5,7 +5,7 @@
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
   import SpeakButton from './SpeakButton.svelte';
-  import { progressStore, addStars, awardSticker } from '../stores/progressStore.js';
+  import { progressStore, addStars, awardSticker, studentProfile } from '../stores/progressStore.js';
 
   const dispatch = createEventDispatcher();
   let currentIndex = 0;
@@ -95,7 +95,16 @@
     finished = false;
     selectedId = null;
     buttonStatus = null;
-    messages = [...$scenariosStore].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, $scenariosStore.length));
+    
+    // Select subset based on user's level
+    const userLevel = $studentProfile.level || 1;
+    let maxScenarios = 7;
+    if (userLevel === 2) maxScenarios = 14;
+    if (userLevel >= 3) maxScenarios = $scenariosStore.length;
+    
+    const validScenarios = $scenariosStore.slice(0, maxScenarios);
+    messages = [...validScenarios].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, validScenarios.length));
+    
     dbgState('restart');
     persist();
   }

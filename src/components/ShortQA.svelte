@@ -5,7 +5,7 @@
   import { SHORT_QA_ITEMS } from '../data/shortQA.js';
   import confetti from 'canvas-confetti';
   import SpeakButton from './SpeakButton.svelte';
-  import { progressStore, addStars, awardSticker } from '../stores/progressStore.js';
+  import { progressStore, addStars, awardSticker, studentProfile } from '../stores/progressStore.js';
 
   const dispatch = createEventDispatcher();
 
@@ -27,8 +27,14 @@
   });
 
   function startSession() {
-    const shuffled = [...$shortQAStore].sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(0, Math.min(QUESTIONS_PER_SESSION, $shortQAStore.length));
+    const userLevel = $studentProfile.level || 1;
+    let maxItems = 7;
+    if (userLevel === 2) maxItems = 14;
+    if (userLevel >= 3) maxItems = $shortQAStore.length;
+    
+    const validItems = [...$shortQAStore].slice(0, maxItems);
+    const shuffled = validItems.sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, Math.min(QUESTIONS_PER_SESSION, validItems.length));
     
     // Shuffle options for each question so the answer isn't always the first one
     items = selected.map(q => ({

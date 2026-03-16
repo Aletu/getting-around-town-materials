@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import { themeStore, fontSizeStore, reducedMotionStore, dyslexiaFontStore } from '../stores.js';
+  import { resetAllProgress } from '../stores/progressStore.js';
   import { fade, scale } from 'svelte/transition';
 
   const dispatch = createEventDispatcher();
@@ -11,6 +12,14 @@
 
   function handleKeydown(e) {
     if (e.key === 'Escape') close();
+  }
+
+  function handleReset() {
+    if (confirm('Are you sure you want to reset all your progress and stickers? This cannot be undone!')) {
+      resetAllProgress();
+      alert('Progress has been reset.');
+      close();
+    }
   }
 
   const themes = [
@@ -103,11 +112,21 @@
           </div>
         </label>
       </div>
+      <!-- Danger Zone -->
+      <div class="space-y-4 border-t pt-5 border-error/50">
+        <h4 class="font-semibold text-xs uppercase tracking-wider text-error">Danger Zone</h4>
+        <button class="btn btn-outline btn-error w-full mt-2" on:click={handleReset}>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          Reset All Progress
+        </button>
+      </div>
     </div>
 
     <!-- Footer -->
-    <div class="p-5 pt-0">
-      <button class="btn btn-primary w-full rounded-xl font-semibold shadow-sm hover:shadow-md transition-all" on:click={close}>Done</button>
+    <div class="p-5 pt-3">
+      <button class="btn btn-primary w-full rounded-xl font-semibold shadow-sm hover:shadow-md transition-all btn-kid" on:click={close}>Done</button>
     </div>
   </div>
   <div 
