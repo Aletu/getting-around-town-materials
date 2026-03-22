@@ -2,17 +2,6 @@
 // Traffic safety elements are described in text, but only locations are draggable options
 export const SAFE_WALK_SCENARIOS = [
   {
-    id: 1,
-    text: 'First, I leave my house and walk on the sidewalk to school. Next, I play at the playground after class. Then, I stop at the library to borrow a book. Finally, I return home safely.',
-    sequence: [
-      { id: 'house', label: 'House', emoji: '🏠', correctIndex: 0, alt: 'House' },
-      { id: 'school', label: 'School', emoji: '🏫', correctIndex: 1, alt: 'School building' },
-      { id: 'playground', label: 'Playground', emoji: '🎪', correctIndex: 2, alt: 'Playground' },
-      { id: 'library', label: 'Library', emoji: '📚', correctIndex: 3, alt: 'Library' },
-      { id: 'house_return', label: 'House', emoji: '🏠', correctIndex: 4, alt: 'House' }
-    ]
-  },
-  {
     id: 2,
     text: 'First, we leave home to visit the hospital because Mom feels sick. Next, we go to the pharmacy for medicine. Then, we stop at the store for food. Finally, we go back home so she can rest.',
     sequence: [

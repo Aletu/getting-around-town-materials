@@ -12,6 +12,7 @@
   let score = 0;
   let attempts = 0;
   let wrongAttemptsForCurrent = 0;
+  let eliminatedIds = [];
   let finished = false;
   let selectedId = null;
   let buttonStatus = null; // 'correct' or 'incorrect'
@@ -64,6 +65,7 @@
     } else {
       buttonStatus = 'incorrect';
       wrongAttemptsForCurrent += 1;
+      eliminatedIds = [...eliminatedIds, id];
       dbgState('selectPlace - wrong');
       setTimeout(() => {
         buttonStatus = null;
@@ -79,6 +81,7 @@
       if (currentIndex < messages.length - 1) {
         currentIndex++;
         wrongAttemptsForCurrent = 0;
+        eliminatedIds = [];
         dbgState('advance - incremented');
       } else {
         finished = true;
@@ -92,17 +95,13 @@
     score = 0;
     attempts = 0;
     wrongAttemptsForCurrent = 0;
+    eliminatedIds = [];
     finished = false;
     selectedId = null;
     buttonStatus = null;
     
-    // Select subset based on user's level
-    const userLevel = $studentProfile.level || 1;
-    let maxScenarios = 7;
-    if (userLevel === 2) maxScenarios = 14;
-    if (userLevel >= 3) maxScenarios = $scenariosStore.length;
-    
-    const validScenarios = $scenariosStore.slice(0, maxScenarios);
+    // Start with all scenarios shuffled and limited to QUESTIONS_PER_SESSION
+    const validScenarios = $scenariosStore;
     messages = [...validScenarios].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, validScenarios.length));
     
     dbgState('restart');
@@ -211,6 +210,15 @@
     
     return {};
   }
+
+  // Validation helper for Teacher Mode
+  function getScenarioWarnings(scenario) {
+    const warnings = [];
+    if (!scenario.text || !scenario.text.trim()) warnings.push("Missing text");
+    if (!scenario.hint || !scenario.hint.trim()) warnings.push("Missing hint");
+    if (!scenario.distractors || scenario.distractors.length === 0) warnings.push("Needs wrong answers");
+    return warnings;
+  }
 </script>
 
 {#if $teacherMode}
@@ -230,25 +238,39 @@
 
     <div class="space-y-3">
         {#each $scenariosStore as scenario, i}
-        <div class="collapse collapse-arrow bg-base-200/50 border border-base-200 rounded-xl hover:border-base-300 transition-colors">
+        <div class="collapse collapse-arrow {getScenarioWarnings(scenario).length > 0 ? 'bg-warning/5 border-warning/30' : 'bg-base-200/50 border-base-200'} border rounded-xl hover:border-base-300 transition-colors">
             <input type="checkbox" /> 
             <div class="collapse-title text-base font-semibold flex items-center gap-3 pr-12">
                 <span class="badge badge-neutral badge-sm font-mono">{i + 1}</span>
                 <span class="truncate flex-1 text-base-content/90">{scenario.text || 'New Scenario'}</span>
-                {#if !scenario.text}<span class="badge badge-warning badge-xs">Empty</span>{/if}
+                {#if getScenarioWarnings(scenario).length > 0}
+                    <div class="flex gap-1.5 opacity-90">
+                        <span class="badge badge-warning badge-sm gap-1 hidden sm:flex">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                             {getScenarioWarnings(scenario).length} issues
+                        </span>
+                        <span class="badge badge-warning badge-sm sm:hidden px-1">⚠️ {getScenarioWarnings(scenario).length}</span>
+                    </div>
+                {/if}
             </div>
             <div class="collapse-content bg-base-100 pt-4 border-t border-base-200 rounded-b-xl"> 
                 <div class="grid gap-5 p-1">
                     <div class="form-control w-full">
                         <span class="text-sm font-semibold text-base-content/70 mb-1.5">Scenario Text</span>
                         <span class="text-xs text-base-content/50 mb-2">What the visitor says</span>
-                        <input type="text" placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full focus:input-primary transition-all" bind:value={scenario.text} aria-label="Scenario text" />
+                        <input type="text" placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full focus:input-primary transition-all {!scenario.text || !scenario.text.trim() ? 'input-error bg-error/5' : ''}" bind:value={scenario.text} aria-label="Scenario text" />
+                        {#if !scenario.text || !scenario.text.trim()}
+                            <span class="text-xs text-error mt-2 font-medium flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>Scenario text is required</span>
+                        {/if}
                     </div>
                     
                     <div class="form-control w-full">
                         <span class="text-sm font-semibold text-base-content/70 mb-1.5">Hint</span>
                         <span class="text-xs text-base-content/50 mb-2">Helpful tip for the student</span>
-                        <input type="text" placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full focus:input-primary transition-all" bind:value={scenario.hint} aria-label="Hint" />
+                        <input type="text" placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full focus:input-primary transition-all {!scenario.hint || !scenario.hint.trim() ? 'input-error bg-error/5' : ''}" bind:value={scenario.hint} aria-label="Hint" />
+                        {#if !scenario.hint || !scenario.hint.trim()}
+                            <span class="text-xs text-error mt-2 font-medium flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>A hint is required</span>
+                        {/if}
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 bg-base-200/30 p-4 rounded-xl border border-base-200/50">
@@ -279,10 +301,10 @@
                                     </div>
                                 {/each}
                                 {#if scenario.distractors.length === 0}
-                                    <span class="text-xs text-base-content/40 italic py-1">No distractors added yet</span>
+                                    <span class="text-xs text-error font-medium italic py-1 flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>No distractors added yet</span>
                                 {/if}
                             </div>
-                            <select class="select select-bordered select-sm w-full" on:change={(e) => { addDistractor(i, e.currentTarget.value); e.currentTarget.value = ""; }}>
+                            <select class="select select-bordered select-sm w-full {scenario.distractors.length === 0 ? 'select-error bg-error/5' : ''}" on:change={(e) => { addDistractor(i, e.currentTarget.value); e.currentTarget.value = ""; }}>
                                 <option value="" disabled selected>+ Add a wrong answer</option>
                                 {#each PLACES as place}
                                     {#if place.id !== scenario.answer && !scenario.distractors.includes(place.id)}
@@ -366,16 +388,24 @@
           <div class="grid gap-4 mt-6 grid-cols-1 sm:grid-cols-3">
             {#each options as opt (opt.id)}
             <button
-              class="group relative flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-95
-              {selectedId !== opt.id ? 'border-base-200 bg-base-100 hover:border-primary hover:shadow-lg' : ''}
+              class="group relative flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 transition-all duration-200 
+              {eliminatedIds.includes(opt.id) ? 'border-base-200 bg-base-200/50 cursor-not-allowed opacity-60' : 'hover:scale-[1.02] active:scale-95'}
+              {!eliminatedIds.includes(opt.id) && selectedId !== opt.id ? 'border-base-200 bg-base-100 hover:border-primary hover:shadow-lg' : ''}
               {selectedId === opt.id && buttonStatus === 'correct' ? 'border-success bg-success/10 text-success animate-pulse-green' : ''}
               {selectedId === opt.id && buttonStatus === 'incorrect' ? 'border-error bg-error/10 text-error animate-shake' : ''}"
               on:click={() => selectPlace(opt.id)}
-              disabled={buttonStatus !== null}
+              disabled={buttonStatus !== null || eliminatedIds.includes(opt.id)}
               aria-label={"Select " + opt.label}
             >
-              <div class="text-5xl transform transition-transform group-hover:scale-110 group-hover:rotate-3 duration-300 filter drop-shadow-sm">{opt.emoji}</div>
-              <span class="font-bold text-lg text-center">{opt.label}</span>
+              <div class="relative text-5xl transform transition-transform {!eliminatedIds.includes(opt.id) ? 'group-hover:scale-110 group-hover:rotate-3' : ''} duration-300 filter drop-shadow-sm">
+                 <span class={eliminatedIds.includes(opt.id) ? 'grayscale' : ''}>{opt.emoji}</span>
+                 {#if eliminatedIds.includes(opt.id)}
+                    <div class="absolute inset-0 flex items-center justify-center text-error opacity-90 drop-shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </div>
+                 {/if}
+              </div>
+              <span class="font-bold text-lg text-center {eliminatedIds.includes(opt.id) ? 'line-through text-base-content/40' : ''}">{opt.label}</span>
               
               {#if selectedId === opt.id && buttonStatus === 'correct'}
                 <div class="absolute top-2 right-2 text-success">
