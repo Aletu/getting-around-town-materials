@@ -5,7 +5,7 @@
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
   import SpeakButton from './SpeakButton.svelte';
-  import { progressStore, addStars, awardSticker, studentProfile } from '../stores/progressStore.js';
+  import { progressStore, addStars, awardSticker } from '../stores/progressStore.js';
 
   const dispatch = createEventDispatcher();
   let currentIndex = 0;
@@ -100,9 +100,7 @@
     selectedId = null;
     buttonStatus = null;
     
-    // Start with all scenarios shuffled and limited to QUESTIONS_PER_SESSION
-    const validScenarios = $scenariosStore;
-    messages = [...validScenarios].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, validScenarios.length));
+    messages = [...$scenariosStore].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, $scenariosStore.length));
     
     dbgState('restart');
     persist();
