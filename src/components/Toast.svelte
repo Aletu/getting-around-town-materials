@@ -8,10 +8,11 @@
   }
 </script>
 
-<div class="toast toast-bottom toast-end z-[100] p-4">
+<div class="toast toast-bottom toast-end z-[100] p-4" aria-live="polite" aria-atomic="true">
   {#each $toastStore as toast (toast.id)}
     <button 
       type="button"
+      role={toast.type === 'error' ? 'alert' : 'status'}
       class="flex items-center gap-3 px-4 py-3 rounded-xl shadow-soft cursor-pointer hover:scale-[1.02] transition-all text-left backdrop-blur-sm border
         {toast.type === 'info' ? 'bg-info border-info text-info-content' : ''}
         {toast.type === 'success' ? 'bg-success border-success text-success-content' : ''}

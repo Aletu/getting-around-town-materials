@@ -13,11 +13,39 @@
   let selectedItems = [];
   let selectedTransport = null;
   let safetyTipIndex = 0;
+  let hasWarned = false;
+
+  $: recommendedItemIds = getRecommendedItemIds(selectedPlace);
+
+  function getRecommendedItemIds(place) {
+    if (!place) return [];
+    const recs = new Set(['backpack', 'water']);
+
+    const cat = place.category;
+    if (place.id === 'library') {
+      recs.add('library_card');
+      recs.add('book');
+    }
+    if (place.id === 'park' || place.id === 'playground' || place.id === 'gym' || place.id === 'swimming_pool') {
+      recs.add('snack');
+      recs.add('hat');
+      recs.add('toy');
+    }
+    if (place.id === 'hospital' || place.id === 'pharmacy' || place.id === 'dentist') {
+      recs.add('mask');
+      recs.add('toy');
+    }
+    if (cat === 'Transport') { 
+      recs.add('bus_pass');
+    }
+    return Array.from(recs);
+  }
 
   // Filter places to only show physical locations (exclude some abstract ones if needed, but PLACES seems fine)
   const destinations = PLACES.filter((p) => p.category !== "Transport"); // Exclude 'Bus Stop' as a destination if it's in there
 
   function toggleItem(item) {
+    hasWarned = false;
     if (selectedItems.includes(item)) {
       selectedItems = selectedItems.filter((i) => i !== item);
     } else {
@@ -31,16 +59,18 @@
       return;
     }
     if (step === 2) {
-      const missingRequired = PACKING_ITEMS.filter(
-        (i) => i.required && !selectedItems.includes(i),
+      const missingRecommended = PACKING_ITEMS.filter(
+        (i) => recommendedItemIds.includes(i.id) && !selectedItems.includes(i),
       );
-      if (missingRequired.length > 0) {
+      if (missingRecommended.length > 0 && !hasWarned) {
         toastStore.add(
-          `Don't forget your ${missingRequired[0].label}!`,
-          "warning",
+          `Tip: You might want your ${missingRecommended[0].label} for the ${selectedPlace.label}! Click Next again to skip.`,
+          "info",
         );
+        hasWarned = true;
         return;
       }
+      hasWarned = false;
     }
     if (step === 3 && !selectedTransport) {
       toastStore.add("Please choose how you will get there!", "warning");
@@ -66,6 +96,7 @@
     selectedPlace = null;
     selectedItems = [];
     selectedTransport = null;
+    hasWarned = false;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 </script>
@@ -148,6 +179,20 @@
             </button>
           {/each}
         </div>
+
+        {#if selectedPlace}
+          <div
+            in:fly={{ y: 10, duration: 200 }}
+            class="alert bg-base-200 border-2 border-primary/20 shadow-sm mt-4 transition-all text-left flex items-start gap-4"
+          >
+            <span class="text-4xl hidden sm:inline-block">{selectedPlace.emoji}</span>
+            <div class="flex-1">
+              <h3 class="font-bold text-lg text-base-content">{selectedPlace.label}</h3>
+              <p class="text-sm text-base-content/80 mt-1">{selectedPlace.description}</p>
+            </div>
+            <SpeakButton text="{selectedPlace.label}. {selectedPlace.description}" size="sm" />
+          </div>
+        {/if}
       </div>
     {/if}
 
@@ -197,9 +242,9 @@
               <div class="card-body items-center text-center p-3 sm:p-4">
                 <span class="text-3xl sm:text-4xl mb-1">{item.emoji}</span>
                 <h3 class="font-semibold text-xs sm:text-sm">{item.label}</h3>
-                {#if item.required}
-                  <span class="badge badge-warning badge-xs mt-1 font-semibold"
-                    >Important</span
+                {#if recommendedItemIds.includes(item.id)}
+                  <span class="badge badge-info badge-xs mt-1 font-semibold"
+                    >Recommended</span
                   >
                 {/if}
               </div>
@@ -221,41 +266,72 @@
 
         <div class="grid gap-3">
           {#each TRANSPORT_OPTIONS as transport}
-            <button
-              class="card bg-base-200/50 hover:bg-base-200 transition-all duration-200 cursor-pointer border-2 text-left rounded-xl"
-              class:border-primary={selectedTransport === transport}
-              class:shadow-sm={selectedTransport === transport}
-              class:border-transparent={selectedTransport !== transport}
-              on:click={() => (selectedTransport = transport)}
-            >
-              <div
-                class="card-body flex flex-row items-center gap-4 p-4 sm:p-5"
+            <div class="flex flex-col gap-2">
+              <button
+                class="card bg-base-200/50 hover:bg-base-200 transition-all duration-200 cursor-pointer border-2 text-left rounded-xl"
+                class:border-primary={selectedTransport === transport}
+                class:shadow-sm={selectedTransport === transport}
+                class:border-transparent={selectedTransport !== transport}
+                on:click={() => {
+                  selectedTransport = transport;
+                  safetyTipIndex = Math.floor(Math.random() * transport.tips.length);
+                }}
               >
-                <span class="text-4xl">{transport.emoji}</span>
-                <div>
-                  <h3 class="font-bold text-base">{transport.label}</h3>
-                  <p class="text-sm text-base-content/60">
-                    {transport.description}
-                  </p>
-                </div>
-                {#if selectedTransport === transport}
-                  <div class="ml-auto text-primary">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-6 w-6"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
+                <div class="card-body flex flex-row items-center gap-4 p-4 sm:p-5">
+                  <span class="text-4xl">{transport.emoji}</span>
+                  <div>
+                    <h3 class="font-bold text-base">{transport.label}</h3>
+                    <p class="text-sm text-base-content/60">
+                      {transport.description}
+                    </p>
                   </div>
-                {/if}
-              </div>
-            </button>
+                  {#if selectedTransport === transport}
+                    <div class="ml-auto text-primary">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                  {/if}
+                </div>
+              </button>
+
+              {#if selectedTransport === transport}
+                <div
+                  in:slide={{ duration: 200 }}
+                  class="alert bg-info/10 border border-info/20 shadow-sm text-left rounded-xl flex items-start gap-3 w-full ml-auto mr-auto max-w-[95%]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    class="stroke-info flex-shrink-0 w-5 h-5 mt-0.5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <div class="flex-1">
+                    <h3 class="font-bold text-sm text-info">Safety Tip</h3>
+                    <div class="text-xs text-base-content/80 mt-0.5 font-medium">
+                      {transport.tips[safetyTipIndex]}
+                    </div>
+                  </div>
+                  <SpeakButton text="Safety tip. {transport.tips[safetyTipIndex]}" size="xs" />
+                </div>
+              {/if}
+            </div>
           {/each}
         </div>
       </div>
@@ -343,28 +419,13 @@
           </div>
         </div>
 
-        <div
-          class="alert bg-info/10 border border-info/20 shadow-sm max-w-sm mx-auto text-left rounded-xl"
+        <button 
+          class="btn btn-outline btn-sm mx-auto mt-4 px-6 rounded-full" 
+          on:click={resetTrip}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            class="stroke-info flex-shrink-0 w-5 h-5"
-            ><path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path></svg
-          >
-          <div>
-            <h3 class="font-bold text-sm text-info">Safety Tip</h3>
-            <div class="text-xs text-base-content/70">
-              {selectedTransport.tips[safetyTipIndex]}
-            </div>
-          </div>
-        </div>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+          Plan Another Trip
+        </button>
       </div>
     {/if}
   </div>
@@ -374,38 +435,21 @@
     {#if step > 1}
       <button
         class="btn btn-ghost gap-2 rounded-xl font-medium"
-        on:click={step === 4 ? resetTrip : prevStep}
+        on:click={prevStep}
       >
-        {#if step === 4}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            ><path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            /></svg
-          >
-          Start Over
-        {:else}
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-4 w-4"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-              clip-rule="evenodd"
-            />
-          </svg>
-          Back
-        {/if}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+            clip-rule="evenodd"
+          />
+        </svg>
+        Back
       </button>
     {:else}
       <div></div>
@@ -433,21 +477,13 @@
     {:else}
       <button
         class="btn btn-success gap-2 px-6 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all"
-        on:click={() => window.print()}
+        on:click={() => {
+          toastStore.add("Have a great trip!", "success");
+          resetTrip();
+        }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fill-rule="evenodd"
-            d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z"
-            clip-rule="evenodd"
-          />
-        </svg>
-        Print Plan
+        <span class="text-xl">🚀</span>
+        I'm Ready to Go!
       </button>
     {/if}
   </div>

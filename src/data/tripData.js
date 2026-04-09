@@ -1,7 +1,8 @@
 export const PACKING_ITEMS = [
-    { id: 'keys', label: 'House Keys', emoji: '🔑', required: true },
-    { id: 'wallet', label: 'Wallet/Money', emoji: '👛', required: true },
-    { id: 'phone', label: 'Phone', emoji: '📱', required: true },
+    { id: 'backpack', label: 'Backpack', emoji: '🎒', required: false },
+    { id: 'toy', label: 'Favorite Toy', emoji: '🧸', required: false },
+    { id: 'library_card', label: 'Library Card', emoji: '💳', required: false },
+    { id: 'bus_pass', label: 'Bus Pass', emoji: '🎫', required: false },
     { id: 'mask', label: 'Face Mask', emoji: '😷', required: false },
     { id: 'water', label: 'Water Bottle', emoji: '💧', required: false },
     { id: 'umbrella', label: 'Umbrella', emoji: '☂️', required: false },
@@ -9,8 +10,7 @@ export const PACKING_ITEMS = [
     { id: 'jacket', label: 'Jacket', emoji: '🧥', required: false },
     { id: 'hat', label: 'Hat', emoji: '🧢', required: false },
     { id: 'sunglasses', label: 'Sunglasses', emoji: '🕶️', required: false },
-    { id: 'book', label: 'Book', emoji: '📖', required: false },
-    { id: 'headphones', label: 'Headphones', emoji: '🎧', required: false }
+    { id: 'book', label: 'Book', emoji: '📖', required: false }
 ];
 
 export const TRANSPORT_OPTIONS = [
