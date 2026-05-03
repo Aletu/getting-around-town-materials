@@ -1,0 +1,82 @@
+/* ============================================
+   Accessibility
+   ============================================ */
+
+/* Skip link — keyboard navigation */
+.skip-link {
+  @apply absolute bg-primary text-primary-content px-5 py-3 rounded-lg font-bold z-[200] left-4;
+  top: -100%;
+  transition: top 0.25s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.skip-link:focus {
+  top: 0.75rem;
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Focus rings */
+*:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-base-100;
+}
+*:focus { outline: none; }
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Dyslexia-friendly font */
+.font-dyslexic {
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', 'OpenDyslexic', sans-serif !important;
+  line-height: 1.7 !important;
+  letter-spacing: 0.06em !important;
+  word-spacing: 0.12em !important;
+}
+.font-dyslexic * { font-family: inherit !important; }
+
+/* Text scaling */
+html.text-scale-large  { font-size: 112%; }
+html.text-scale-xlarge { font-size: 125%; }
+
+/* Reduced motion — OS preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Reduced motion — manual override */
+.motion-reduce *,
+.motion-reduce *::before,
+.motion-reduce *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* High contrast */
+.high-contrast {
+  --primary: #0066cc;
+  --secondary: #cc0066;
+  --accent: #cc6600;
+  filter: contrast(1.1);
+}

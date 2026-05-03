@@ -1,0 +1,90 @@
+/* ============================================
+   Interactive Elements & Utility Classes
+   ============================================ */
+
+/* Card hover lift */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.hover-lift:hover  { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.05); }
+.hover-lift:active { transform: translateY(-2px); }
+
+/* Gradient text */
+.text-gradient        { @apply bg-clip-text text-transparent; background-image: linear-gradient(135deg, #65c3c8 0%, #ef9fbc 100%); }
+.text-gradient-accent { @apply bg-clip-text text-transparent; background-image: linear-gradient(135deg, #eeaf3a 0%, #ef9fbc 100%); }
+
+/* Glass effect */
+.glass-effect {
+  background: rgba(253, 252, 251, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Premium button */
+.btn-premium {
+  @apply relative overflow-hidden;
+  background: linear-gradient(135deg, #65c3c8 0%, #4db4b9 100%);
+  box-shadow: 0 4px 15px rgba(101, 195, 200, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+.btn-premium:hover  { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(101, 195, 200, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
+.btn-premium:active { transform: translateY(0); }
+
+/* Sequence drag-and-drop items */
+.sequence-item {
+  @apply bg-base-100 rounded-2xl p-4 border-2 border-base-300;
+  @apply flex items-center gap-4 cursor-grab;
+  @apply transition-all duration-200;
+  min-height: 64px;
+  touch-action: manipulation;
+}
+.sequence-item:hover    { @apply border-primary shadow-md; }
+.sequence-item.dragging { @apply border-primary bg-primary/10 shadow-lg scale-105; cursor: grabbing; }
+.sequence-item.selected { @apply border-secondary bg-secondary/10 ring-2 ring-secondary/50; }
+
+/* Quiz option cards */
+.quiz-option {
+  @apply relative overflow-hidden;
+  @apply bg-base-100 rounded-2xl p-5 border-2 border-base-300;
+  @apply cursor-pointer transition-all duration-200;
+  @apply flex items-center gap-4;
+  min-height: 72px;
+}
+.quiz-option:hover     { @apply border-primary bg-primary/5; transform: translateX(4px); }
+.quiz-option.selected  { @apply border-primary bg-primary/10; }
+.quiz-option.correct   { @apply border-success bg-success/10; }
+.quiz-option.incorrect { @apply border-error bg-error/10; }
+
+/* Answer states */
+.answer-correct   { @apply bg-success/20 border-success border-2 ring-4 ring-success/30; }
+.answer-incorrect { @apply bg-error/10 border-error/50 border-2; }
+
+/* Speech bubble for hints */
+.speech-bubble { @apply relative bg-info/10 border-2 border-info/30 rounded-2xl p-4; }
+.speech-bubble::before {
+  content: '';
+  @apply absolute -bottom-3 left-6 w-6 h-6 bg-info/10 border-l-2 border-b-2 border-info/30;
+  transform: rotate(-45deg);
+}
+
+/* Category pills */
+.category-pill        { @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-semibold; }
+.category-shops       { @apply bg-secondary/20 text-secondary; }
+.category-transport   { @apply bg-info/20 text-info; }
+.category-services    { @apply bg-primary/20 text-primary; }
+.category-recreation  { @apply bg-success/20 text-success; }
+.category-food        { @apply bg-warning/20 text-warning; }
+
+/* Step number indicators */
+.step-number           { @apply w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg bg-primary text-primary-content shadow-md; }
+.step-number-completed { @apply bg-success text-success-content; }
+.step-number-pending   { @apply bg-base-300 text-base-content/50; }
+
+/* Decorative */
+.decoration-dots  { background-image: radial-gradient(circle, currentColor 1px, transparent 1px); background-size: 20px 20px; }
+.decoration-waves {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2365c3c8' fill-opacity='0.1' d='M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: bottom;
+}

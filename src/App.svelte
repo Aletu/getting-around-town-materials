@@ -1,13 +1,7 @@
 <script>
-  import HelpVisitor from "./components/HelpVisitor.svelte";
-  import SafeWalkSequence from "./components/SafeWalkSequence.svelte";
-  import ShortQA from "./components/ShortQA.svelte";
-  import LearnPlaces from "./components/LearnPlaces.svelte";
-  import PlanTrip from "./components/PlanTrip.svelte";
-  import SettingsModal from "./components/SettingsModal.svelte";
+  // Lightweight shell components loaded eagerly (used on every page)
   import TeacherPanel from "./components/TeacherPanel.svelte";
   import Toast from "./components/Toast.svelte";
-  import StickerBook from "./components/StickerBook.svelte";
   import Celebration from "./components/Celebration.svelte";
   import ucrLogo from "./assets/firma-ucr-vertical.svg";
   import {
@@ -17,13 +11,12 @@
     reducedMotionStore,
     dyslexiaFontStore,
   } from "./stores.js";
-  import { stickersStore, updateStreak } from "./stores/progressStore.js";
+  import { updateStreak } from "./stores/progressStore.js";
   import { fade, fly } from "svelte/transition";
   import { onMount } from "svelte";
 
   let view = "home";
   let showSettings = false;
-  let showStickerBook = false;
   let showCelebration = false;
   let celebrationType = "success";
   let celebrationMessage = "";
@@ -43,14 +36,6 @@
     celebrationMessage = "New Badge Earned!";
     showCelebration = true;
   }
-
-  // Calculate total stars for display
-  $: totalStars =
-    ($stickersStore?.helpVisitorStars || 0) +
-    ($stickersStore?.safeWalkStars || 0) +
-    ($stickersStore?.shortQAStars || 0) +
-    ($stickersStore?.tripPlannerStars || 0) +
-    ($stickersStore?.learnPlacesStars || 0);
 
   function setView(id) {
     view = id;
@@ -156,17 +141,6 @@
       </nav>
     </div>
     <div class="flex-none flex items-center gap-2">
-      <!-- Sticker Book Button (Gamification) -->
-      <button
-        class="btn btn-ghost gap-1.5 hover:bg-accent/10 transition-colors rounded-lg px-3"
-        on:click={() => (showStickerBook = true)}
-        aria-label="Open Sticker Book"
-      >
-        <span class="text-xl">📚</span>
-        <span class="font-bold text-accent hidden sm:inline">{totalStars}</span>
-        <span class="text-xl">⭐</span>
-      </button>
-
       <button
         class="btn btn-ghost btn-circle hover:bg-base-200 transition-colors"
         on:click={() => (showSettings = true)}
@@ -401,8 +375,7 @@
             <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-5 lg:gap-6">
               <!-- Help Visitor Card -->
               <article
-                class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50 animate-fade-slide-up"
-                style="animation-delay: 150ms"
+                class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50"
               >
                 <div
                   class="h-1.5 bg-gradient-to-r from-primary to-primary/70"
@@ -455,8 +428,7 @@
 
               <!-- Safe Walk Card -->
               <article
-                class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50 animate-fade-slide-up"
-                style="animation-delay: 225ms"
+                class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50"
               >
                 <div
                   class="h-1.5 bg-gradient-to-r from-secondary to-secondary/70"
@@ -508,8 +480,7 @@
 
               <!-- Short Q&A Card -->
               <article
-                class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50 animate-fade-slide-up"
-                style="animation-delay: 300ms"
+                class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50"
               >
                 <div
                   class="h-1.5 bg-gradient-to-r from-accent to-accent/70"
@@ -561,8 +532,7 @@
 
               <!-- Plan Trip Card -->
               <article
-                class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50 animate-fade-slide-up"
-                style="animation-delay: 375ms"
+                class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50"
               >
                 <div class="h-1.5 bg-gradient-to-r from-info to-info/70"></div>
                 <div class="card-body relative p-6 lg:p-7">
@@ -672,7 +642,11 @@
         in:fly={{ y: 20, duration: 300, delay: 200 }}
         out:fade={{ duration: 200 }}
       >
-        <HelpVisitor on:back={() => setView("home")} />
+        {#await import("./components/HelpVisitor.svelte")}
+          <div class="flex justify-center p-12"><span class="loading loading-spinner loading-lg text-primary"></span></div>
+        {:then { default: HelpVisitor }}
+          <svelte:component this={HelpVisitor} on:back={() => setView("home")} />
+        {/await}
       </main>
     {:else if view === "safe-walk"}
       <main
@@ -680,7 +654,11 @@
         in:fly={{ y: 20, duration: 300, delay: 200 }}
         out:fade={{ duration: 200 }}
       >
-        <SafeWalkSequence on:back={() => setView("home")} />
+        {#await import("./components/SafeWalkSequence.svelte")}
+          <div class="flex justify-center p-12"><span class="loading loading-spinner loading-lg text-secondary"></span></div>
+        {:then { default: SafeWalkSequence }}
+          <svelte:component this={SafeWalkSequence} on:back={() => setView("home")} />
+        {/await}
       </main>
     {:else if view === "short-qa"}
       <main
@@ -688,7 +666,11 @@
         in:fly={{ y: 20, duration: 300, delay: 200 }}
         out:fade={{ duration: 200 }}
       >
-        <ShortQA on:back={() => setView("home")} />
+        {#await import("./components/ShortQA.svelte")}
+          <div class="flex justify-center p-12"><span class="loading loading-spinner loading-lg text-accent"></span></div>
+        {:then { default: ShortQA }}
+          <svelte:component this={ShortQA} on:back={() => setView("home")} />
+        {/await}
       </main>
     {:else if view === "plan-trip"}
       <main
@@ -696,7 +678,11 @@
         in:fly={{ y: 20, duration: 300, delay: 200 }}
         out:fade={{ duration: 200 }}
       >
-        <PlanTrip on:back={() => setView("home")} />
+        {#await import("./components/PlanTrip.svelte")}
+          <div class="flex justify-center p-12"><span class="loading loading-spinner loading-lg text-info"></span></div>
+        {:then { default: PlanTrip }}
+          <svelte:component this={PlanTrip} on:back={() => setView("home")} />
+        {/await}
       </main>
     {:else if view === "learn"}
       <main
@@ -704,7 +690,11 @@
         in:fly={{ y: 20, duration: 300, delay: 200 }}
         out:fade={{ duration: 200 }}
       >
-        <LearnPlaces on:back={() => setView("home")} />
+        {#await import("./components/LearnPlaces.svelte")}
+          <div class="flex justify-center p-12"><span class="loading loading-spinner loading-lg text-primary"></span></div>
+        {:then { default: LearnPlaces }}
+          <svelte:component this={LearnPlaces} on:back={() => setView("home")} />
+        {/await}
       </main>
     {/if}
   </div>
@@ -713,13 +703,10 @@
 <TeacherPanel />
 
 {#if showSettings}
-  <SettingsModal on:close={() => (showSettings = false)} />
+  {#await import("./components/SettingsModal.svelte") then { default: SettingsModal }}
+    <svelte:component this={SettingsModal} on:close={() => (showSettings = false)} />
+  {/await}
 {/if}
-
-<StickerBook
-  isOpen={showStickerBook}
-  onClose={() => (showStickerBook = false)}
-/>
 
 <Celebration
   show={showCelebration}

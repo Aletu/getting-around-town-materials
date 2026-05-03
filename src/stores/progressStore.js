@@ -1,27 +1,53 @@
 // Progress & Achievement System for Gamification
 import { writable } from 'svelte/store';
+import {
+    XP_PER_STAR,
+    XP_LEVEL_2,
+    XP_LEVEL_3,
+    MAX_STARS,
+} from '../config.js';
 
-// Helper to load from localStorage or use default
+// ---------------------------------------------------------------------------
+// Persistence helpers
+// ---------------------------------------------------------------------------
+
+function readStorage(key, fallback) {
+    try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+    } catch {
+        return fallback;
+    }
+}
+
+function writeStorage(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+    } catch (e) {
+        console.warn(`[progressStore] Could not persist "${key}" to localStorage:`, e);
+    }
+}
+
 function createPersistentStore(key, startValue) {
     if (typeof localStorage === 'undefined') {
         return writable(startValue);
     }
 
-    const storedValue = localStorage.getItem(key);
-    const initial = storedValue ? JSON.parse(storedValue) : startValue;
+    const initial = readStorage(key, startValue);
     const store = writable(initial);
-    
+
     let isFirst = true;
     store.subscribe(value => {
-        if (isFirst) {
-            isFirst = false;
-            return;
-        }
-        localStorage.setItem(key, JSON.stringify(value));
+        if (isFirst) { isFirst = false; return; }
+        writeStorage(key, value);
     });
-    
+
     return store;
 }
+
+// ---------------------------------------------------------------------------
+// Stores
+// ---------------------------------------------------------------------------
 
 // Student Profile & Character
 export const studentProfile = createPersistentStore('studentProfile', {
@@ -30,28 +56,28 @@ export const studentProfile = createPersistentStore('studentProfile', {
     characterName: 'Explorer',
     joinedAt: null,
     level: 1, // 1: Principiante, 2: Intermedio, 3: Avanzado
-    xp: 0     // Experience points
+    xp: 0
 });
 
-// Achievement Sticker Book - Kids love collecting!
+// Achievement Sticker Book
 export const stickersStore = createPersistentStore('stickersEarned', {
     // Module completion stickers
-    helpVisitorStars: 0,      // 1-3 stars per completion
+    helpVisitorStars: 0,
     safeWalkStars: 0,
     shortQAStars: 0,
     tripPlannerStars: 0,
     learnPlacesStars: 0,
-    
+
     // Special achievement stickers
-    firstAdventure: false,    // Complete any activity
-    perfectScore: false,      // Get 100% on any quiz
-    explorerBadge: false,     // Learn all places
-    safetyChampion: false,    // Complete SafeWalk 3 times
-    helpfulHero: false,       // Help 20 visitors
-    superNavigator: false,    // Plan 5 trips
-    questionMaster: false,    // Answer 30 Q&A correctly
-    completionist: false,     // Earn all other stickers
-    
+    firstAdventure: false,
+    perfectScore: false,
+    explorerBadge: false,
+    safetyChampion: false,
+    helpfulHero: false,
+    superNavigator: false,
+    questionMaster: false,
+    completionist: false,
+
     // Streak tracking
     dailyStreak: 0,
     bestStreak: 0,
@@ -88,23 +114,27 @@ export const progressStore = createPersistentStore('moduleProgress', {
     }
 });
 
-// Narrative wrapper - "Community Detective" story
-export const storyProgress = createPersistentStore('storyProgress', {
-    chapter: 1,
-    unlockedAreas: ['downtown'],
-    currentMission: null,
-    completedMissions: [],
-    detectiveBadgeLevel: 'Junior' // Junior -> Detective -> Super Detective
-});
+// ---------------------------------------------------------------------------
+// Multiple student profiles
+// ---------------------------------------------------------------------------
 
-// Helper functions to award stickers
+const DEFAULT_PROFILES = [
+    { id: 'default', name: 'Student 1', avatar: '🧒' }
+];
+
+export const profileListStore = createPersistentStore('profileList', DEFAULT_PROFILES);
+export const activeProfileIdStore = createPersistentStore('activeProfileId', 'default');
+
+// ---------------------------------------------------------------------------
+// Helper functions
+// ---------------------------------------------------------------------------
+
 export function awardSticker(stickerKey) {
     stickersStore.update(stickers => {
         if (!stickers[stickerKey]) {
             stickers[stickerKey] = true;
-            // Trigger celebration event
             if (typeof window !== 'undefined') {
-                window.dispatchEvent(new CustomEvent('sticker-earned', { 
+                window.dispatchEvent(new CustomEvent('sticker-earned', {
                     detail: { sticker: stickerKey }
                 }));
             }
@@ -117,25 +147,23 @@ export function addStars(moduleKey, stars) {
     stickersStore.update(stickers => {
         const key = `${moduleKey}Stars`;
         if (stickers[key] !== undefined) {
-            stickers[key] = Math.min(stickers[key] + stars, 99); // Cap at 99 stars
+            stickers[key] = Math.min(stickers[key] + stars, MAX_STARS);
         }
         return stickers;
     });
 
-    // Subir XP y Nivel automáticamente!
     studentProfile.update(profile => {
-        profile.xp = (profile.xp || 0) + (stars * 10);
-        let oldLevel = profile.level || 1;
-        
-        if (profile.xp >= 100 && oldLevel === 1) {
-            profile.level = 2; // Unlock level 2
-        } else if (profile.xp >= 250 && oldLevel === 2) {
-            profile.level = 3; // Unlock level 3
+        profile.xp = (profile.xp || 0) + (stars * XP_PER_STAR);
+        const oldLevel = profile.level || 1;
+
+        if (profile.xp >= XP_LEVEL_2 && oldLevel === 1) {
+            profile.level = 2;
+        } else if (profile.xp >= XP_LEVEL_3 && oldLevel === 2) {
+            profile.level = 3;
         }
-        
-        // Disparar evento de subida de nivel
+
         if (profile.level > oldLevel && typeof window !== 'undefined') {
-            window.dispatchEvent(new CustomEvent('level-up', { 
+            window.dispatchEvent(new CustomEvent('level-up', {
                 detail: { level: profile.level }
             }));
         }
@@ -143,34 +171,26 @@ export function addStars(moduleKey, stars) {
     });
 }
 
-// Check daily streak
 export function updateStreak() {
     stickersStore.update(stickers => {
         const today = new Date().toDateString();
-        
-        if (stickers.lastPlayDate === today) {
-            return stickers; // Already played today
-        }
-        
+        if (stickers.lastPlayDate === today) return stickers;
+
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
-        const yesterdayStr = yesterday.toDateString();
-        
-        if (stickers.lastPlayDate === yesterdayStr) {
-            // Continue streak!
+
+        if (stickers.lastPlayDate === yesterday.toDateString()) {
             stickers.dailyStreak += 1;
             stickers.bestStreak = Math.max(stickers.bestStreak, stickers.dailyStreak);
-        } else if (stickers.lastPlayDate !== today) {
-            // Streak broken, reset
+        } else {
             stickers.dailyStreak = 1;
         }
-        
+
         stickers.lastPlayDate = today;
         return stickers;
     });
 }
 
-// Calculate overall progress percentage
 export function calculateOverallProgress(progress) {
     const weights = {
         helpVisitor: 25,
@@ -179,45 +199,33 @@ export function calculateOverallProgress(progress) {
         tripPlanner: 15,
         learnPlaces: 10
     };
-    
+
     let score = 0;
-    
-    // HelpVisitor: based on total completed (max 20 for 100%)
     score += Math.min(progress.helpVisitor.totalCompleted / 20, 1) * weights.helpVisitor;
-    
-    // SafeWalk: based on scenarios completed (max 10 for 100%)
     score += Math.min(progress.safeWalk.scenariosCompleted / 10, 1) * weights.safeWalk;
-    
-    // ShortQA: based on correct answers (max 30 for 100%)
     score += Math.min(progress.shortQA.correctAnswers / 30, 1) * weights.shortQA;
-    
-    // TripPlanner: based on trips planned (max 5 for 100%)
     score += Math.min(progress.tripPlanner.tripsPlanned / 5, 1) * weights.tripPlanner;
-    
-    // LearnPlaces: based on unique places viewed (max 20 for 100%)
     score += Math.min(progress.learnPlaces.placesViewed.length / 20, 1) * weights.learnPlaces;
-    
+
     return Math.round(score);
 }
 
-// Restablecer el progreso de un estudiante
 export function resetAllProgress() {
-    studentProfile.update(() => ({
+    studentProfile.set({
         name: '',
         avatar: '🧒',
         characterName: 'Explorer',
         joinedAt: null,
-        level: 1, 
+        level: 1,
         xp: 0
-    }));
+    });
 
-    stickersStore.update(() => ({
+    stickersStore.set({
         helpVisitorStars: 0,
         safeWalkStars: 0,
         shortQAStars: 0,
         tripPlannerStars: 0,
         learnPlacesStars: 0,
-        
         firstAdventure: false,
         perfectScore: false,
         explorerBadge: false,
@@ -226,33 +234,22 @@ export function resetAllProgress() {
         superNavigator: false,
         questionMaster: false,
         completionist: false,
-        
         dailyStreak: 0,
         bestStreak: 0,
         lastPlayDate: null
-    }));
+    });
 
-    progressStore.update(() => ({
+    progressStore.set({
         helpVisitor: { totalCompleted: 0, bestScore: 0, hintsUsed: 0, perfectRounds: 0 },
         safeWalk: { scenariosCompleted: 0, perfectSequences: 0, totalAttempts: 0 },
         shortQA: { questionsAnswered: 0, correctAnswers: 0, streakBest: 0 },
         tripPlanner: { tripsPlanned: 0, uniqueDestinations: [], safetyTipsRead: 0 },
         learnPlaces: { placesViewed: [], quizzesTaken: 0, favoritePlace: null }
-    }));
+    });
 
-    storyProgress.update(() => ({
-        chapter: 1,
-        unlockedAreas: ['downtown'],
-        currentMission: null,
-        completedMissions: [],
-        detectiveBadgeLevel: 'Junior'
-    }));
-
-    // Reset local storage directly
     if (typeof localStorage !== 'undefined') {
-        localStorage.removeItem('studentProfile');
-        localStorage.removeItem('stickersEarned');
-        localStorage.removeItem('moduleProgress');
-        localStorage.removeItem('storyProgress');
+        ['studentProfile', 'stickersEarned', 'moduleProgress'].forEach(k => {
+            try { localStorage.removeItem(k); } catch { /* ignore */ }
+        });
     }
 }

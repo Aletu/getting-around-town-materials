@@ -1,6 +1,7 @@
 <script>
   import { scenariosStore, teacherMode } from '../stores.js';
   import { PLACES } from '../data/places.js';
+  import { VALIDATION } from '../config.js';
   import { createEventDispatcher } from 'svelte';
   import { onMount } from 'svelte';
   import { fade, fly } from 'svelte/transition';
@@ -254,18 +255,24 @@
             <div class="collapse-content bg-base-100 pt-4 border-t border-base-200 rounded-b-xl"> 
                 <div class="grid gap-5 p-1">
                     <div class="form-control w-full">
-                        <span class="text-sm font-semibold text-base-content/70 mb-1.5">Scenario Text</span>
+                        <div class="flex items-baseline justify-between mb-1.5">
+                            <span class="text-sm font-semibold text-base-content/70">Scenario Text</span>
+                            <span class="text-xs {(scenario.text?.length || 0) >= VALIDATION.SCENARIO_TEXT_MAX ? 'text-error font-semibold' : 'text-base-content/40'}">{scenario.text?.length || 0}/{VALIDATION.SCENARIO_TEXT_MAX}</span>
+                        </div>
                         <span class="text-xs text-base-content/50 mb-2">What the visitor says</span>
-                        <input type="text" placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full focus:input-primary transition-all {!scenario.text || !scenario.text.trim() ? 'input-error bg-error/5' : ''}" bind:value={scenario.text} aria-label="Scenario text" />
+                        <input type="text" maxlength={VALIDATION.SCENARIO_TEXT_MAX} placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full focus:input-primary transition-all {!scenario.text || !scenario.text.trim() ? 'input-error bg-error/5' : ''}" bind:value={scenario.text} aria-label="Scenario text" />
                         {#if !scenario.text || !scenario.text.trim()}
                             <span class="text-xs text-error mt-2 font-medium flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>Scenario text is required</span>
                         {/if}
                     </div>
-                    
+
                     <div class="form-control w-full">
-                        <span class="text-sm font-semibold text-base-content/70 mb-1.5">Hint</span>
+                        <div class="flex items-baseline justify-between mb-1.5">
+                            <span class="text-sm font-semibold text-base-content/70">Hint</span>
+                            <span class="text-xs {(scenario.hint?.length || 0) >= VALIDATION.SCENARIO_HINT_MAX ? 'text-error font-semibold' : 'text-base-content/40'}">{scenario.hint?.length || 0}/{VALIDATION.SCENARIO_HINT_MAX}</span>
+                        </div>
                         <span class="text-xs text-base-content/50 mb-2">Helpful tip for the student</span>
-                        <input type="text" placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full focus:input-primary transition-all {!scenario.hint || !scenario.hint.trim() ? 'input-error bg-error/5' : ''}" bind:value={scenario.hint} aria-label="Hint" />
+                        <input type="text" maxlength={VALIDATION.SCENARIO_HINT_MAX} placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full focus:input-primary transition-all {!scenario.hint || !scenario.hint.trim() ? 'input-error bg-error/5' : ''}" bind:value={scenario.hint} aria-label="Hint" />
                         {#if !scenario.hint || !scenario.hint.trim()}
                             <span class="text-xs text-error mt-2 font-medium flex items-center gap-1.5"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>A hint is required</span>
                         {/if}

@@ -24,3 +24,8 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock
 });
 
+Object.defineProperty(window, 'scrollTo', {
+  value: () => {},
+  writable: true,
+});
+

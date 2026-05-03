@@ -1,5 +1,6 @@
 <script>
   import { shortQAStore, teacherMode } from "../stores.js";
+  import { VALIDATION } from "../config.js";
   import { createEventDispatcher, onMount } from "svelte";
   import { fade, fly } from "svelte/transition";
   import { SHORT_QA_ITEMS } from "../data/shortQA.js";
@@ -230,15 +231,23 @@
           >
             <div class="grid gap-5 p-1">
               <div class="form-control w-full">
-                <span class="text-sm font-semibold text-base-content/70 mb-1.5"
-                  >Question Text</span
-                >
+                <div class="flex items-baseline justify-between mb-1.5">
+                  <span class="text-sm font-semibold text-base-content/70">Question Text</span>
+                  <span class="text-xs {(item.question?.length || 0) >= VALIDATION.QA_QUESTION_MAX ? 'text-error font-semibold' : 'text-base-content/40'}">{item.question?.length || 0}/{VALIDATION.QA_QUESTION_MAX}</span>
+                </div>
                 <input
                   type="text"
-                  class="input input-bordered w-full focus:input-primary transition-all"
+                  maxlength={VALIDATION.QA_QUESTION_MAX}
+                  class="input input-bordered w-full focus:input-primary transition-all {!item.question?.trim() ? 'input-error bg-error/5' : ''}"
                   bind:value={item.question}
                   aria-label="Question text"
                 />
+                {#if !item.question?.trim()}
+                  <span class="text-xs text-error mt-2 font-medium flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                    Question text is required
+                  </span>
+                {/if}
               </div>
 
               <div
@@ -271,8 +280,10 @@
                       >
                       <input
                         type="text"
-                        class="input input-bordered input-sm flex-1"
+                        maxlength={VALIDATION.QA_OPTION_MAX}
+                        class="input input-bordered input-sm flex-1 {!opt.text?.trim() ? 'input-error' : ''}"
                         bind:value={opt.text}
+                        title="Max {VALIDATION.QA_OPTION_MAX} characters"
                       />
                     </label>
                   {/each}

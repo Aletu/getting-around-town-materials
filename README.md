@@ -1,34 +1,47 @@
 # Getting Around Town – Interactive Materials
 
-This repository contains an educational prototype built with Svelte + Vite + Tailwind (DaisyUI). It currently includes two small interactive modules:
+An educational web app built with **Svelte 4 + Vite + Tailwind (DaisyUI)** to help learners practice community-navigation language and safety skills.
 
-- Material #1 — Help the Visitor: short text hints where the learner selects the correct place (multiple choice).
-- Material #2 — Safe Walk Sequence: short safety text plus an image ordering activity (drag & drop).
+## Learning modules
+
+- **Help the Visitor**: read scenarios and choose the correct place.
+- **Safe Walk Sequence**: order safety steps in the correct sequence.
+- **Short Q&A**: answer practical multiple-choice questions.
+- **Plan Your Trip**: choose what to pack and how to travel safely.
+- **Learn Places**: browse place vocabulary and context.
 
 ## Quick links
 
-- Live demo (deployed to Vercel):
- [https://getting-around-town-materials.vercel.app](https://getting-around-town-materials.vercel.app)
+- Live demo: [https://getting-around-town-materials.vercel.app](https://getting-around-town-materials.vercel.app)
 
-## For Development
+## Development
 
-1. Install dependencies
+Install dependencies:
 
-    ```powershell
-    npm install
-    ```
+```powershell
+npm install
+```
 
-2. Start dev server (Vite will pick an available port)
+Start local development:
 
-    ```powershell
-    npm run dev
-    ```
+```powershell
+npm run dev
+```
 
-3. Open the URL printed by Vite (for example: `http://localhost:5173`) and use the UI to try the modules.
+Run static/type checks:
 
-Build & preview
+```powershell
+npm run check
+```
+
+Run tests:
+
+```powershell
+npm run test -- --run
+```
+
+Build production bundle:
 
 ```powershell
 npm run build
-npm run preview
 ```

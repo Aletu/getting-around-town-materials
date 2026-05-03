@@ -1,0 +1,72 @@
+/* ============================================
+   Base Styles & Typography
+   ============================================ */
+
+html, body {
+  @apply bg-base-200 text-base-content;
+  font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent FOUC */
+html {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.2s ease-in;
+}
+
+/* Subtle background pattern */
+body {
+  background-color: #fdfcfb;
+  background-image:
+    radial-gradient(circle at 100% 0%, rgba(101, 195, 200, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(239, 159, 188, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(238, 175, 58, 0.02) 0%, transparent 70%);
+  background-attachment: fixed;
+}
+
+/* ============================================
+   Custom Scrollbar (Webkit)
+   ============================================ */
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(101, 195, 200, 0.3);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(101, 195, 200, 0.5);
+  background-clip: content-box;
+}
+
+/* Firefox */
+* { scrollbar-width: thin; scrollbar-color: rgba(101, 195, 200, 0.3) transparent; }
+
+/* ============================================
+   Selection Styling
+   ============================================ */
+
+::selection       { background-color: rgba(101, 195, 200, 0.3); color: inherit; }
+::-moz-selection  { background-color: rgba(101, 195, 200, 0.3); color: inherit; }
+
+/* ============================================
+   Component Refinements
+   ============================================ */
+
+.card { @apply transition-shadow duration-300; }
+
+.input, .select, .textarea { @apply transition-all duration-200; }
+.input:hover, .select:hover, .textarea:hover { @apply border-primary/50; }
+
+.badge    { @apply font-semibold tracking-wide; }
+.progress { @apply overflow-hidden; }
+.progress::-webkit-progress-bar   { @apply rounded-full; }
+.progress::-webkit-progress-value { @apply rounded-full transition-all duration-500; }
+.tooltip::before { @apply text-sm font-medium; }

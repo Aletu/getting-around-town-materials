@@ -1,9 +1,8 @@
 <script>
-  import { teacherMode, scenariosStore, shortQAStore, safeWalkStore } from '../stores.js';
+  import { teacherMode, scenariosStore, shortQAStore, safeWalkStore, toastStore } from '../stores.js';
   import { SCENARIOS } from '../data/scenarios.js';
   import { SHORT_QA_ITEMS } from '../data/shortQA.js';
   import { SAFE_WALK_SCENARIOS } from '../data/sequenceText.js';
-  import { toastStore } from '../stores.js';
   import { fly } from 'svelte/transition';
 
   function resetAllData() {
@@ -27,7 +26,7 @@
           <p class="text-xs text-base-content/60">Edit content directly within each module</p>
         </div>
       </div>
-      
+
       <div class="flex items-center gap-2 flex-wrap">
         <span class="px-2.5 py-1 text-xs font-medium bg-primary/10 text-primary rounded-lg">
           {$scenariosStore.length} Scenarios
@@ -38,8 +37,8 @@
         <span class="px-2.5 py-1 text-xs font-medium bg-accent/10 text-accent rounded-lg">
           {$safeWalkStore.length} Sequences
         </span>
-        
-        <button 
+
+        <button
           class="btn btn-sm btn-ghost border border-warning/30 text-warning hover:bg-warning/10 ml-2 gap-1.5 rounded-lg"
           on:click={resetAllData}
           aria-label="Reset all data to defaults"
