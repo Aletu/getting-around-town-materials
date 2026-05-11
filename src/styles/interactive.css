@@ -2,12 +2,29 @@
    Interactive Elements & Utility Classes
    ============================================ */
 
-/* Card hover lift */
+/* Card hover lift — smooth Material-style ease-out, no overshoot.
+   Slight scale adds depth; longer duration on enter, snappier on press. */
 .hover-lift {
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  transform: translateY(0) scale(1);
+  transition: transform 380ms cubic-bezier(0.22, 0.61, 0.36, 1),
+              box-shadow 380ms cubic-bezier(0.22, 0.61, 0.36, 1),
+              border-color 280ms ease-out;
+  will-change: transform;
 }
-.hover-lift:hover  { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08), 0 8px 10px -6px rgba(0,0,0,0.05); }
-.hover-lift:active { transform: translateY(-2px); }
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.015);
+  box-shadow:
+    0 24px 38px -10px rgba(31, 22, 38, 0.14),
+    0 12px 18px -8px rgba(31, 22, 38, 0.08),
+    0 2px 4px -1px rgba(31, 22, 38, 0.04);
+}
+.hover-lift:active {
+  transform: translateY(-2px) scale(1);
+  transition-duration: 140ms;
+}
+.hover-lift:focus-visible {
+  transform: translateY(-4px);
+}
 
 /* Gradient text */
 .text-gradient        { @apply bg-clip-text text-transparent; background-image: linear-gradient(135deg, #65c3c8 0%, #ef9fbc 100%); }
@@ -59,6 +76,12 @@
 /* Answer states */
 .answer-correct   { @apply bg-success/20 border-success border-2 ring-4 ring-success/30; }
 .answer-incorrect { @apply bg-error/10 border-error/50 border-2; }
+
+/* Quoted scenario text — uses CSS-generated quotes so screen readers
+   don't announce "quote ... end quote" for the literal characters. */
+.visitor-quote::before { content: open-quote; }
+.visitor-quote::after  { content: close-quote; }
+.visitor-quote { quotes: '\201C' '\201D' '\2018' '\2019'; }
 
 /* Speech bubble for hints */
 .speech-bubble { @apply relative bg-info/10 border-2 border-info/30 rounded-2xl p-4; }

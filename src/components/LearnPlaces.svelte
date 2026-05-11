@@ -1,9 +1,35 @@
 <script>
   import { PLACES } from "../data/places.js";
-  import { fade, scale, fly } from "svelte/transition";
+  import { fade, scale } from "svelte/transition";
   import { flip } from "svelte/animate";
-  import { onMount, onDestroy, createEventDispatcher } from "svelte";
+  import { onDestroy, createEventDispatcher } from "svelte";
+  import { get } from "svelte/store";
   import SpeakButton from "./SpeakButton.svelte";
+  import { focusTrap } from "../lib/focusTrap.js";
+  import { progressStore, addStars, awardSticker } from "../stores/progressStore.js";
+
+  function trackPlaceViewed(placeId) {
+    let starsToAward = 0;
+    progressStore.update(p => {
+      const viewed = new Set(p.learnPlaces.placesViewed);
+      if (viewed.has(placeId)) return p;
+
+      viewed.add(placeId);
+      // Award one Explorer star every 5 unique places viewed.
+      if (viewed.size % 5 === 0) starsToAward = 1;
+      return {
+        ...p,
+        learnPlaces: { ...p.learnPlaces, placesViewed: Array.from(viewed) },
+      };
+    });
+
+    if (starsToAward > 0) addStars("learnPlaces", starsToAward);
+
+    awardSticker("firstAdventure");
+    if (get(progressStore).learnPlaces.placesViewed.length >= 10) {
+      awardSticker("explorerBadge");
+    }
+  }
 
   const dispatch = createEventDispatcher();
 
@@ -25,6 +51,7 @@
 
   function openPlace(place) {
     selectedPlace = place;
+    trackPlaceViewed(place.id);
     // Lock body scroll
     document.body.style.overflow = "hidden";
   }
@@ -216,21 +243,24 @@
 
 <!-- Modal -->
 {#if selectedPlace}
-  <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
   <div
-    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-base-content/50 backdrop-blur-sm"
-    on:click={closePlace}
-    on:keydown={(e) => e.key === "Escape" && closePlace()}
+    class="fixed inset-0 z-50 flex items-center justify-center p-4"
     role="dialog"
     aria-modal="true"
     aria-labelledby="modal-title"
     transition:fade={{ duration: 200 }}
   >
-    <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-static-element-interactions -->
+    <button
+      type="button"
+      class="absolute inset-0 bg-base-content/50 backdrop-blur-sm"
+      aria-label="Close place details"
+      tabindex="-1"
+      on:click={closePlace}
+    ></button>
     <div
-      class="card w-full max-w-md bg-base-100 shadow-2xl overflow-hidden cursor-default relative rounded-2xl border border-base-200/50"
-      on:click|stopPropagation
+      class="card w-full max-w-md bg-base-100 shadow-2xl overflow-hidden relative rounded-2xl border border-base-200/50 z-10"
       transition:scale={{ duration: 200, start: 0.95 }}
+      use:focusTrap
     >
       <!-- Header with gradient background -->
       <div

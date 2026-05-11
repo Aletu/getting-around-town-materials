@@ -1,32 +1,45 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { themeStore, fontSizeStore, reducedMotionStore, dyslexiaFontStore } from '../stores.js';
+  import { themeStore, fontSizeStore, reducedMotionStore, dyslexiaFontStore, toastStore } from '../stores.js';
   import { resetAllProgress } from '../stores/progressStore.js';
   import { fade, scale } from 'svelte/transition';
+  import { focusTrap } from '../lib/focusTrap.js';
 
   const dispatch = createEventDispatcher();
+
+  let confirmingReset = false;
 
   function close() {
     dispatch('close');
   }
 
   function handleKeydown(e) {
-    if (e.key === 'Escape') close();
+    if (e.key === 'Escape') {
+      if (confirmingReset) confirmingReset = false;
+      else close();
+    }
   }
 
   function handleReset() {
-    if (confirm('Are you sure you want to reset all your progress and stickers? This cannot be undone!')) {
-      resetAllProgress();
-      alert('Progress has been reset.');
-      close();
-    }
+    confirmingReset = true;
+  }
+
+  function confirmReset() {
+    resetAllProgress();
+    confirmingReset = false;
+    toastStore.add('Progress has been reset.', 'success');
+    close();
+  }
+
+  function cancelReset() {
+    confirmingReset = false;
   }
 
   const themes = [
     { id: 'gettingaround', name: 'Default' },
     { id: 'light', name: 'Light' },
     { id: 'dark', name: 'Dark' },
-    { id: 'bumblebee', name: 'High Contrast' }
+    { id: 'highcontrast', name: 'High Contrast' }
   ];
 
   const fontSizes = [
@@ -38,8 +51,13 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="modal modal-open z-[100]">
-  <div class="modal-box relative max-w-md bg-base-100 shadow-2xl border border-base-200/50 rounded-2xl p-0 overflow-hidden" in:scale={{start: 0.95, duration: 200}} out:fade={{duration: 150}}>
+<div class="modal modal-open z-[100]" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+  <div
+    class="modal-box relative max-w-md bg-base-100 shadow-2xl border border-base-200/50 rounded-2xl p-0 overflow-hidden"
+    in:scale={{start: 0.95, duration: 200}}
+    out:fade={{duration: 150}}
+    use:focusTrap
+  >
     <!-- Header -->
     <div class="flex items-center justify-between p-5 border-b border-base-200">
       <div class="flex items-center gap-3">
@@ -49,7 +67,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
         </div>
-        <h3 class="text-lg font-bold text-base-content">Settings</h3>
+        <h3 id="settings-title" class="text-lg font-bold text-base-content">Settings</h3>
       </div>
       <button class="btn btn-sm btn-circle btn-ghost hover:bg-base-200" on:click={close} aria-label="Close settings">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -115,12 +133,30 @@
       <!-- Danger Zone -->
       <div class="space-y-4 border-t pt-5 border-error/50">
         <h4 class="font-semibold text-xs uppercase tracking-wider text-error">Danger Zone</h4>
-        <button class="btn btn-outline btn-error w-full mt-2" on:click={handleReset}>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-          </svg>
-          Reset All Progress
-        </button>
+        {#if !confirmingReset}
+          <button class="btn btn-outline btn-error w-full mt-2" on:click={handleReset}>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+            Reset All Progress
+          </button>
+        {:else}
+          <div
+            class="rounded-xl border border-error/40 bg-error/5 p-4 space-y-3"
+            role="alertdialog"
+            aria-labelledby="reset-confirm-title"
+            aria-describedby="reset-confirm-desc"
+          >
+            <p id="reset-confirm-title" class="font-semibold text-error">Reset all progress?</p>
+            <p id="reset-confirm-desc" class="text-sm text-base-content/70">
+              All your stickers, stars, and saved progress will be erased. This cannot be undone.
+            </p>
+            <div class="flex gap-2">
+              <button class="btn btn-ghost btn-sm flex-1 rounded-lg" on:click={cancelReset}>Cancel</button>
+              <button class="btn btn-error btn-sm flex-1 rounded-lg" on:click={confirmReset}>Yes, reset</button>
+            </div>
+          </div>
+        {/if}
       </div>
     </div>
 
@@ -129,12 +165,11 @@
       <button class="btn btn-primary w-full rounded-xl font-semibold shadow-sm hover:shadow-md transition-all btn-kid" on:click={close}>Done</button>
     </div>
   </div>
-  <div 
-    class="modal-backdrop bg-base-content/40 backdrop-blur-sm" 
-    on:click={close} 
-    role="button" 
-    tabindex="0" 
-    on:keydown={(e) => e.key === 'Enter' && close()}
+  <button
+    type="button"
+    class="modal-backdrop bg-base-content/40 backdrop-blur-sm"
+    on:click={close}
     aria-label="Close modal"
-  ></div>
+    tabindex="-1"
+  ></button>
 </div>

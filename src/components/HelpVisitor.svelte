@@ -1,10 +1,11 @@
 <script>
   import { scenariosStore, teacherMode } from '../stores.js';
   import { PLACES } from '../data/places.js';
-  import { VALIDATION } from '../config.js';
+  import { VALIDATION, HELP_VISITOR_SESSION } from '../config.js';
   import { createEventDispatcher } from 'svelte';
-  import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
   import { fade, fly } from 'svelte/transition';
+  import { shuffle } from '../lib/shuffle.js';
   import SpeakButton from './SpeakButton.svelte';
   import { progressStore, addStars, awardSticker } from '../stores/progressStore.js';
 
@@ -17,9 +18,6 @@
   let finished = false;
   let selectedId = null;
   let buttonStatus = null; // 'correct' or 'incorrect'
-  // session size: pick a random subset of scenarios per session to keep sessions short
-  const QUESTIONS_PER_SESSION = 10;
-  // start with scenarios shuffled and limited to QUESTIONS_PER_SESSION so sessions are consistent
   let messages = [];
 
   // Initialize messages when store is ready
@@ -32,42 +30,26 @@
 
   function buildOptions(msg) {
     const base = [msg.answer, ...msg.distractors];
-    return base
-      .map(v => {
-        const p = PLACES.find(p => p.id === v);
-        return { id: v, label: p?.label || v, emoji: p?.emoji || '❓' };
-      })
-      .sort(() => Math.random() - 0.5);
+    return shuffle(base.map(v => {
+      const p = PLACES.find(p => p.id === v);
+      return { id: v, label: p?.label || v, emoji: p?.emoji || '❓' };
+    }));
   }
 
   // make options reactive so they're rebuilt whenever the current message or messages change
   $: options = current ? buildOptions(current) : [];
 
-  // debugging: track state so it's easier to see why we might be stuck on the first message
-  function dbgState(tag) {
-    // use console.debug so logs are visible in devtools without being too noisy
-    console.debug('[HelpVisitor]', tag, {
-      currentIndex,
-      messagesLength: messages.length,
-      currentId: current?.id,
-      currentText: current?.text
-    });
-  }
-
   function selectPlace(id) {
     attempts++;
     selectedId = id;
-    dbgState('selectPlace - before check');
     if (current && id === current.answer) {
       score++;
       buttonStatus = 'correct';
-      dbgState('selectPlace - correct');
       advance();
     } else {
       buttonStatus = 'incorrect';
       wrongAttemptsForCurrent += 1;
       eliminatedIds = [...eliminatedIds, id];
-      dbgState('selectPlace - wrong');
       setTimeout(() => {
         buttonStatus = null;
         selectedId = null;
@@ -83,10 +65,8 @@
         currentIndex++;
         wrongAttemptsForCurrent = 0;
         eliminatedIds = [];
-        dbgState('advance - incremented');
       } else {
         finished = true;
-        dbgState('advance - finished');
       }
     }, 600);
   }
@@ -100,37 +80,8 @@
     finished = false;
     selectedId = null;
     buttonStatus = null;
-    
-    messages = [...$scenariosStore].sort(() => Math.random() - 0.5).slice(0, Math.min(QUESTIONS_PER_SESSION, $scenariosStore.length));
-    
-    dbgState('restart');
-    persist();
+    messages = shuffle($scenariosStore).slice(0, Math.min(HELP_VISITOR_SESSION, $scenariosStore.length));
   }
-
-  // persistence helpers
-  function persist() {
-    if (typeof window === 'undefined') return;
-    const data = { currentIndex, score, attempts };
-    window.localStorage.setItem('helpVisitorProgress', JSON.stringify(data));
-  }
-  $: if (currentIndex || score || attempts) { persist(); }
-
-  onMount(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      const raw = window.localStorage.getItem('helpVisitorProgress');
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (typeof parsed.currentIndex === 'number' && parsed.currentIndex < messages.length) {
-          currentIndex = parsed.currentIndex;
-        }
-        if (typeof parsed.score === 'number') score = parsed.score;
-        if (typeof parsed.attempts === 'number') attempts = parsed.attempts;
-      }
-    } catch (e) {
-      console.warn('Failed to restore progress', e);
-    }
-  });
 
   // Teacher Mode Functions
   function addScenario() {
@@ -201,12 +152,10 @@
     }
     
     // Check for Helpful Hero badge (20+ completions)
-    progressStore.subscribe(p => {
-      if (p.helpVisitor.totalCompleted >= 20) {
-        awardSticker('helpfulHero');
-      }
-    })();
-    
+    if (get(progressStore).helpVisitor.totalCompleted >= 20) {
+      awardSticker('helpfulHero');
+    }
+
     return {};
   }
 
@@ -257,7 +206,7 @@
                     <div class="form-control w-full">
                         <div class="flex items-baseline justify-between mb-1.5">
                             <span class="text-sm font-semibold text-base-content/70">Scenario Text</span>
-                            <span class="text-xs {(scenario.text?.length || 0) >= VALIDATION.SCENARIO_TEXT_MAX ? 'text-error font-semibold' : 'text-base-content/40'}">{scenario.text?.length || 0}/{VALIDATION.SCENARIO_TEXT_MAX}</span>
+                            <span class="text-xs {(scenario.text?.length || 0) >= VALIDATION.SCENARIO_TEXT_MAX ? 'text-error font-semibold' : 'text-base-content/60'}">{scenario.text?.length || 0}/{VALIDATION.SCENARIO_TEXT_MAX}</span>
                         </div>
                         <span class="text-xs text-base-content/50 mb-2">What the visitor says</span>
                         <input type="text" maxlength={VALIDATION.SCENARIO_TEXT_MAX} placeholder="e.g. I need to buy some bread..." class="input input-bordered w-full focus:input-primary transition-all {!scenario.text || !scenario.text.trim() ? 'input-error bg-error/5' : ''}" bind:value={scenario.text} aria-label="Scenario text" />
@@ -269,7 +218,7 @@
                     <div class="form-control w-full">
                         <div class="flex items-baseline justify-between mb-1.5">
                             <span class="text-sm font-semibold text-base-content/70">Hint</span>
-                            <span class="text-xs {(scenario.hint?.length || 0) >= VALIDATION.SCENARIO_HINT_MAX ? 'text-error font-semibold' : 'text-base-content/40'}">{scenario.hint?.length || 0}/{VALIDATION.SCENARIO_HINT_MAX}</span>
+                            <span class="text-xs {(scenario.hint?.length || 0) >= VALIDATION.SCENARIO_HINT_MAX ? 'text-error font-semibold' : 'text-base-content/60'}">{scenario.hint?.length || 0}/{VALIDATION.SCENARIO_HINT_MAX}</span>
                         </div>
                         <span class="text-xs text-base-content/50 mb-2">Helpful tip for the student</span>
                         <input type="text" maxlength={VALIDATION.SCENARIO_HINT_MAX} placeholder="e.g. Look for the place that sells food made from flour." class="input input-bordered w-full focus:input-primary transition-all {!scenario.hint || !scenario.hint.trim() ? 'input-error bg-error/5' : ''}" bind:value={scenario.hint} aria-label="Hint" />
@@ -385,7 +334,7 @@
                         size="sm"
                       />
                     </div>
-                    <p class="text-lg sm:text-xl font-medium leading-relaxed text-base-content" aria-live="polite">"{current?.text}"</p>
+                    <p class="visitor-quote text-lg sm:text-xl font-medium leading-relaxed text-base-content" aria-live="polite">{current?.text}</p>
                 </div>
             </div>
           </div>

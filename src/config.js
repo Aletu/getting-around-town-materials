@@ -4,15 +4,15 @@
 
 // Gamification — XP thresholds to reach each level
 export const XP_PER_STAR   = 10;
-export const XP_LEVEL_2    = 100;   // Principiante → Intermedio
-export const XP_LEVEL_3    = 250;   // Intermedio   → Avanzado
+export const XP_LEVEL_2    = 100;   // Beginner    → Intermediate
+export const XP_LEVEL_3    = 250;   // Intermediate → Advanced
 export const MAX_STARS     = 99;    // Cap per-module star counter
 
 // Level labels used in UI and profile
 export const LEVEL_NAMES = {
-    1: 'Principiante',
-    2: 'Intermedio',
-    3: 'Avanzado',
+    1: 'Beginner',
+    2: 'Intermediate',
+    3: 'Advanced',
 };
 
 // Session lengths per module (how many items per play-through)

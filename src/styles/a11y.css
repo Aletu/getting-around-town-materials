@@ -15,7 +15,8 @@
   outline-offset: 3px;
 }
 
-/* Focus rings */
+/* Focus rings — :focus-visible only, never strip the default :focus outline.
+   Browsers without :focus-visible support fall back to native outlines. */
 *:focus-visible,
 button:focus-visible,
 a:focus-visible,
@@ -25,7 +26,6 @@ textarea:focus-visible,
 [tabindex]:focus-visible {
   @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-base-100;
 }
-*:focus { outline: none; }
 
 /* Screen reader only */
 .sr-only {

@@ -9,8 +9,8 @@ export const SCENARIOS = [
   },
   {
     id: 2,
-    text: 'I need to cross the street safely. What should I look for first?',
-    hint: 'Look for the white stripes where people cross.',
+    text: 'I need to walk to the other side of this street. Where is the safe place to cross?',
+    hint: 'Look for the white stripes painted on the road.',
     answer: 'crosswalk',
     distractors: ['library', 'bus_stop']
   },
@@ -23,7 +23,7 @@ export const SCENARIOS = [
   },
   {
     id: 4,
-    text: 'I am at a busy corner. Which signal helps cars and walkers know when to stop and go?',
+    text: "I'm at a busy corner and not sure when to cross. Where do I look to see when cars must stop?",
     hint: 'It has red, yellow, and green colors.',
     answer: 'traffic_light',
     distractors: ['park', 'hospital']
@@ -51,14 +51,14 @@ export const SCENARIOS = [
   },
   {
     id: 8,
-    text: 'I am walking to school. What is the safest place to walk beside the road?',
+    text: "I'm walking next to a busy road. Where should I walk to be safe?",
     hint: 'This path is made for people, not for cars.',
     answer: 'sidewalk',
     distractors: ['park', 'crosswalk']
   },
   {
     id: 9,
-    text: 'I have my backpack, pencils, and homework. Where am I going?',
+    text: 'My niece has her backpack, pencils, and homework all packed. Where should I drop her off?',
     hint: 'Teachers and classmates are there every weekday.',
     answer: 'school',
     distractors: ['library', 'bus_stop']
@@ -114,15 +114,15 @@ export const SCENARIOS = [
   },
   {
     id: 17,
-    text: 'I see smoke coming from a building. Which emergency place sends firefighters?',
+    text: 'I see smoke coming from a building! Where should I go to get help putting out the fire?',
     hint: 'Fire trucks leave from this station.',
     answer: 'fire_station',
     distractors: ['police_station', 'hospital']
   },
   {
     id: 18,
-    text: 'I lost my backpack and need help. Which place has officers who can assist?',
-    hint: 'Police officers work there to keep people safe.',
+    text: 'Someone took my backpack and I need help. Where should I go to report it?',
+    hint: 'Officers there work to keep people safe.',
     answer: 'police_station',
     distractors: ['fire_station', 'post_office']
   },

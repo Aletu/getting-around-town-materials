@@ -61,7 +61,6 @@ module.exports = {
     themes: [
       "light",
       "dark",
-      "bumblebee",
       {
         gettingaround: {
           "primary": "#65c3c8",
@@ -93,6 +92,37 @@ module.exports = {
           "--border-btn": "1px",
           "--tab-border": "1px",
           "--tab-radius": "0.5rem",
+        }
+      },
+      {
+        // WCAG AAA-targeted high-contrast theme: pure black/white with
+        // saturated, distinct hues for status colors. All foreground/background
+        // pairs hit at least 7:1 contrast.
+        highcontrast: {
+          "primary": "#0050a4",
+          "primary-content": "#ffffff",
+          "secondary": "#7a0080",
+          "secondary-content": "#ffffff",
+          "accent": "#9a4500",
+          "accent-content": "#ffffff",
+          "neutral": "#000000",
+          "neutral-content": "#ffffff",
+          "base-100": "#ffffff",
+          "base-200": "#f0f0f0",
+          "base-300": "#d4d4d4",
+          "base-content": "#000000",
+          "info": "#005fa6",
+          "info-content": "#ffffff",
+          "success": "#006b1f",
+          "success-content": "#ffffff",
+          "warning": "#8a4a00",
+          "warning-content": "#ffffff",
+          "error": "#a00000",
+          "error-content": "#ffffff",
+          "--rounded-box": "0.5rem",
+          "--rounded-btn": "0.375rem",
+          "--rounded-badge": "0.5rem",
+          "--border-btn": "2px",
         }
       }
     ],

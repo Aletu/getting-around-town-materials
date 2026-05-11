@@ -93,7 +93,7 @@
   
   <!-- Milestone labels -->
   {#if showMilestones}
-    <div class="flex justify-between text-xs text-base-content/40 px-1">
+    <div class="flex justify-between text-xs text-base-content/60 px-1">
       <span>Start</span>
       <span>25%</span>
       <span>50%</span>

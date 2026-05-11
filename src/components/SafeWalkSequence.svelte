@@ -1,9 +1,12 @@
 <script>
   import { safeWalkStore, teacherMode } from '../stores.js';
   import { createEventDispatcher } from 'svelte';
+  import { get } from 'svelte/store';
   import { fade, fly } from 'svelte/transition';
   import { flip } from 'svelte/animate';
   import { tick } from 'svelte';
+  import { shuffle } from '../lib/shuffle.js';
+  import { SAFE_WALK_SESSION, SAFE_WALK_LEVEL_CAPS } from '../config.js';
   import SpeakButton from './SpeakButton.svelte';
   import { progressStore, addStars, awardSticker, studentProfile } from '../stores/progressStore.js';
 
@@ -12,28 +15,23 @@
   // Track focused index for keyboard navigation
   let focusedIndex = -1;
 
-  // Session state: we play through 3 distinct scenarios before the module is "fully" completed
-  const SCENARIOS_PER_SESSION = 3;
+  // Session state: SAFE_WALK_SESSION distinct scenarios per session
   let sessionScenarios = [];
   let currentIndex = 0;
   let currentScenario;
   let items = [];
   let feedback = '';
-  let completed = false; // true when the whole 3-scenario session is done
+  let completed = false; // true when the whole session is done
   let scenarioDone = false; // true when the current scenario has been correctly ordered
   let selectedId = null;
 
   function startNewSession() {
     const userLevel = $studentProfile.level || 1;
-    let maxScenarios = 10;
-    if (userLevel === 2) maxScenarios = 20;
-    if (userLevel >= 3) maxScenarios = $safeWalkStore.length;
-    
-    const validScenarios = [...$safeWalkStore].slice(0, maxScenarios);
-    
-    // shuffle a shallow copy and take the first SCENARIOS_PER_SESSION
-    const shuffled = validScenarios.sort(() => Math.random() - 0.5);
-    sessionScenarios = shuffled.slice(0, SCENARIOS_PER_SESSION);
+    const cap = SAFE_WALK_LEVEL_CAPS[userLevel] ?? SAFE_WALK_LEVEL_CAPS[1];
+    const maxScenarios = Math.min(cap, $safeWalkStore.length);
+    const validScenarios = $safeWalkStore.slice(0, maxScenarios);
+
+    sessionScenarios = shuffle(validScenarios).slice(0, SAFE_WALK_SESSION);
     currentIndex = 0;
     completed = false;
     loadCurrentScenario();
@@ -46,7 +44,7 @@
 
   function loadCurrentScenario() {
     currentScenario = sessionScenarios[currentIndex];
-    items = currentScenario.sequence.map(i => ({ ...i })).sort(() => Math.random() - 0.5);
+    items = shuffle(currentScenario.sequence.map(i => ({ ...i })));
     feedback = '';
     scenarioDone = false;
     selectedId = null;
@@ -154,7 +152,7 @@
 
       // small delay gives time to read feedback before switching automatically
       setTimeout(() => {
-        if (currentIndex < SCENARIOS_PER_SESSION - 1) {
+        if (currentIndex < SAFE_WALK_SESSION - 1) {
           currentIndex += 1;
           loadCurrentScenario();
         } else {
@@ -221,8 +219,8 @@
       ...p,
       safeWalk: {
         ...p.safeWalk,
-        scenariosCompleted: p.safeWalk.scenariosCompleted + SCENARIOS_PER_SESSION,
-        perfectSequences: p.safeWalk.perfectSequences + SCENARIOS_PER_SESSION,
+        scenariosCompleted: p.safeWalk.scenariosCompleted + SAFE_WALK_SESSION,
+        perfectSequences: p.safeWalk.perfectSequences + SAFE_WALK_SESSION,
         totalAttempts: p.safeWalk.totalAttempts + 1
       }
     }));
@@ -230,13 +228,11 @@
     // Check for achievements
     awardSticker('firstAdventure');
     
-    // Check for Safety Champion badge (3+ sessions)
-    progressStore.subscribe(p => {
-      if (p.safeWalk.totalAttempts >= 3) {
-        awardSticker('safetyChampion');
-      }
-    })();
-    
+    // Sequence Master badge after 3+ completed sessions
+    if (get(progressStore).safeWalk.totalAttempts >= 3) {
+      awardSticker('sequenceMaster');
+    }
+
     return {};
   }
 </script>
@@ -283,7 +279,7 @@
                 <div>
                     <div class="flex items-center justify-between mb-3">
                         <span class="text-xs font-medium text-base-content/50 uppercase tracking-wide">Steps (correct order)</span>
-                        <span class="text-xs text-base-content/40">{scenario.sequence.length} steps</span>
+                        <span class="text-xs text-base-content/60">{scenario.sequence.length} steps</span>
                     </div>
                     
                     <div class="space-y-2">
@@ -352,8 +348,8 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
     </button>
     <div>
-        <h2 class="text-xl lg:text-2xl font-bold text-base-content">Safe Walk Sequence</h2>
-        <p class="text-sm text-base-content/60">Order the steps correctly.</p>
+        <h2 class="text-xl lg:text-2xl font-bold text-base-content">Daily Sequences</h2>
+        <p class="text-sm text-base-content/60">Put the activities in the right order.</p>
     </div>
   </div>
 
@@ -361,13 +357,13 @@
     <div class="card bg-base-100 shadow-soft overflow-hidden border border-base-200/50">
       <!-- Progress Bar -->
       <div class="h-1 bg-base-200 w-full">
-        <div class="h-full bg-gradient-to-r from-secondary to-accent transition-all duration-500 ease-out" style="width: {((currentIndex + 1) / SCENARIOS_PER_SESSION) * 100}%"></div>
+        <div class="h-full bg-gradient-to-r from-secondary to-accent transition-all duration-500 ease-out" style="width: {((currentIndex + 1) / SAFE_WALK_SESSION) * 100}%"></div>
       </div>
       
       <div class="card-body p-5 sm:p-7 lg:p-8">
         <!-- Progress Indicator -->
         <div class="flex items-center justify-between text-sm mb-5">
-          <span class="text-base-content/50 font-medium">Scenario {currentIndex + 1} of {SCENARIOS_PER_SESSION}</span>
+          <span class="text-base-content/50 font-medium">Scenario {currentIndex + 1} of {SAFE_WALK_SESSION}</span>
         </div>
         
         <div class="bg-gradient-to-br from-base-200/60 to-base-200/30 p-5 sm:p-6 rounded-2xl border border-base-300/50 mb-6 relative overflow-hidden">
@@ -447,7 +443,7 @@
             🎊
         </div>
         <h3 class="text-2xl sm:text-3xl font-bold mb-2 text-base-content">Session Complete!</h3>
-        <p class="text-base-content/60 mb-4 max-w-sm">You successfully arranged all the steps in three different safe-walk scenarios.</p>
+        <p class="text-base-content/60 mb-4 max-w-sm">You put the activities in order for three different scenarios.</p>
         
         <!-- Stars Earned -->
         <div class="flex items-center justify-center gap-1 mb-6">
@@ -457,10 +453,10 @@
         </div>
 
         <div class="flex items-center gap-3 p-4 bg-success/10 rounded-xl border border-success/20 mb-6 w-full max-w-sm">
-          <span class="text-2xl">🛡️</span>
+          <span class="text-2xl">📋</span>
           <div class="text-left">
-              <h3 class="font-semibold text-success">Safety Expert!</h3>
-              <p class="text-xs text-base-content/60">You've demonstrated understanding of safe walking. +3 stars</p>
+              <h3 class="font-semibold text-success">Sequence Master!</h3>
+              <p class="text-xs text-base-content/60">You put all the activities in the right order. +3 stars</p>
           </div>
         </div>
 

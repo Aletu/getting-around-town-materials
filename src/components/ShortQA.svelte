@@ -1,10 +1,11 @@
 <script>
   import { shortQAStore, teacherMode } from "../stores.js";
-  import { VALIDATION } from "../config.js";
+  import { VALIDATION, SHORT_QA_SESSION, SHORT_QA_LEVEL_CAPS } from "../config.js";
   import { createEventDispatcher, onMount } from "svelte";
+  import { get } from "svelte/store";
   import { fade, fly } from "svelte/transition";
   import { SHORT_QA_ITEMS } from "../data/shortQA.js";
-  import confetti from "canvas-confetti";
+  import { shuffle } from "../lib/shuffle.js";
   import SpeakButton from "./SpeakButton.svelte";
   import {
     progressStore,
@@ -14,8 +15,6 @@
   } from "../stores/progressStore.js";
 
   const dispatch = createEventDispatcher();
-
-  const QUESTIONS_PER_SESSION = 5;
 
   let items = [];
   let currentIndex = 0;
@@ -34,21 +33,15 @@
 
   function startSession() {
     const userLevel = $studentProfile.level || 1;
-    let maxItems = 7;
-    if (userLevel === 2) maxItems = 14;
-    if (userLevel >= 3) maxItems = $shortQAStore.length;
+    const cap = SHORT_QA_LEVEL_CAPS[userLevel] ?? SHORT_QA_LEVEL_CAPS[1];
+    const maxItems = Math.min(cap, $shortQAStore.length);
+    const validItems = $shortQAStore.slice(0, maxItems);
+    const selected = shuffle(validItems).slice(0, Math.min(SHORT_QA_SESSION, validItems.length));
 
-    const validItems = [...$shortQAStore].slice(0, maxItems);
-    const shuffled = validItems.sort(() => Math.random() - 0.5);
-    const selected = shuffled.slice(
-      0,
-      Math.min(QUESTIONS_PER_SESSION, validItems.length),
-    );
-
-    // Shuffle options for each question so the answer isn't always the first one
+    // Shuffle options so the answer isn't always the first one
     items = selected.map((q) => ({
       ...q,
-      options: [...q.options].sort(() => Math.random() - 0.5),
+      options: shuffle(q.options),
     }));
 
     currentIndex = 0;
@@ -89,13 +82,8 @@
         currentIndex += 1;
       } else {
         finished = true;
-        if (score === items.length) {
-          confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-          });
-        }
+        // Perfect-score celebration is handled by the global Celebration
+        // component (triggered via the "sticker-earned" event).
       }
     }, 1200); // Wait enough time for user to see the correct answer
   }
@@ -161,11 +149,9 @@
     }
 
     // Check for Question Master badge (30+ correct)
-    progressStore.subscribe((p) => {
-      if (p.shortQA.correctAnswers >= 30) {
-        awardSticker("questionMaster");
-      }
-    })();
+    if (get(progressStore).shortQA.correctAnswers >= 30) {
+      awardSticker("questionMaster");
+    }
 
     return {};
   }
@@ -233,7 +219,7 @@
               <div class="form-control w-full">
                 <div class="flex items-baseline justify-between mb-1.5">
                   <span class="text-sm font-semibold text-base-content/70">Question Text</span>
-                  <span class="text-xs {(item.question?.length || 0) >= VALIDATION.QA_QUESTION_MAX ? 'text-error font-semibold' : 'text-base-content/40'}">{item.question?.length || 0}/{VALIDATION.QA_QUESTION_MAX}</span>
+                  <span class="text-xs {(item.question?.length || 0) >= VALIDATION.QA_QUESTION_MAX ? 'text-error font-semibold' : 'text-base-content/60'}">{item.question?.length || 0}/{VALIDATION.QA_QUESTION_MAX}</span>
                 </div>
                 <input
                   type="text"
@@ -611,7 +597,7 @@
                 Correct
               </div>
               <div class="text-2xl font-bold text-success">
-                {score}<span class="text-sm font-normal text-base-content/40"
+                {score}<span class="text-sm font-normal text-base-content/60"
                   >/{items.length}</span
                 >
               </div>

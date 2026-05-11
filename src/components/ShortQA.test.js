@@ -90,19 +90,31 @@ describe('ShortQA Component', () => {
         expect(buttons.length).toBeGreaterThanOrEqual(4);
     });
 
-    it('shows correct feedback after clicking the right answer', async () => {
+    it('marks the clicked correct answer with a success-state class', async () => {
         render(ShortQA);
 
-        // Find which question is currently shown (Library question)
-        const libraryQ = screen.queryByText(/Where do you go to borrow books\?/);
-        if (libraryQ) {
-            const correctBtn = screen.getByText('Library');
-            await fireEvent.click(correctBtn);
-            // The button should receive a correct state — aria-pressed or class change.
-            // We verify no crash and the button remains in the DOM.
-            expect(correctBtn).toBeInTheDocument();
-        }
-        // Pass if no errors thrown regardless of which question renders
+        // Find which question is currently shown and pick its known correct answer
+        const correctByQuestion = {
+            'Where do you go to borrow books?': 'Library',
+            'Where do you go when you are sick?': 'Hospital',
+            'Where do you buy bread?': 'Bakery',
+            'Where do children study?': 'School',
+            'Where do you play outside?': 'Park',
+        };
+
+        const shownQuestion = Object.keys(correctByQuestion).find(q =>
+            screen.queryByText(q),
+        );
+        if (!shownQuestion) return; // Defensive: nothing to assert against
+
+        const correctText = correctByQuestion[shownQuestion];
+        const correctBtn = screen.getByText(correctText).closest('button');
+        expect(correctBtn).not.toBeNull();
+
+        await fireEvent.click(correctBtn);
+
+        // Correct selection should add a success border/background class
+        expect(correctBtn.className).toMatch(/border-success|bg-success/);
     });
 
     it('shows the Q&A Editor when in teacher mode', async () => {

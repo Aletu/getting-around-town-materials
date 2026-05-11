@@ -3,17 +3,40 @@
   import { PACKING_ITEMS, TRANSPORT_OPTIONS } from "../data/tripData.js";
   import { fade, fly, slide, scale } from "svelte/transition";
   import { createEventDispatcher } from "svelte";
+  import { get } from "svelte/store";
   import { toastStore } from "../stores.js";
   import SpeakButton from "./SpeakButton.svelte";
+  import { progressStore, addStars, awardSticker } from "../stores/progressStore.js";
 
   const dispatch = createEventDispatcher();
+
+  function completeTrip() {
+    addStars("tripPlanner", 2);
+    progressStore.update(p => {
+      const destinations = new Set(p.tripPlanner.uniqueDestinations);
+      if (selectedPlace?.id) destinations.add(selectedPlace.id);
+      return {
+        ...p,
+        tripPlanner: {
+          ...p.tripPlanner,
+          tripsPlanned: p.tripPlanner.tripsPlanned + 1,
+          uniqueDestinations: Array.from(destinations),
+        },
+      };
+    });
+
+    awardSticker("firstAdventure");
+    if (get(progressStore).tripPlanner.tripsPlanned >= 5) {
+      awardSticker("superNavigator");
+    }
+  }
 
   let step = 1;
   let selectedPlace = null;
   let selectedItems = [];
   let selectedTransport = null;
   let safetyTipIndex = 0;
-  let hasWarned = false;
+  let packingWarningShown = false;
 
   $: recommendedItemIds = getRecommendedItemIds(selectedPlace);
 
@@ -45,7 +68,6 @@
   const destinations = PLACES.filter((p) => p.category !== "Transport"); // Exclude 'Bus Stop' as a destination if it's in there
 
   function toggleItem(item) {
-    hasWarned = false;
     if (selectedItems.includes(item)) {
       selectedItems = selectedItems.filter((i) => i !== item);
     } else {
@@ -62,15 +84,15 @@
       const missingRecommended = PACKING_ITEMS.filter(
         (i) => recommendedItemIds.includes(i.id) && !selectedItems.includes(i),
       );
-      if (missingRecommended.length > 0 && !hasWarned) {
+      if (missingRecommended.length > 0 && !packingWarningShown) {
+        const names = missingRecommended.map((i) => i.label).join(", ");
         toastStore.add(
-          `Tip: You might want your ${missingRecommended[0].label} for the ${selectedPlace.label}! Click Next again to skip.`,
+          `Tip: You might want ${names} for the ${selectedPlace.label}! Click Next again to continue anyway.`,
           "info",
         );
-        hasWarned = true;
+        packingWarningShown = true;
         return;
       }
-      hasWarned = false;
     }
     if (step === 3 && !selectedTransport) {
       toastStore.add("Please choose how you will get there!", "warning");
@@ -96,7 +118,7 @@
     selectedPlace = null;
     selectedItems = [];
     selectedTransport = null;
-    hasWarned = false;
+    packingWarningShown = false;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 </script>
@@ -478,6 +500,7 @@
       <button
         class="btn btn-success gap-2 px-6 rounded-xl font-semibold shadow-sm hover:shadow-md transition-all"
         on:click={() => {
+          completeTrip();
           toastStore.add("Have a great trip!", "success");
           resetTrip();
         }}

@@ -3,13 +3,12 @@
 export const SAFE_WALK_SCENARIOS = [
   {
     id: 2,
-    text: 'First, we leave home to visit the hospital because Mom feels sick. Next, we go to the pharmacy for medicine. Then, we stop at the store for food. Finally, we go back home so she can rest.',
+    text: 'First, we leave home to visit the hospital because Mom feels sick. Next, we go to the pharmacy for medicine. Finally, we stop at the store for food on the way home.',
     sequence: [
       { id: 'house', label: 'House', emoji: '🏠', correctIndex: 0, alt: 'House' },
       { id: 'hospital', label: 'Hospital', emoji: '🏥', correctIndex: 1, alt: 'Hospital' },
       { id: 'pharmacy', label: 'Pharmacy', emoji: '💊', correctIndex: 2, alt: 'Pharmacy' },
-      { id: 'store', label: 'Store', emoji: '🏪', correctIndex: 3, alt: 'Store' },
-      { id: 'house_return', label: 'House', emoji: '🏠', correctIndex: 4, alt: 'House' }
+      { id: 'store', label: 'Store', emoji: '🏪', correctIndex: 3, alt: 'Store' }
     ]
   },
   {
@@ -34,12 +33,11 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 5,
-    text: 'First, school ends. Next, I return a book at the library. Then, I wait safely at the bus stop. Finally, I ride to my dentist appointment.',
+    text: 'First, I return a book at the library. Next, I wait safely at the bus stop. Finally, I ride to my dentist appointment.',
     sequence: [
-      { id: 'school', label: 'School', emoji: '🏫', correctIndex: 0, alt: 'School' },
-      { id: 'library', label: 'Library', emoji: '📚', correctIndex: 1, alt: 'Library' },
-      { id: 'bus_stop', label: 'Bus Stop', emoji: '🚏', correctIndex: 2, alt: 'Bus stop' },
-      { id: 'dentist', label: 'Dentist', emoji: '🦷', correctIndex: 3, alt: 'Dentist' }
+      { id: 'library', label: 'Library', emoji: '📚', correctIndex: 0, alt: 'Library' },
+      { id: 'bus_stop', label: 'Bus Stop', emoji: '🚏', correctIndex: 1, alt: 'Bus stop' },
+      { id: 'dentist', label: 'Dentist', emoji: '🦷', correctIndex: 2, alt: 'Dentist' }
     ]
   },
   {
@@ -109,7 +107,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 13,
-    text: 'First, I finish my workout at the gym. Next, I wait at the bus stop. Finally, I visit my aunt at the hospital.',
+    text: 'First, I finish my exercise at the gym. Next, I wait at the bus stop. Finally, I visit my aunt at the hospital.',
     sequence: [
       { id: 'gym', label: 'Gym', emoji: '💪', correctIndex: 0, alt: 'Gym' },
       { id: 'bus_stop', label: 'Bus Stop', emoji: '🚏', correctIndex: 1, alt: 'Bus stop' },
@@ -148,7 +146,7 @@ export const SAFE_WALK_SCENARIOS = [
     id: 17,
     text: 'First, we take our cat to the veterinarian for a checkup. Next, we buy treats at the pet store. Finally, we walk in the park for fresh air.',
     sequence: [
-      { id: 'vet', label: 'Veterinarian', emoji: '🐕‍🦺', correctIndex: 0, alt: 'Veterinarian' },
+      { id: 'vet', label: 'Vet', emoji: '🐕‍🦺', correctIndex: 0, alt: 'Veterinarian' },
       { id: 'pet_store', label: 'Pet Store', emoji: '🐾', correctIndex: 1, alt: 'Pet store' },
       { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 2, alt: 'Park' }
     ]
@@ -157,7 +155,7 @@ export const SAFE_WALK_SCENARIOS = [
     id: 18,
     text: 'First, I go to the bakery to get a birthday cake. Next, I buy balloons at the party store. Finally, I visit Grandpa\'s apartment for the celebration.',
     sequence: [
-      { id: 'bakery', label: 'Bakery', emoji: '🎂', correctIndex: 0, alt: 'Bakery' },
+      { id: 'bakery', label: 'Bakery', emoji: '🥖', correctIndex: 0, alt: 'Bakery' },
       { id: 'party_store', label: 'Party Store', emoji: '🎈', correctIndex: 1, alt: 'Party store' },
       { id: 'apartment', label: 'Apartment', emoji: '🏢', correctIndex: 2, alt: 'Apartment building' }
     ]
@@ -174,11 +172,11 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 20,
-    text: 'First, I get a haircut at the salon for picture day. Next, I pick up photos at the photo shop. Finally, I buy a frame at the store.',
+    text: 'First, I get a haircut at the salon. Next, I buy a new outfit at the store. Finally, my family takes pictures together at the park.',
     sequence: [
       { id: 'salon', label: 'Salon', emoji: '💇', correctIndex: 0, alt: 'Hair salon' },
-      { id: 'photo_shop', label: 'Photo Shop', emoji: '📷', correctIndex: 1, alt: 'Photo shop' },
-      { id: 'store', label: 'Store', emoji: '🏪', correctIndex: 2, alt: 'Store' }
+      { id: 'store', label: 'Store', emoji: '🏪', correctIndex: 1, alt: 'Store' },
+      { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 2, alt: 'Park' }
     ]
   },
   {
@@ -192,7 +190,7 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 22,
-    text: 'First, our class explores the museum to learn history. Next, we eat lunch in the cafeteria. Finally, we visit the aquarium to observe sea animals.',
+    text: 'First, our class visits the museum to learn history. Next, we eat lunch in the cafeteria. Finally, we go to the aquarium to see the sea animals.',
     sequence: [
       { id: 'museum', label: 'Museum', emoji: '🏛️', correctIndex: 0, alt: 'Museum' },
       { id: 'cafeteria', label: 'Cafeteria', emoji: '🍴', correctIndex: 1, alt: 'Cafeteria' },
@@ -228,29 +226,29 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 26,
-    text: 'First, I buy supplies for my science project at the craft store. Next, I copy notes at the print shop. Finally, I organize everything at the library.',
+    text: 'First, I buy supplies for my science project at the craft store. Next, I read books about my topic at the library. Finally, I work on my project at home.',
     sequence: [
       { id: 'craft_store', label: 'Craft Store', emoji: '🎨', correctIndex: 0, alt: 'Craft store' },
-      { id: 'print_shop', label: 'Print Shop', emoji: '🖨️', correctIndex: 1, alt: 'Print shop' },
-      { id: 'library', label: 'Library', emoji: '📚', correctIndex: 2, alt: 'Library' }
+      { id: 'library', label: 'Library', emoji: '📚', correctIndex: 1, alt: 'Library' },
+      { id: 'house', label: 'Home', emoji: '🏠', correctIndex: 2, alt: 'Home' }
     ]
   },
   {
     id: 27,
-    text: 'First, I volunteer at the animal shelter. Next, I buy fresh vegetables at the farmer\'s market. Finally, I deliver food to the senior center.',
+    text: 'First, I help feed the dogs at the animal shelter. Next, I buy fresh fruit at the farmer\'s market. Finally, I take cookies to my grandma\'s house.',
     sequence: [
       { id: 'shelter', label: 'Animal Shelter', emoji: '🐶', correctIndex: 0, alt: 'Animal shelter' },
       { id: 'farmers_market', label: 'Farmer\'s Market', emoji: '🥬', correctIndex: 1, alt: 'Farmer\'s market' },
-      { id: 'senior_center', label: 'Senior Center', emoji: '👴', correctIndex: 2, alt: 'Senior center' }
+      { id: 'grandmas_house', label: 'Grandma\'s House', emoji: '🏡', correctIndex: 2, alt: 'Grandma\'s house' }
     ]
   },
   {
     id: 28,
-    text: 'First, I go to art class at the art studio. Next, I buy paint at the art store. Finally, I visit my grandma at the nursing home and show her my artwork.',
+    text: 'First, I go to art class at the art studio. Next, I buy paint at the art store. Finally, I show my new artwork to my grandma at her house.',
     sequence: [
       { id: 'art_studio', label: 'Art Studio', emoji: '🎨', correctIndex: 0, alt: 'Art studio' },
       { id: 'art_store', label: 'Art Store', emoji: '🖌️', correctIndex: 1, alt: 'Art supply store' },
-      { id: 'nursing_home', label: 'Nursing Home', emoji: '🏥', correctIndex: 2, alt: 'Nursing home' }
+      { id: 'grandmas_house', label: 'Grandma\'s House', emoji: '🏡', correctIndex: 2, alt: 'Grandma\'s house' }
     ]
   },
   {

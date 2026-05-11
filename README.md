@@ -5,7 +5,7 @@ An educational web app built with **Svelte 4 + Vite + Tailwind (DaisyUI)** to he
 ## Learning modules
 
 - **Help the Visitor**: read scenarios and choose the correct place.
-- **Safe Walk Sequence**: order safety steps in the correct sequence.
+- **Daily Sequences**: put daily activities in the correct order.
 - **Short Q&A**: answer practical multiple-choice questions.
 - **Plan Your Trip**: choose what to pack and how to travel safely.
 - **Learn Places**: browse place vocabulary and context.
@@ -37,7 +37,7 @@ npm run check
 Run tests:
 
 ```powershell
-npm run test -- --run
+npm run test:run
 ```
 
 Build production bundle:
