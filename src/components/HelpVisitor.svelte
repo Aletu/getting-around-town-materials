@@ -339,10 +339,10 @@
             </div>
           </div>
 
-          <div class="grid gap-4 mt-6 grid-cols-1 sm:grid-cols-3">
+          <div class="grid gap-3 mt-4 sm:mt-6 grid-cols-1 sm:grid-cols-3">
             {#each options as opt (opt.id)}
             <button
-              class="group relative flex flex-col items-center justify-center gap-3 p-6 rounded-2xl border-2 transition-all duration-200 
+              class="group relative flex flex-col items-center justify-center gap-2 p-4 sm:p-6 rounded-2xl border-2 transition-all duration-200
               {eliminatedIds.includes(opt.id) ? 'border-base-200 bg-base-200/50 cursor-not-allowed opacity-60' : 'hover:scale-[1.02] active:scale-95'}
               {!eliminatedIds.includes(opt.id) && selectedId !== opt.id ? 'border-base-200 bg-base-100 hover:border-primary hover:shadow-lg' : ''}
               {selectedId === opt.id && buttonStatus === 'correct' ? 'border-success bg-success/10 text-success animate-pulse-green' : ''}
@@ -394,7 +394,7 @@
       use:awardProgressOnMount
     >
       <div class="h-1.5 bg-gradient-to-r from-success via-primary to-accent"></div>
-      <div class="card-body items-center text-center p-8 sm:p-10">
+      <div class="card-body items-center text-center p-5 sm:p-8">
         <div class="w-20 h-20 rounded-full bg-gradient-to-br from-success/20 to-primary/10 flex items-center justify-center text-5xl mb-5 shadow-inner animate-celebrate">
             🎉
         </div>
@@ -413,15 +413,15 @@
         </div>
         
         <div class="grid grid-cols-2 gap-4 w-full max-w-sm mb-8">
-          <div class="bg-gradient-to-br from-success/10 to-success/5 p-5 rounded-2xl border border-success/20 text-center">
+          <div class="bg-gradient-to-br from-success/10 to-success/5 p-3 sm:p-5 rounded-2xl border border-success/20 text-center">
             <div class="text-xs uppercase font-semibold text-success/70 mb-1 tracking-wide">Correct</div>
-            <div class="text-3xl font-bold text-success">{score}</div>
+            <div class="text-2xl sm:text-3xl font-bold text-success">{score}</div>
             <div class="text-xs text-base-content/50">out of {messages.length}</div>
           </div>
-          
-          <div class="bg-gradient-to-br from-primary/10 to-primary/5 p-5 rounded-2xl border border-primary/20 text-center">
+
+          <div class="bg-gradient-to-br from-primary/10 to-primary/5 p-3 sm:p-5 rounded-2xl border border-primary/20 text-center">
             <div class="text-xs uppercase font-semibold text-primary/70 mb-1 tracking-wide">Accuracy</div>
-            <div class="text-3xl font-bold text-primary">{attempts > 0 ? Math.round((score / attempts) * 100) : 0}%</div>
+            <div class="text-2xl sm:text-3xl font-bold text-primary">{attempts > 0 ? Math.round((score / attempts) * 100) : 0}%</div>
             <div class="text-xs text-base-content/50">{attempts} attempts</div>
           </div>
         </div>

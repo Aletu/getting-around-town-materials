@@ -147,7 +147,7 @@
         >
       </button>
       <div>
-        <h1 class="text-3xl sm:text-4xl font-black text-base-content">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-base-content">
           <span class="text-gradient">Trip</span> Planner
         </h1>
         <p class="text-base sm:text-lg text-base-content/60">
@@ -158,14 +158,14 @@
   </div>
 
   <!-- Steps Indicator -->
-  <div class="w-full overflow-x-auto pb-2 -mx-4 px-4">
-    <ul class="steps steps-horizontal w-full min-w-[450px] text-sm">
+  <div class="w-full">
+    <ul class="steps steps-horizontal w-full text-xs sm:text-sm">
       <li class="step font-medium" class:step-primary={step >= 1}>
-        Pick Destination
+        <span class="hidden xs:inline">Pick </span>Destination
       </li>
       <li class="step font-medium" class:step-primary={step >= 2}>Pack Bag</li>
       <li class="step font-medium" class:step-primary={step >= 3}>
-        Choose Travel
+        <span class="hidden xs:inline">Choose </span>Travel
       </li>
       <li class="step font-medium" class:step-primary={step >= 4}>Ready!</li>
     </ul>
@@ -173,7 +173,7 @@
 
   <!-- Content Area -->
   <div
-    class="bg-base-100 rounded-2xl shadow-soft p-5 sm:p-8 min-h-[350px] border border-base-200/50"
+    class="bg-base-100 rounded-2xl shadow-soft p-4 sm:p-8 min-h-[300px] border border-base-200/50"
   >
     <!-- Step 1: Destination -->
     {#if step === 1}
@@ -185,7 +185,7 @@
           <SpeakButton text="Where do you want to go today?" size="sm" />
         </div>
 
-        <div class="grid grid-cols-3 sm:grid-cols-4 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 sm:gap-3">
           {#each destinations as place}
             <button
               class="card bg-base-200/50 hover:bg-base-200 transition-all duration-200 cursor-pointer border-2 rounded-xl"
@@ -329,7 +329,7 @@
               {#if selectedTransport === transport}
                 <div
                   in:slide={{ duration: 200 }}
-                  class="alert bg-info/10 border border-info/20 shadow-sm text-left rounded-xl flex items-start gap-3 w-full ml-auto mr-auto max-w-[95%]"
+                  class="alert bg-info/10 border border-info/20 shadow-sm text-left rounded-xl flex items-start gap-3 w-full"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

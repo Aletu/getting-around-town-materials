@@ -102,9 +102,9 @@
     </button>
   </div>
 
-  <div class="text-center space-y-4" in:fade={{ duration: 400 }}>
+  <div class="text-center space-y-3 sm:space-y-4" in:fade={{ duration: 400 }}>
     <h1
-      class="text-3xl sm:text-4xl lg:text-5xl font-black text-base-content tracking-tight"
+      class="text-2xl sm:text-4xl lg:text-5xl font-black text-base-content tracking-tight"
     >
       <span class="text-gradient">Explore</span> Our Community
     </h1>
@@ -165,7 +165,7 @@
 
   <!-- Results Grid -->
   <div
-    class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+    class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-4"
   >
     {#each filteredPlaces as place (place.id)}
       <button
@@ -176,7 +176,7 @@
         aria-label={`View details for ${place.label}`}
       >
         <div
-          class="card-body items-center text-center p-4 sm:p-5 relative h-full"
+          class="card-body items-center text-center p-3 sm:p-4 md:p-5 relative h-full"
         >
           <!-- Category Badge -->
           <div
@@ -186,7 +186,7 @@
           </div>
 
           <div
-            class="text-5xl sm:text-6xl mb-3 transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm"
+            class="text-4xl sm:text-5xl mb-2 sm:mb-3 transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm"
           >
             {place.emoji}
           </div>
@@ -264,7 +264,7 @@
     >
       <!-- Header with gradient background -->
       <div
-        class="relative h-32 sm:h-36 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/5 flex items-center justify-center"
+        class="relative h-24 sm:h-32 bg-gradient-to-br from-primary/15 via-secondary/10 to-accent/5 flex items-center justify-center"
       >
         <!-- Decorative elements -->
         <div class="absolute inset-0 overflow-hidden">
@@ -298,14 +298,14 @@
 
         <!-- Emoji icon -->
         <div
-          class="text-7xl sm:text-8xl transform translate-y-6 relative z-10 drop-shadow-lg"
+          class="text-5xl sm:text-7xl transform translate-y-5 sm:translate-y-6 relative z-10 drop-shadow-lg"
         >
           {selectedPlace.emoji}
         </div>
       </div>
 
       <!-- Content -->
-      <div class="card-body items-center text-center pt-10 pb-6 px-6 relative">
+      <div class="card-body items-center text-center pt-8 pb-5 px-4 sm:px-6 relative">
         <div class="absolute right-4 top-4">
           <SpeakButton
             text={`${selectedPlace.label}. ${selectedPlace.description}`}
@@ -318,7 +318,7 @@
         </div>
         <h2
           id="modal-title"
-          class="text-2xl sm:text-3xl font-bold mb-4 text-base-content"
+          class="text-xl sm:text-3xl font-bold mb-3 sm:mb-4 text-base-content"
         >
           {selectedPlace.label}
         </h2>

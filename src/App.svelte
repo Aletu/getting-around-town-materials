@@ -211,7 +211,7 @@
         out:fade={{ duration: 150 }}
       >
         <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
-          <section class="space-y-12 lg:space-y-16">
+          <section class="space-y-8 sm:space-y-12 lg:space-y-16">
             <!-- Hero Section -->
             <div
               class="hero relative rounded-3xl lg:rounded-4xl shadow-soft-lg border border-base-300/30 isolate overflow-hidden animate-fade-slide-up"
@@ -229,11 +229,11 @@
               </div>
 
               <div
-                class="hero-content flex-col lg:flex-row-reverse p-6 sm:p-10 lg:p-16 gap-8 lg:gap-16 relative z-10"
+                class="hero-content flex-col lg:flex-row-reverse p-4 sm:p-10 lg:p-16 gap-4 sm:gap-8 lg:gap-16 relative z-10"
               >
                 <div class="relative">
                   <div
-                    class="text-8xl lg:text-9xl animate-float select-none filter drop-shadow-xl"
+                    class="text-6xl sm:text-8xl lg:text-9xl animate-float select-none filter drop-shadow-xl"
                   >
                     🗺️
                   </div>
@@ -243,13 +243,13 @@
                 </div>
                 <div class="text-center lg:text-left max-w-xl">
                   <h1
-                    class="text-4xl sm:text-5xl lg:text-6xl font-black mb-4 lg:mb-6 leading-[1.1] tracking-tight"
+                    class="text-3xl sm:text-5xl lg:text-6xl font-black mb-2 sm:mb-4 lg:mb-6 leading-[1.1] tracking-tight"
                   >
                     <span class="text-gradient">Explore Your</span><br />
                     <span class="text-base-content">Community!</span>
                   </h1>
                   <p
-                    class="text-base sm:text-lg lg:text-xl text-base-content/70 max-w-lg leading-relaxed mb-6 lg:mb-8"
+                    class="text-sm sm:text-lg lg:text-xl text-base-content/70 max-w-lg leading-relaxed mb-4 sm:mb-6 lg:mb-8"
                   >
                     Learn how to navigate your city, help visitors find their
                     way, and stay safe while walking. Choose a fun activity
@@ -293,7 +293,7 @@
                 <div
                   class="h-1.5 bg-gradient-to-r from-primary to-primary/70"
                 ></div>
-                <div class="card-body relative p-6 lg:p-7">
+                <div class="card-body relative p-4 sm:p-6 lg:p-7">
                   <div
                     class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-[8rem] pointer-events-none select-none"
                   >
@@ -346,7 +346,7 @@
                 <div
                   class="h-1.5 bg-gradient-to-r from-secondary to-secondary/70"
                 ></div>
-                <div class="card-body relative p-6 lg:p-7">
+                <div class="card-body relative p-4 sm:p-6 lg:p-7">
                   <div
                     class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-[8rem] pointer-events-none select-none"
                   >
@@ -398,7 +398,7 @@
                 <div
                   class="h-1.5 bg-gradient-to-r from-accent to-accent/70"
                 ></div>
-                <div class="card-body relative p-6 lg:p-7">
+                <div class="card-body relative p-4 sm:p-6 lg:p-7">
                   <div
                     class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-[8rem] pointer-events-none select-none"
                   >
@@ -448,7 +448,7 @@
                 class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50"
               >
                 <div class="h-1.5 bg-gradient-to-r from-info to-info/70"></div>
-                <div class="card-body relative p-6 lg:p-7">
+                <div class="card-body relative p-4 sm:p-6 lg:p-7">
                   <div
                     class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-[8rem] pointer-events-none select-none"
                   >
@@ -496,8 +496,8 @@
           </section>
         </main>
 
-        <footer class="mt-16 bg-neutral text-neutral-content">
-          <div class="max-w-7xl mx-auto p-8 lg:p-12">
+        <footer class="mt-8 sm:mt-16 bg-neutral text-neutral-content">
+          <div class="max-w-7xl mx-auto p-5 sm:p-8 lg:p-12">
             <div
               class="flex flex-col lg:flex-row items-center justify-between gap-8"
             >

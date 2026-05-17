@@ -381,14 +381,14 @@
             </div>
         </div>
 
-        <p class="text-sm text-base-content/60 mb-3">💡 <strong>Tip:</strong> Click to select, then click another to swap. <kbd class="kbd kbd-xs">↑↓</kbd> to move selected item.</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3" role="listbox" aria-label="Reorder these steps into the correct sequence" aria-describedby="sequence-instructions">
+        <p class="text-sm text-base-content/60 mb-3">💡 <strong>Tip:</strong> Tap to select, then tap another to swap. <kbd class="kbd kbd-xs hidden sm:inline">↑↓</kbd><span class="hidden sm:inline"> to move selected item.</span></p>
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3" role="listbox" aria-label="Reorder these steps into the correct sequence" aria-describedby="sequence-instructions">
           <span id="sequence-instructions" class="sr-only">Use arrow keys to move a selected item. Press Enter or Space to select an item, then use arrow keys to move it. Press Escape to deselect.</span>
           {#each items as item, index (item.id)}
             <button
               type="button"
               data-sequence-item
-              class="group relative flex flex-col items-center justify-center p-5 sm:p-6 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer select-none touch-manipulation min-h-[7rem]
+              class="group relative flex flex-col items-center justify-center p-3 sm:p-5 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-95 cursor-pointer select-none touch-manipulation min-h-[5.5rem] sm:min-h-[7rem]
               {selectedId !== item.id ? 'bg-base-100 border-base-200/80 hover:border-secondary/50 hover:shadow-md' : ''}
               {selectedId === item.id ? 'bg-secondary text-secondary-content border-secondary ring-4 ring-secondary/20' : ''}"
               on:click={() => handleItemClick(item.id)}
@@ -398,8 +398,8 @@
               aria-selected={selectedId === item.id}
               animate:flip={{ duration: 300 }}
             >
-              <span class="text-4xl sm:text-5xl transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm" aria-hidden="true">{item.emoji}</span>
-              <span class="text-sm mt-2 font-medium opacity-80">{item.label || ''}</span>
+              <span class="text-3xl sm:text-4xl transform transition-transform group-hover:scale-110 duration-300 filter drop-shadow-sm" aria-hidden="true">{item.emoji}</span>
+              <span class="text-xs sm:text-sm mt-1 sm:mt-2 font-medium opacity-80 leading-tight text-center">{item.label || ''}</span>
               {#if selectedId === item.id}
                 <div class="absolute top-2 right-2 animate-pulse" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
@@ -409,7 +409,7 @@
           {/each}
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3 mt-8 pt-6 border-t border-base-200/50">
+        <div class="flex flex-col sm:flex-row gap-3 mt-4 sm:mt-8 pt-4 sm:pt-6 border-t border-base-200/50">
           <button class="btn btn-secondary flex-1 rounded-xl gap-2" on:click={checkOrder} disabled={completed}>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             Check Order
