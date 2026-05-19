@@ -24,8 +24,8 @@
     { key: "helpVisitorStars",  emoji: "🗣️", label: "Helper Stars",   tint: "from-primary/15 to-primary/5",     text: "text-primary"   },
     { key: "safeWalkStars",     emoji: "📋", label: "Sequence Stars", tint: "from-secondary/15 to-secondary/5", text: "text-secondary" },
     { key: "shortQAStars",      emoji: "❓", label: "Q&A Stars",      tint: "from-accent/15 to-accent/5",       text: "text-accent"    },
-    { key: "tripPlannerStars",  emoji: "🎒", label: "Trip Stars",     tint: "from-info/15 to-info/5",           text: "text-info"      },
-    { key: "learnPlacesStars",  emoji: "🗺️", label: "Explorer Stars", tint: "from-success/15 to-success/5",     text: "text-success"   },
+    { key: "mapQuestStars",     emoji: "🗺️", label: "Quest Stars",    tint: "from-info/15 to-info/5",           text: "text-info"      },
+    { key: "learnPlacesStars",  emoji: "📚", label: "Explorer Stars", tint: "from-success/15 to-success/5",     text: "text-success"   },
   ];
 
   const BADGES = {
@@ -34,8 +34,8 @@
     helpfulHero:    { emoji: "🦸", name: "Helpful Hero",    earned: "You helped lots of visitors!",     locked: "Finish Help the Visitor 20 times."  },
     sequenceMaster: { emoji: "📋", name: "Sequence Master", earned: "You mastered daily sequences!",    locked: "Finish Daily Sequences 3 times."    },
     questionMaster: { emoji: "🎓", name: "Question Master", earned: "You answered tons of questions!",  locked: "Get 30 Short Q&A answers right."    },
-    superNavigator: { emoji: "🧭", name: "Super Navigator", earned: "You planned many great trips!",    locked: "Plan 5 trips."                      },
-    explorerBadge:  { emoji: "🗺️", name: "Super Explorer",  earned: "You learned about lots of places!", locked: "Visit 10 places in Learn Places."  },
+    mapMaster:      { emoji: "🗺️", name: "Map Master",      earned: "You read the map like an explorer!", locked: "Finish Map Quest 3 times."        },
+    explorerBadge:  { emoji: "📚", name: "Super Explorer",  earned: "You learned about lots of places!", locked: "Visit 10 places in Learn Places."  },
     weekWarrior:    { emoji: "🔥", name: "Week Warrior",    earned: "You played 7 days in a row!",      locked: "Play every day for a week."         },
     completionist:  { emoji: "🏆", name: "Completionist",   earned: "You earned EVERY badge!",          locked: "Earn all the other badges."         },
   };

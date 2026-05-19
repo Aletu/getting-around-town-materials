@@ -619,6 +619,25 @@
             </div>
           </div>
 
+          <!-- Badge Callout -->
+          {#if score === items.length}
+            <div class="flex items-center gap-3 p-4 bg-success/10 rounded-xl border border-success/20 mb-6 w-full max-w-sm">
+              <span class="text-2xl">💯</span>
+              <div class="text-left">
+                <h3 class="font-semibold text-success">Perfect Score!</h3>
+                <p class="text-xs text-base-content/60">You answered every question right. +3 stars</p>
+              </div>
+            </div>
+          {:else}
+            <div class="flex items-center gap-3 p-4 bg-success/10 rounded-xl border border-success/20 mb-6 w-full max-w-sm">
+              <span class="text-2xl">🎓</span>
+              <div class="text-left">
+                <h3 class="font-semibold text-success">Question Master!</h3>
+                <p class="text-xs text-base-content/60">Keep answering to earn more stars and badges.</p>
+              </div>
+            </div>
+          {/if}
+
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-2.5 w-full max-w-xs">
             <button

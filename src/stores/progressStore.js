@@ -19,7 +19,7 @@ export const BADGE_KEYS = [
     'helpfulHero',
     'sequenceMaster',
     'questionMaster',
-    'superNavigator',
+    'mapMaster',
     'explorerBadge',
     'weekWarrior',
 ];
@@ -28,8 +28,8 @@ export const STAR_KEYS = [
     'helpVisitorStars',
     'safeWalkStars',
     'shortQAStars',
-    'tripPlannerStars',
     'learnPlacesStars',
+    'mapQuestStars',
 ];
 
 const STREAK_FOR_WEEK_WARRIOR = 7;
@@ -48,8 +48,8 @@ const DEFAULT_STICKERS = {
     helpVisitorStars: 0,
     safeWalkStars: 0,
     shortQAStars: 0,
-    tripPlannerStars: 0,
     learnPlacesStars: 0,
+    mapQuestStars: 0,
 
     // Achievement badges
     firstAdventure: false,
@@ -57,7 +57,7 @@ const DEFAULT_STICKERS = {
     helpfulHero: false,
     sequenceMaster: false,
     questionMaster: false,
-    superNavigator: false,
+    mapMaster: false,
     explorerBadge: false,
     weekWarrior: false,
     completionist: false,
@@ -72,8 +72,8 @@ const DEFAULT_PROGRESS = {
     helpVisitor: { totalCompleted: 0, bestScore: 0, hintsUsed: 0, perfectRounds: 0 },
     safeWalk:    { scenariosCompleted: 0, perfectSequences: 0, totalAttempts: 0 },
     shortQA:     { questionsAnswered: 0, correctAnswers: 0, streakBest: 0 },
-    tripPlanner: { tripsPlanned: 0, uniqueDestinations: [], safetyTipsRead: 0 },
     learnPlaces: { placesViewed: [], quizzesTaken: 0, favoritePlace: null },
+    mapQuest:    { scenariosCompleted: 0, perfectRoutes: 0, totalAttempts: 0 },
 };
 
 // ---------------------------------------------------------------------------
@@ -83,6 +83,16 @@ const DEFAULT_PROGRESS = {
 export const studentProfile = createPersistentStore('studentProfile', DEFAULT_PROFILE);
 export const stickersStore  = createPersistentStore('stickersEarned',  DEFAULT_STICKERS);
 export const progressStore  = createPersistentStore('moduleProgress',  DEFAULT_PROGRESS);
+
+// Backfill any missing keys for users whose localStorage predates new modules.
+// persistentStore reads the saved object verbatim, so newly-added defaults
+// won't appear unless we merge them in once on load.
+stickersStore.update(s => ({ ...DEFAULT_STICKERS, ...s }));
+progressStore.update(p => ({
+    ...DEFAULT_PROGRESS,
+    ...p,
+    mapQuest: { ...DEFAULT_PROGRESS.mapQuest, ...(p?.mapQuest ?? {}) },
+}));
 
 // ---------------------------------------------------------------------------
 // Award helpers
@@ -168,8 +178,8 @@ export function calculateOverallProgress(progress) {
     const weights = {
         helpVisitor: 25,
         safeWalk:    25,
-        shortQA:     25,
-        tripPlanner: 15,
+        shortQA:     20,
+        mapQuest:    20,
         learnPlaces: 10,
     };
 
@@ -177,7 +187,7 @@ export function calculateOverallProgress(progress) {
     score += Math.min(progress.helpVisitor.totalCompleted / 20, 1)        * weights.helpVisitor;
     score += Math.min(progress.safeWalk.scenariosCompleted / 10, 1)       * weights.safeWalk;
     score += Math.min(progress.shortQA.correctAnswers / 30, 1)            * weights.shortQA;
-    score += Math.min(progress.tripPlanner.tripsPlanned / 5, 1)           * weights.tripPlanner;
+    score += Math.min((progress.mapQuest?.scenariosCompleted ?? 0) / 15, 1) * weights.mapQuest;
     score += Math.min(progress.learnPlaces.placesViewed.length / 20, 1)   * weights.learnPlaces;
 
     return Math.round(score);

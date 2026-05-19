@@ -443,31 +443,33 @@
                 </div>
               </article>
 
-              <!-- Plan Trip Card -->
+              <!-- Map Quest Card -->
               <article
                 class="card bg-base-100 shadow-soft hover-lift group overflow-hidden border border-base-200/50"
               >
-                <div class="h-1.5 bg-gradient-to-r from-info to-info/70"></div>
+                <div
+                  class="h-1.5 bg-gradient-to-r from-success to-success/70"
+                ></div>
                 <div class="card-body relative p-4 sm:p-6 lg:p-7">
                   <div
                     class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.06] transition-opacity duration-500 text-[8rem] pointer-events-none select-none"
                   >
-                    🎒
+                    🗺️
                   </div>
                   <div class="flex flex-col h-full relative z-10">
                     <div class="mb-5">
                       <div
-                        class="w-16 h-16 rounded-2xl bg-info/10 flex items-center justify-center text-4xl mb-5 group-hover:scale-110 group-hover:-rotate-2 transition-transform duration-300 shadow-sm border border-info/10"
+                        class="w-16 h-16 rounded-2xl bg-success/10 flex items-center justify-center text-4xl mb-5 group-hover:scale-110 group-hover:rotate-2 transition-transform duration-300 shadow-sm border border-success/10"
                       >
-                        🎒
+                        🗺️
                       </div>
                       <h3
                         class="card-title text-xl font-bold mb-2 text-base-content"
                       >
-                        Plan Your Trip
+                        Map Quest
                       </h3>
                       <p class="text-sm text-base-content/60 leading-relaxed">
-                        Pack your bag and choose how to travel.
+                        Read the directions and find the right place on the town map.
                       </p>
                     </div>
 
@@ -475,18 +477,18 @@
                       <div class="flex flex-wrap gap-1.5 mb-5">
                         <span
                           class="badge badge-sm bg-base-200 text-base-content/70 border-none font-medium"
-                          >Step-by-Step</span
+                          >Map Reading</span
                         >
                         <span
                           class="badge badge-sm bg-base-200 text-base-content/70 border-none font-medium"
-                          >Planning</span
+                          >Directions</span
                         >
                       </div>
                       <button
-                        class="btn btn-info w-full rounded-xl shadow-sm group-hover:shadow-md transition-all font-semibold text-info-content"
-                        on:click={() => setView("plan-trip")}
+                        class="btn btn-success w-full rounded-xl shadow-sm group-hover:shadow-md transition-all font-semibold text-success-content"
+                        on:click={() => setView("map-quest")}
                       >
-                        Start Planning
+                        Start Quest
                       </button>
                     </div>
                   </div>
@@ -577,16 +579,16 @@
           <svelte:component this={ShortQA} on:back={() => setView("home")} />
         {/await}
       </main>
-    {:else if view === "plan-trip"}
+    {:else if view === "map-quest"}
       <main
         class="flex-1 p-4 max-w-6xl mx-auto w-full col-start-1 row-start-1"
         in:fly={{ y: 20, duration: 300, delay: 200 }}
         out:fade={{ duration: 200 }}
       >
-        {#await import("./components/PlanTrip.svelte")}
-          <div class="flex justify-center p-12"><span class="loading loading-spinner loading-lg text-info"></span></div>
-        {:then { default: PlanTrip }}
-          <svelte:component this={PlanTrip} on:back={() => setView("home")} />
+        {#await import("./components/MapQuest.svelte")}
+          <div class="flex justify-center p-12"><span class="loading loading-spinner loading-lg text-success"></span></div>
+        {:then { default: MapQuest }}
+          <svelte:component this={MapQuest} on:back={() => setView("home")} />
         {/await}
       </main>
     {:else if view === "learn"}
