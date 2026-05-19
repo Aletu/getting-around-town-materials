@@ -1,6 +1,6 @@
 <script>
   import { shortQAStore, teacherMode } from "../stores.js";
-  import { VALIDATION, SHORT_QA_SESSION, SHORT_QA_LEVEL_CAPS } from "../config.js";
+  import { VALIDATION, SHORT_QA_SESSION } from "../config.js";
   import { createEventDispatcher, onMount } from "svelte";
   import { get } from "svelte/store";
   import { fade, fly } from "svelte/transition";
@@ -11,7 +11,6 @@
     progressStore,
     addStars,
     awardSticker,
-    studentProfile,
   } from "../stores/progressStore.js";
 
   const dispatch = createEventDispatcher();
@@ -32,11 +31,7 @@
   });
 
   function startSession() {
-    const userLevel = $studentProfile.level || 1;
-    const cap = SHORT_QA_LEVEL_CAPS[userLevel] ?? SHORT_QA_LEVEL_CAPS[1];
-    const maxItems = Math.min(cap, $shortQAStore.length);
-    const validItems = $shortQAStore.slice(0, maxItems);
-    const selected = shuffle(validItems).slice(0, Math.min(SHORT_QA_SESSION, validItems.length));
+    const selected = shuffle($shortQAStore).slice(0, Math.min(SHORT_QA_SESSION, $shortQAStore.length));
 
     // Shuffle options so the answer isn't always the first one
     items = selected.map((q) => ({

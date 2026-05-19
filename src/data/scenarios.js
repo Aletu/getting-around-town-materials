@@ -139,5 +139,110 @@ export const SCENARIOS = [
     hint: 'This cozy place often serves coffee, tea, and pastries.',
     answer: 'cafe',
     distractors: ['restaurant', 'bakery']
+  },
+  {
+    id: 21,
+    text: 'I want to take a long trip to another city by train. Where do I catch it?',
+    hint: 'Trains pull up to long platforms here.',
+    answer: 'train_station',
+    distractors: ['bus_stop', 'airport']
+  },
+  {
+    id: 22,
+    text: 'My uncle is flying in from another country. Where will his plane land?',
+    hint: 'Big planes take off and land here.',
+    answer: 'airport',
+    distractors: ['train_station', 'bus_stop']
+  },
+  {
+    id: 23,
+    text: 'We are visiting a new town and need a place to sleep for a few nights.',
+    hint: 'Travelers rent rooms here when they are away from home.',
+    answer: 'hotel',
+    distractors: ['restaurant', 'hospital']
+  },
+  {
+    id: 24,
+    text: 'It is raining outside. We want to walk around and visit many shops inside one big building. Where should we go?',
+    hint: 'This huge building has lots of stores under one roof.',
+    answer: 'mall',
+    distractors: ['supermarket', 'museum']
+  },
+  {
+    id: 25,
+    text: 'I want to buy a new comic book to keep at home.',
+    hint: 'This shop sells new books for you to own.',
+    answer: 'bookstore',
+    distractors: ['library', 'school']
+  },
+  {
+    id: 26,
+    text: 'We just adopted a kitten and need to buy food and toys for her.',
+    hint: 'This shop sells everything pets need.',
+    answer: 'pet_store',
+    distractors: ['supermarket', 'flower_shop']
+  },
+  {
+    id: 27,
+    text: 'My dad wants to lift weights and run on a machine to stay strong.',
+    hint: 'People exercise with equipment here.',
+    answer: 'gym',
+    distractors: ['park', 'swimming_pool']
+  },
+  {
+    id: 28,
+    text: 'My tooth hurts when I eat. Where can I go to have it checked?',
+    hint: 'This doctor works only on teeth.',
+    answer: 'dentist',
+    distractors: ['hospital', 'pharmacy']
+  },
+  {
+    id: 29,
+    text: 'It is very hot today. Where can I go to swim and cool down?',
+    hint: 'This place has a big pool of water for swimming.',
+    answer: 'swimming_pool',
+    distractors: ['park', 'gym']
+  },
+  {
+    id: 30,
+    text: 'My hair has gotten too long. Where can I get a quick haircut?',
+    hint: 'A barber works with scissors and combs here.',
+    answer: 'barbershop',
+    distractors: ['hotel', 'cafe']
+  },
+  {
+    id: 31,
+    text: 'I want to buy roses for my mom\'s birthday.',
+    hint: 'This shop sells fresh flowers and plants.',
+    answer: 'flower_shop',
+    distractors: ['park', 'bakery']
+  },
+  {
+    id: 32,
+    text: 'I cannot find my parents anywhere and I am a little scared. Where can I go for help?',
+    hint: 'Officers in uniforms help keep people safe here.',
+    answer: 'police_station',
+    distractors: ['fire_station', 'hospital']
+  },
+  {
+    id: 33,
+    text: 'We are late and need to get a quick ride across town. Where do we wait to catch one?',
+    hint: 'Yellow cars wait here to give people rides.',
+    answer: 'taxi_stand',
+    distractors: ['bus_stop', 'gas_station']
+  },
+  {
+    id: 34,
+    text: 'I need cash money to buy lunch. Where can I take some out from my bank account?',
+    hint: 'This little machine gives you cash any time of day.',
+    answer: 'atm',
+    distractors: ['bank', 'supermarket']
+  },
+  {
+    id: 35,
+    text: 'My mom needs to get a special paper from the mayor\'s office. Where should she go?',
+    hint: 'This is where the town\'s leaders work.',
+    answer: 'city_hall',
+    distractors: ['post_office', 'bank']
   }
 ];

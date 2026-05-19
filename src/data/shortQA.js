@@ -222,5 +222,170 @@ export const SHORT_QA_ITEMS = [
       { id: 'd', text: 'The store has many nice things.' }
     ],
     answer: 'a'
+  },
+  {
+    id: 21,
+    question: 'Excuse me, I think I am lost. Can you help me find my way home?',
+    options: [
+      { id: 'a', text: 'Of course. Do you remember your street name?' },
+      { id: 'b', text: 'Sorry, I lost my book yesterday.' },
+      { id: 'c', text: 'Yes, my home is a long way from here.' },
+      { id: 'd', text: 'Thank you, the road is very pretty today.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 22,
+    question: 'Officer, I cannot find my mom in this big store. Can you help me?',
+    options: [
+      { id: 'a', text: 'Yes, stay with me. We will call your mom right away.' },
+      { id: 'b', text: 'Yes, the store has many things to buy.' },
+      { id: 'c', text: 'I have not seen your mom today.' },
+      { id: 'd', text: 'The store opens at ten in the morning.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 23,
+    question: 'I lost my class on the field trip. What should I do?',
+    options: [
+      { id: 'a', text: 'Stay where you are and wait for your teacher to find you.' },
+      { id: 'b', text: 'Run quickly back to the school by yourself.' },
+      { id: 'c', text: 'Yes, field trips are always very fun.' },
+      { id: 'd', text: 'Sorry, I lost my pencil too.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 24,
+    question: 'I do not feel well. My stomach hurts.',
+    options: [
+      { id: 'a', text: 'I am sorry. Let\'s tell a grown-up so you can rest.' },
+      { id: 'b', text: 'Yes, my stomach is full from lunch.' },
+      { id: 'c', text: 'Stomachs are an important part of the body.' },
+      { id: 'd', text: 'I had a small breakfast this morning.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 25,
+    question: 'Ouch! I fell and scraped my knee. Can you help me?',
+    options: [
+      { id: 'a', text: 'Yes, let\'s wash it with water and find a bandage.' },
+      { id: 'b', text: 'Yes, knees bend when you sit down.' },
+      { id: 'c', text: 'I scraped my elbow at school last week.' },
+      { id: 'd', text: 'Sorry, I have never fallen down before.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 26,
+    question: 'It is so sunny today. What should we do?',
+    options: [
+      { id: 'a', text: 'Let\'s wear hats and go play at the park!' },
+      { id: 'b', text: 'Yes, it rained a lot yesterday.' },
+      { id: 'c', text: 'The sun is very, very far away from us.' },
+      { id: 'd', text: 'I think it is going to snow soon.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 27,
+    question: 'It is raining hard. Do you have an umbrella?',
+    options: [
+      { id: 'a', text: 'Yes, you can share mine on the way home.' },
+      { id: 'b', text: 'Yes, umbrellas come in many bright colors.' },
+      { id: 'c', text: 'I love the smell of rain in the morning.' },
+      { id: 'd', text: 'No, my shoes are still at home.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 28,
+    question: 'Here is two thousand colones. How much change do I get back?',
+    options: [
+      { id: 'a', text: 'You get five hundred colones back. Thank you!' },
+      { id: 'b', text: 'Colones are the money we use in Costa Rica.' },
+      { id: 'c', text: 'Yes, I have a lot of coins in my pocket.' },
+      { id: 'd', text: 'I bought a small toy here last week.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 29,
+    question: 'What is the total for this bread and these eggs?',
+    options: [
+      { id: 'a', text: 'It comes to one thousand five hundred colones.' },
+      { id: 'b', text: 'Yes, fresh bread tastes the best.' },
+      { id: 'c', text: 'Eggs come from chickens on a farm.' },
+      { id: 'd', text: 'You can pay tomorrow if that is easier.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 30,
+    question: 'What time does the library open today?',
+    options: [
+      { id: 'a', text: 'It opens at nine o\'clock in the morning.' },
+      { id: 'b', text: 'Yes, the library has many new books.' },
+      { id: 'c', text: 'I went to the library last week.' },
+      { id: 'd', text: 'Reading is my favorite thing to do.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 31,
+    question: 'Excuse me, when does this store close tonight?',
+    options: [
+      { id: 'a', text: 'We close at eight o\'clock. You still have time.' },
+      { id: 'b', text: 'Yes, the store is very busy tonight.' },
+      { id: 'c', text: 'Sorry, we are closed on Sundays.' },
+      { id: 'd', text: 'The store sells food and clothes.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 32,
+    question: 'Thank you so much for helping me find the bus!',
+    options: [
+      { id: 'a', text: 'You are very welcome. I am glad I could help.' },
+      { id: 'b', text: 'Yes, you helped me a lot last week too.' },
+      { id: 'c', text: 'Thank you for saying thank you.' },
+      { id: 'd', text: 'I will help someone else tomorrow.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 33,
+    question: 'Oh! I am so sorry I bumped into you. Are you okay?',
+    options: [
+      { id: 'a', text: 'It\'s okay, no problem. I am fine.' },
+      { id: 'b', text: 'Yes, I bumped into the wall yesterday.' },
+      { id: 'c', text: 'Yes, the floor is a little slippery here.' },
+      { id: 'd', text: 'Sorry, I am in a big hurry today.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 34,
+    question: 'Excuse me, how do I get to the post office from here?',
+    options: [
+      { id: 'a', text: 'Walk two blocks north, then turn east. It will be on your left.' },
+      { id: 'b', text: 'Yes, the post office is always very busy.' },
+      { id: 'c', text: 'I mailed a letter from the post office last week.' },
+      { id: 'd', text: 'The post office is closed on Sundays.' }
+    ],
+    answer: 'a'
+  },
+  {
+    id: 35,
+    question: 'Hi there! I do not know you. Do you want a ride in my car?',
+    options: [
+      { id: 'a', text: 'No thank you. I will wait for my mom right here.' },
+      { id: 'b', text: 'Yes, your car looks very fast and shiny.' },
+      { id: 'c', text: 'Sorry, I do not feel like riding in cars today.' },
+      { id: 'd', text: 'Where are you going on your trip?' }
+    ],
+    answer: 'a'
   }
 ];

@@ -269,5 +269,140 @@ export const SAFE_WALK_SCENARIOS = [
       { id: 'beach', label: 'Beach', emoji: '🏖️', correctIndex: 2, alt: 'Beach' },
       { id: 'taco_place', label: 'Taco Place', emoji: '🌮', correctIndex: 3, alt: 'Taco restaurant' }
     ]
+  },
+  {
+    id: 31,
+    text: 'First, Mom and I take a taxi to the airport to meet my uncle. Next, we have dinner together at a restaurant. Finally, we drive him to his hotel.',
+    sequence: [
+      { id: 'airport', label: 'Airport', emoji: '✈️', correctIndex: 0, alt: 'Airport' },
+      { id: 'restaurant', label: 'Restaurant', emoji: '🍽️', correctIndex: 1, alt: 'Restaurant' },
+      { id: 'hotel', label: 'Hotel', emoji: '🏨', correctIndex: 2, alt: 'Hotel' }
+    ]
+  },
+  {
+    id: 32,
+    text: 'First, we walk to the train station. Next, after our train ride, we have a snack at a café. Then, we visit the museum. Finally, we sleep at the hotel.',
+    sequence: [
+      { id: 'train_station', label: 'Train Station', emoji: '🚆', correctIndex: 0, alt: 'Train station' },
+      { id: 'cafe', label: 'Café', emoji: '☕', correctIndex: 1, alt: 'Café' },
+      { id: 'museum', label: 'Museum', emoji: '🏛️', correctIndex: 2, alt: 'Museum' },
+      { id: 'hotel', label: 'Hotel', emoji: '🏨', correctIndex: 3, alt: 'Hotel' }
+    ]
+  },
+  {
+    id: 33,
+    text: 'First, we go to the mall to buy a new shirt. Next, I get a haircut at the barbershop. Then, we buy roses at the flower shop. Finally, we mail a card at the post office.',
+    sequence: [
+      { id: 'mall', label: 'Mall', emoji: '🏬', correctIndex: 0, alt: 'Shopping mall' },
+      { id: 'barbershop', label: 'Barbershop', emoji: '💈', correctIndex: 1, alt: 'Barbershop' },
+      { id: 'flower_shop', label: 'Flower Shop', emoji: '💐', correctIndex: 2, alt: 'Flower shop' },
+      { id: 'post_office', label: 'Post Office', emoji: '📮', correctIndex: 3, alt: 'Post office' }
+    ]
+  },
+  {
+    id: 34,
+    text: 'First, Mom and I stop at the ATM to get cash. Next, we go to the bank to pay a bill. Then, we visit city hall to get a special paper. Finally, we have lunch at a café.',
+    sequence: [
+      { id: 'atm', label: 'ATM', emoji: '🏧', correctIndex: 0, alt: 'ATM' },
+      { id: 'bank', label: 'Bank', emoji: '🏦', correctIndex: 1, alt: 'Bank' },
+      { id: 'city_hall', label: 'City Hall', emoji: '🏛️', correctIndex: 2, alt: 'City hall' },
+      { id: 'cafe', label: 'Café', emoji: '☕', correctIndex: 3, alt: 'Café' }
+    ]
+  },
+  {
+    id: 35,
+    text: 'First, we walk to the swimming pool for a swim. Next, we eat lunch at the café next door. Finally, we play at the park before going home.',
+    sequence: [
+      { id: 'swimming_pool', label: 'Swimming Pool', emoji: '🏊', correctIndex: 0, alt: 'Swimming pool' },
+      { id: 'cafe', label: 'Café', emoji: '☕', correctIndex: 1, alt: 'Café' },
+      { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 2, alt: 'Park' }
+    ]
+  },
+  {
+    id: 36,
+    text: 'It is a busy weekend! First, we get cash at the ATM. Next, we buy groceries at the supermarket. Then, we drop off a card at the post office. Then, we fill the car at the gas station. Finally, we have dinner at the restaurant.',
+    sequence: [
+      { id: 'atm', label: 'ATM', emoji: '🏧', correctIndex: 0, alt: 'ATM' },
+      { id: 'supermarket', label: 'Supermarket', emoji: '🛒', correctIndex: 1, alt: 'Supermarket' },
+      { id: 'post_office', label: 'Post Office', emoji: '📮', correctIndex: 2, alt: 'Post office' },
+      { id: 'gas_station', label: 'Gas Station', emoji: '⛽', correctIndex: 3, alt: 'Gas station' },
+      { id: 'restaurant', label: 'Restaurant', emoji: '🍽️', correctIndex: 4, alt: 'Restaurant' }
+    ]
+  },
+  {
+    id: 37,
+    text: 'It is a long Tuesday. First, I go to school. Next, I have piano class at the music school. Then, I meet my dad at his office. Then, I get a quick haircut at the barbershop. Finally, we walk home together.',
+    sequence: [
+      { id: 'school', label: 'School', emoji: '🏫', correctIndex: 0, alt: 'School' },
+      { id: 'music_school', label: 'Music School', emoji: '🎹', correctIndex: 1, alt: 'Music school' },
+      { id: 'office', label: 'Office', emoji: '🏢', correctIndex: 2, alt: 'Office' },
+      { id: 'barbershop', label: 'Barbershop', emoji: '💈', correctIndex: 3, alt: 'Barbershop' },
+      { id: 'house', label: 'House', emoji: '🏠', correctIndex: 4, alt: 'House' }
+    ]
+  },
+  {
+    id: 38,
+    text: 'Because it is raining, we change our plans. First, we drive to the mall to stay dry. Next, we watch a movie at the theater. Finally, we eat dinner at the restaurant inside.',
+    sequence: [
+      { id: 'mall', label: 'Mall', emoji: '🏬', correctIndex: 0, alt: 'Shopping mall' },
+      { id: 'theater', label: 'Theater', emoji: '🎬', correctIndex: 1, alt: 'Movie theater' },
+      { id: 'restaurant', label: 'Restaurant', emoji: '🍽️', correctIndex: 2, alt: 'Restaurant' }
+    ]
+  },
+  {
+    id: 39,
+    text: 'Because it is sunny and warm today, we go outside. First, we walk to the park to play. Next, we have ice cream at the ice cream shop. Finally, we go for a swim at the swimming pool.',
+    sequence: [
+      { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 0, alt: 'Park' },
+      { id: 'ice_cream', label: 'Ice Cream Shop', emoji: '🍦', correctIndex: 1, alt: 'Ice cream shop' },
+      { id: 'swimming_pool', label: 'Swimming Pool', emoji: '🏊', correctIndex: 2, alt: 'Swimming pool' }
+    ]
+  },
+  {
+    id: 40,
+    text: 'Early in the morning, I help deliver newspapers. First, I pick them up at the bakery. Next, I drop one at the café. Then, I leave one at the bookstore. Finally, I ride home for breakfast.',
+    sequence: [
+      { id: 'bakery', label: 'Bakery', emoji: '🥖', correctIndex: 0, alt: 'Bakery' },
+      { id: 'cafe', label: 'Café', emoji: '☕', correctIndex: 1, alt: 'Café' },
+      { id: 'bookstore', label: 'Bookstore', emoji: '📖', correctIndex: 2, alt: 'Bookstore' },
+      { id: 'house', label: 'House', emoji: '🏠', correctIndex: 3, alt: 'House' }
+    ]
+  },
+  {
+    id: 41,
+    text: 'After dinner, our family goes out together. First, we walk to the playground for swings. Next, we get treats at the ice cream shop. Finally, we visit Grandma at her apartment.',
+    sequence: [
+      { id: 'playground', label: 'Playground', emoji: '🛝', correctIndex: 0, alt: 'Playground' },
+      { id: 'ice_cream', label: 'Ice Cream Shop', emoji: '🍦', correctIndex: 1, alt: 'Ice cream shop' },
+      { id: 'apartment', label: 'Apartment', emoji: '🏢', correctIndex: 2, alt: 'Apartment building' }
+    ]
+  },
+  {
+    id: 42,
+    text: 'Our dog ran away! First, we ask for help at the police station. Next, we check the animal shelter to see if she is there. Finally, we find her at the park playing with other dogs.',
+    sequence: [
+      { id: 'police_station', label: 'Police Station', emoji: '👮', correctIndex: 0, alt: 'Police station' },
+      { id: 'shelter', label: 'Animal Shelter', emoji: '🐶', correctIndex: 1, alt: 'Animal shelter' },
+      { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 2, alt: 'Park' }
+    ]
+  },
+  {
+    id: 43,
+    text: 'I do not feel well today. First, Mom takes me to the hospital for a checkup. Next, we get my medicine at the pharmacy. Finally, we have warm soup at the café before going home.',
+    sequence: [
+      { id: 'hospital', label: 'Hospital', emoji: '🏥', correctIndex: 0, alt: 'Hospital' },
+      { id: 'pharmacy', label: 'Pharmacy', emoji: '💊', correctIndex: 1, alt: 'Pharmacy' },
+      { id: 'cafe', label: 'Café', emoji: '☕', correctIndex: 2, alt: 'Café' }
+    ]
+  },
+  {
+    id: 44,
+    text: 'It is the first day of school! First, Dad and I walk to the bus stop. Next, the bus takes me to school. Then, after class, I play at the playground. Finally, I walk home with new friends.',
+    sequence: [
+      { id: 'bus_stop', label: 'Bus Stop', emoji: '🚏', correctIndex: 0, alt: 'Bus stop' },
+      { id: 'school', label: 'School', emoji: '🏫', correctIndex: 1, alt: 'School' },
+      { id: 'playground', label: 'Playground', emoji: '🛝', correctIndex: 2, alt: 'Playground' },
+      { id: 'house', label: 'House', emoji: '🏠', correctIndex: 3, alt: 'House' }
+    ]
   }
 ];

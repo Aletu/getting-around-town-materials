@@ -21,12 +21,6 @@ export const SHORT_QA_SESSION      = 5;
 export const SAFE_WALK_SESSION     = 3;
 export const MAP_QUEST_SESSION     = 3;
 
-// How many items are unlocked at each level (HelpVisitor / ShortQA / SafeWalk / MapQuest)
-export const HELP_VISITOR_LEVEL_CAPS  = { 1: 5,  2: 10, 3: Infinity };
-export const SHORT_QA_LEVEL_CAPS      = { 1: 7,  2: 14, 3: Infinity };
-export const SAFE_WALK_LEVEL_CAPS     = { 1: 10, 2: 20, 3: Infinity };
-export const MAP_QUEST_LEVEL_CAPS     = { 1: 6,  2: 10, 3: Infinity };
-
 // Input validation limits for Teacher Mode
 export const VALIDATION = {
     SCENARIO_TEXT_MAX:   300,

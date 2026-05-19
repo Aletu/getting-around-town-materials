@@ -6,9 +6,9 @@
   import { flip } from 'svelte/animate';
   import { tick } from 'svelte';
   import { shuffle } from '../lib/shuffle.js';
-  import { SAFE_WALK_SESSION, SAFE_WALK_LEVEL_CAPS } from '../config.js';
+  import { SAFE_WALK_SESSION } from '../config.js';
   import SpeakButton from './SpeakButton.svelte';
-  import { progressStore, addStars, awardSticker, studentProfile } from '../stores/progressStore.js';
+  import { progressStore, addStars, awardSticker } from '../stores/progressStore.js';
 
   const dispatch = createEventDispatcher();
   
@@ -26,12 +26,7 @@
   let selectedId = null;
 
   function startNewSession() {
-    const userLevel = $studentProfile.level || 1;
-    const cap = SAFE_WALK_LEVEL_CAPS[userLevel] ?? SAFE_WALK_LEVEL_CAPS[1];
-    const maxScenarios = Math.min(cap, $safeWalkStore.length);
-    const validScenarios = $safeWalkStore.slice(0, maxScenarios);
-
-    sessionScenarios = shuffle(validScenarios).slice(0, SAFE_WALK_SESSION);
+    sessionScenarios = shuffle($safeWalkStore).slice(0, SAFE_WALK_SESSION);
     currentIndex = 0;
     completed = false;
     loadCurrentScenario();

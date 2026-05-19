@@ -4,9 +4,9 @@
   import { fade, fly } from 'svelte/transition';
   import { shuffle } from '../lib/shuffle.js';
   import { MAP_QUESTS } from '../data/mapQuests.js';
-  import { MAP_QUEST_SESSION, MAP_QUEST_LEVEL_CAPS } from '../config.js';
+  import { MAP_QUEST_SESSION } from '../config.js';
   import SpeakButton from './SpeakButton.svelte';
-  import { progressStore, addStars, awardSticker, studentProfile } from '../stores/progressStore.js';
+  import { progressStore, addStars, awardSticker } from '../stores/progressStore.js';
 
   const dispatch = createEventDispatcher();
   const GRID_SIZE = 4;
@@ -21,10 +21,7 @@
   let wrongTimer = null;
 
   function startNewSession() {
-    const userLevel = $studentProfile.level || 1;
-    const cap = MAP_QUEST_LEVEL_CAPS[userLevel] ?? MAP_QUEST_LEVEL_CAPS[1];
-    const validScenarios = MAP_QUESTS.slice(0, Math.min(cap, MAP_QUESTS.length));
-    sessionScenarios = shuffle(validScenarios).slice(0, MAP_QUEST_SESSION);
+    sessionScenarios = shuffle(MAP_QUESTS).slice(0, MAP_QUEST_SESSION);
     currentIndex = 0;
     completed = false;
     loadCurrentScenario();
