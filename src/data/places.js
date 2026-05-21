@@ -278,5 +278,187 @@ export const PLACES = [
     emoji: '🚕',
     category: 'Transport',
     description: "Wait here to get a taxi ride."
+  },
+  {
+    id: 'store',
+    label: 'Store',
+    emoji: '🏪',
+    category: 'Shops',
+    description: "A small shop where you can quickly buy snacks, drinks, and little things."
+  },
+  {
+    id: 'vet',
+    label: 'Vet',
+    emoji: '🐕‍🦺',
+    category: 'Services',
+    description: "A special doctor who takes care of sick or hurt pets."
+  },
+  {
+    id: 'ice_cream',
+    label: 'Ice Cream Shop',
+    emoji: '🍦',
+    category: 'Food & Drink',
+    description: "A sweet shop where you can buy cold ice cream in many flavors."
+  },
+  {
+    id: 'aquarium',
+    label: 'Aquarium',
+    emoji: '🐠',
+    category: 'Recreation',
+    description: "See fish, sharks, and other sea animals swimming in big tanks."
+  },
+  {
+    id: 'arcade',
+    label: 'Arcade',
+    emoji: '🕹️',
+    category: 'Recreation',
+    description: "A loud, fun place full of video games and prize machines."
+  },
+  {
+    id: 'community_center',
+    label: 'Community Center',
+    emoji: '🏘️',
+    category: 'Community',
+    description: "A big place where neighbors meet for classes, games, and events."
+  },
+  {
+    id: 'farmers_market',
+    label: "Farmer's Market",
+    emoji: '🥬',
+    category: 'Shops',
+    description: "An outdoor market where farmers sell fresh fruits and vegetables."
+  },
+  {
+    id: 'music_school',
+    label: 'Music School',
+    emoji: '🎹',
+    category: 'Services',
+    description: "A place where you can learn to play instruments like piano and guitar."
+  },
+  {
+    id: 'salon',
+    label: 'Hair Salon',
+    emoji: '💇',
+    category: 'Services',
+    description: "Where people go to wash, cut, and style their hair."
+  },
+  {
+    id: 'sports_center',
+    label: 'Sports Center',
+    emoji: '⚽',
+    category: 'Recreation',
+    description: "A place to play sports like soccer, basketball, and tennis with friends."
+  },
+  {
+    id: 'shoe_store',
+    label: 'Shoe Store',
+    emoji: '👟',
+    category: 'Shops',
+    description: "A shop full of shoes, sneakers, and boots in every size."
+  },
+  {
+    id: 'climbing_gym',
+    label: 'Climbing Gym',
+    emoji: '🧗',
+    category: 'Recreation',
+    description: "An indoor place with tall walls you can climb safely with ropes."
+  },
+  {
+    id: 'art_studio',
+    label: 'Art Studio',
+    emoji: '🎨',
+    category: 'Recreation',
+    description: "A bright room where artists paint, draw, and make beautiful things."
+  },
+  {
+    id: 'art_store',
+    label: 'Art Store',
+    emoji: '🖌️',
+    category: 'Shops',
+    description: "A shop that sells paint, brushes, and paper for making art."
+  },
+  {
+    id: 'craft_store',
+    label: 'Craft Store',
+    emoji: '✂️',
+    category: 'Shops',
+    description: "A shop full of yarn, glue, scissors, and craft supplies."
+  },
+  {
+    id: 'juice_bar',
+    label: 'Juice Bar',
+    emoji: '🥤',
+    category: 'Food & Drink',
+    description: "A small shop that makes fresh fruit juices and smoothies."
+  },
+  {
+    id: 'bike_shop',
+    label: 'Bike Shop',
+    emoji: '🚲',
+    category: 'Shops',
+    description: "A shop that sells new bikes and fixes broken ones."
+  },
+  {
+    id: 'beach',
+    label: 'Beach',
+    emoji: '🏖️',
+    category: 'Recreation',
+    description: "A sandy place by the ocean where you can swim and build sandcastles."
+  },
+  {
+    id: 'taco_place',
+    label: 'Taco Place',
+    emoji: '🌮',
+    category: 'Food & Drink',
+    description: "A small restaurant that sells warm tacos and other Mexican food."
+  },
+  {
+    id: 'burger_place',
+    label: 'Burger Place',
+    emoji: '🍔',
+    category: 'Food & Drink',
+    description: "A restaurant that makes hot burgers and crispy fries."
+  },
+  {
+    id: 'party_store',
+    label: 'Party Store',
+    emoji: '🎈',
+    category: 'Shops',
+    description: "A shop full of balloons, hats, and decorations for parties."
+  },
+  {
+    id: 'groomer',
+    label: 'Pet Groomer',
+    emoji: '🛁',
+    category: 'Services',
+    description: "Where pets get a bath, a haircut, and their nails trimmed."
+  },
+  {
+    id: 'shelter',
+    label: 'Animal Shelter',
+    emoji: '🐶',
+    category: 'Community',
+    description: "A safe home for dogs and cats that are waiting to be adopted."
+  },
+  {
+    id: 'field',
+    label: 'Sports Field',
+    emoji: '🏟️',
+    category: 'Recreation',
+    description: "A big open grassy area for playing soccer, baseball, or running."
+  },
+  {
+    id: 'cafeteria',
+    label: 'Cafeteria',
+    emoji: '🍴',
+    category: 'Food & Drink',
+    description: "A big room with tables where students or workers eat lunch."
+  },
+  {
+    id: 'office',
+    label: 'Office',
+    emoji: '🏢',
+    category: 'Services',
+    description: "A building where people work at desks and computers."
   }
 ];

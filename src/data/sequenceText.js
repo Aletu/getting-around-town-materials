@@ -18,7 +18,7 @@ export const SAFE_WALK_SCENARIOS = [
       { id: 'house', label: 'Friend\'s House', emoji: '🏠', correctIndex: 0, alt: 'Friend\'s house' },
       { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 1, alt: 'Park' },
       { id: 'restaurant', label: 'Restaurant', emoji: '🍽️', correctIndex: 2, alt: 'Restaurant' },
-      { id: 'theater', label: 'Theater', emoji: '🎬', correctIndex: 3, alt: 'Theater' }
+      { id: 'movie_theater', label: 'Movie Theater', emoji: '🎬', correctIndex: 3, alt: 'Theater' }
     ]
   },
   {
@@ -82,7 +82,7 @@ export const SAFE_WALK_SCENARIOS = [
     text: 'First, my sister and I play at the playground. Next, we watch a funny movie at the theater. Finally, we eat pizza at a restaurant.',
     sequence: [
       { id: 'playground', label: 'Playground', emoji: '🎪', correctIndex: 0, alt: 'Playground' },
-      { id: 'theater', label: 'Theater', emoji: '🎬', correctIndex: 1, alt: 'Theater' },
+      { id: 'movie_theater', label: 'Movie Theater', emoji: '🎬', correctIndex: 1, alt: 'Theater' },
       { id: 'restaurant', label: 'Restaurant', emoji: '🍽️', correctIndex: 2, alt: 'Restaurant' }
     ]
   },
@@ -118,7 +118,7 @@ export const SAFE_WALK_SCENARIOS = [
     id: 14,
     text: 'First, I watch a movie at the theater. Next, I go to my dentist appointment. Finally, I pick up medicine at the pharmacy for Mom.',
     sequence: [
-      { id: 'theater', label: 'Theater', emoji: '🎬', correctIndex: 0, alt: 'Theater' },
+      { id: 'movie_theater', label: 'Movie Theater', emoji: '🎬', correctIndex: 0, alt: 'Theater' },
       { id: 'dentist', label: 'Dentist', emoji: '🦷', correctIndex: 1, alt: 'Dentist' },
       { id: 'pharmacy', label: 'Pharmacy', emoji: '💊', correctIndex: 2, alt: 'Pharmacy' }
     ]
@@ -137,7 +137,7 @@ export const SAFE_WALK_SCENARIOS = [
     id: 16,
     text: 'First, I go to the pool for swimming class. Next, I stop at a cafe for a snack. Finally, I visit the bookstore to find a new comic.',
     sequence: [
-      { id: 'pool', label: 'Pool', emoji: '🏊', correctIndex: 0, alt: 'Swimming pool' },
+      { id: 'swimming_pool', label: 'Swimming Pool', emoji: '🏊', correctIndex: 0, alt: 'Swimming pool' },
       { id: 'cafe', label: 'Cafe', emoji: '☕', correctIndex: 1, alt: 'Cafe' },
       { id: 'bookstore', label: 'Bookstore', emoji: '📖', correctIndex: 2, alt: 'Bookstore' }
     ]
@@ -172,10 +172,10 @@ export const SAFE_WALK_SCENARIOS = [
   },
   {
     id: 20,
-    text: 'First, I get a haircut at the salon. Next, I buy a new outfit at the store. Finally, my family takes pictures together at the park.',
+    text: 'First, I get a haircut at the salon. Next, I buy a new outfit at the mall. Finally, my family takes pictures together at the park.',
     sequence: [
       { id: 'salon', label: 'Salon', emoji: '💇', correctIndex: 0, alt: 'Hair salon' },
-      { id: 'store', label: 'Store', emoji: '🏪', correctIndex: 1, alt: 'Store' },
+      { id: 'mall', label: 'Mall', emoji: '🏬', correctIndex: 1, alt: 'Shopping mall' },
       { id: 'park', label: 'Park', emoji: '🌳', correctIndex: 2, alt: 'Park' }
     ]
   },
@@ -345,7 +345,7 @@ export const SAFE_WALK_SCENARIOS = [
     text: 'Because it is raining, we change our plans. First, we drive to the mall to stay dry. Next, we watch a movie at the theater. Finally, we eat dinner at the restaurant inside.',
     sequence: [
       { id: 'mall', label: 'Mall', emoji: '🏬', correctIndex: 0, alt: 'Shopping mall' },
-      { id: 'theater', label: 'Theater', emoji: '🎬', correctIndex: 1, alt: 'Movie theater' },
+      { id: 'movie_theater', label: 'Movie Theater', emoji: '🎬', correctIndex: 1, alt: 'Movie theater' },
       { id: 'restaurant', label: 'Restaurant', emoji: '🍽️', correctIndex: 2, alt: 'Restaurant' }
     ]
   },

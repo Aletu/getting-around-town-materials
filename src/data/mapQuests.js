@@ -189,7 +189,7 @@ export const MAP_QUESTS = [
         correctId: 'r1c1',
         grid: [
             place('r0c0', 'School', '🏫'),   place('r0c1', 'Park', '🌳'),      place('r0c2', 'Bakery', '🥖'),     place('r0c3', 'Bank', '🏦'),
-            road('r1c0'),                    place('r1c1', 'Theater', '🎬'),   place('r1c2', 'Museum', '🏛️'),     road('r1c3'),
+            road('r1c0'),                    place('r1c1', 'Movie Theater', '🎬'),   place('r1c2', 'Museum', '🏛️'),     road('r1c3'),
             place('r2c0', 'Hospital', '🏥'), road('r2c1'),                     place('r2c2', 'Pharmacy', '💊'),    place('r2c3', 'Café', '☕'),
             place('r3c0', 'Home', '🏠'),     place('r3c1', 'Bus Stop', '🚌'), road('r3c2'),                       place('r3c3', 'Post Office', '📮')
         ]
@@ -251,7 +251,7 @@ export const MAP_QUESTS = [
             place('r0c0', 'School', '🏫'),   place('r0c1', 'Bakery', '🥖'),    place('r0c2', 'Bank', '🏦'),       place('r0c3', 'Library', '📚'),
             place('r1c0', 'Park', '🌳'),     place('r1c1', 'Gym', '💪'),       place('r1c2', 'Museum', '🏛️'),     place('r1c3', 'Post Office', '📮'),
             place('r2c0', 'Hospital', '🏥'), place('r2c1', 'Pharmacy', '💊'),  road('r2c2'),                       place('r2c3', 'Bus Stop', '🚌'),
-            place('r3c0', 'Home', '🏠'),     place('r3c1', 'Café', '☕'),      place('r3c2', 'Store', '🏪'),      place('r3c3', 'Theater', '🎬')
+            place('r3c0', 'Home', '🏠'),     place('r3c1', 'Café', '☕'),      place('r3c2', 'Store', '🏪'),      place('r3c3', 'Movie Theater', '🎬')
         ]
     },
     {
@@ -275,7 +275,7 @@ export const MAP_QUESTS = [
             place('r0c0', 'School', '🏫'),   place('r0c1', 'Park', '🌳'),      place('r0c2', 'Post Office', '📮'), place('r0c3', 'Bank', '🏦'),
             place('r1c0', 'Bakery', '🥖'),   place('r1c1', 'Café', '☕'),      place('r1c2', 'Museum', '🏛️'),     place('r1c3', 'Library', '📚'),
             place('r2c0', 'Gym', '💪'),      place('r2c1', 'Pharmacy', '💊'),  place('r2c2', 'Hospital', '🏥'),    place('r2c3', 'Store', '🏪'),
-            place('r3c0', 'Home', '🏠'),     place('r3c1', 'Bus Stop', '🚌'), place('r3c2', 'Theater', '🎬'),     place('r3c3', 'Dentist', '🦷')
+            place('r3c0', 'Home', '🏠'),     place('r3c1', 'Bus Stop', '🚌'), place('r3c2', 'Movie Theater', '🎬'),     place('r3c3', 'Dentist', '🦷')
         ]
     },
     {

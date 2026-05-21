@@ -98,7 +98,7 @@ progressStore.update(p => ({
 // Award helpers
 // ---------------------------------------------------------------------------
 
-export function awardSticker(stickerKey) {
+export function awardSticker(stickerKey, { silent = false } = {}) {
     let justAwarded = false;
     stickersStore.update(stickers => {
         if (!stickers[stickerKey]) {
@@ -112,7 +112,10 @@ export function awardSticker(stickerKey) {
         return stickers;
     });
 
-    if (justAwarded && typeof window !== 'undefined') {
+    // `silent` lets callers (e.g. LearnPlaces) record the badge without
+    // triggering the fullscreen celebration overlay — useful when the user
+    // is browsing and a popup would feel jarring.
+    if (justAwarded && !silent && typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('sticker-earned', {
             detail: { sticker: stickerKey },
         }));

@@ -25,9 +25,11 @@
 
     if (starsToAward > 0) addStars("learnPlaces", starsToAward);
 
-    awardSticker("firstAdventure");
+    // Silent awards — the user is browsing; a fullscreen celebration here
+    // would feel jarring. Badges still show up in the Achievements modal.
+    awardSticker("firstAdventure", { silent: true });
     if (get(progressStore).learnPlaces.placesViewed.length >= 10) {
-      awardSticker("explorerBadge");
+      awardSticker("explorerBadge", { silent: true });
     }
   }
 
