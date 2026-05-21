@@ -2,28 +2,27 @@
    Interactive Elements & Utility Classes
    ============================================ */
 
-/* Card hover lift — smooth Material-style ease-out, no overshoot.
-   Slight scale adds depth; longer duration on enter, snappier on press. */
+/* Card hover lift — soft, restrained motion matching the primary CTA button
+   (hover:-translate-y-0.5 hover:shadow-xl transition-all duration-300). */
 .hover-lift {
-  transform: translateY(0) scale(1);
-  transition: transform 380ms cubic-bezier(0.22, 0.61, 0.36, 1),
-              box-shadow 380ms cubic-bezier(0.22, 0.61, 0.36, 1),
-              border-color 280ms ease-out;
+  transform: translateY(0);
+  transition: transform 300ms ease-out,
+              box-shadow 300ms ease-out,
+              border-color 300ms ease-out;
   will-change: transform;
 }
 .hover-lift:hover {
-  transform: translateY(-8px) scale(1.015);
+  transform: translateY(-2px);
   box-shadow:
-    0 24px 38px -10px rgba(31, 22, 38, 0.14),
-    0 12px 18px -8px rgba(31, 22, 38, 0.08),
-    0 2px 4px -1px rgba(31, 22, 38, 0.04);
+    0 10px 20px -8px rgba(31, 22, 38, 0.10),
+    0 4px 8px -4px rgba(31, 22, 38, 0.06);
 }
 .hover-lift:active {
-  transform: translateY(-2px) scale(1);
-  transition-duration: 140ms;
+  transform: translateY(0);
+  transition-duration: 120ms;
 }
 .hover-lift:focus-visible {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
 }
 
 /* Gradient text */
