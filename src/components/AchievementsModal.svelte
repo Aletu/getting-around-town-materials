@@ -69,15 +69,22 @@
 
 {#if isOpen}
   <div
-    class="modal modal-open z-[100]"
+    class="fixed inset-0 z-[100] flex items-center justify-center p-4"
     role="dialog"
     aria-modal="true"
     aria-labelledby="achievements-title"
+    transition:fade={{ duration: 180 }}
   >
+    <button
+      type="button"
+      class="absolute inset-0 bg-base-content/40 backdrop-blur-sm"
+      on:click={onClose}
+      aria-label="Close achievements"
+      tabindex="-1"
+    ></button>
     <div
-      class="modal-box relative max-w-2xl w-full bg-base-100 shadow-2xl border border-base-200/50 rounded-3xl p-0 overflow-hidden max-h-[90vh] flex flex-col"
-      in:scale={{ start: 0.95, duration: 220 }}
-      out:fade={{ duration: 150 }}
+      class="relative z-10 max-w-2xl w-full bg-base-100 shadow-2xl border border-base-200/50 rounded-3xl overflow-hidden max-h-[90vh] flex flex-col"
+      transition:scale={{ start: 0.95, duration: 220 }}
       use:focusTrap
     >
       <!-- Header -->
@@ -244,13 +251,5 @@
         </button>
       </footer>
     </div>
-
-    <button
-      type="button"
-      class="modal-backdrop bg-base-content/40 backdrop-blur-sm"
-      on:click={onClose}
-      aria-label="Close achievements"
-      tabindex="-1"
-    ></button>
   </div>
 {/if}

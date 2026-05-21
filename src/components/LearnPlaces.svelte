@@ -310,7 +310,8 @@
       <div class="card-body items-center text-center pt-8 pb-5 px-4 sm:px-6 relative">
         <div class="absolute right-4 top-4">
           <SpeakButton
-            text={`${selectedPlace.label}. ${selectedPlace.description}`}
+            text={selectedPlace.label}
+            label="Say the place name"
             size="sm"
             variant="ghost"
           />

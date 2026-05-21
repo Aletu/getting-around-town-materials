@@ -21,9 +21,21 @@
   let currentScenario;
   let items = [];
   let feedback = '';
+  let feedbackType = ''; // 'success' | 'error' | ''
   let completed = false; // true when the whole session is done
   let scenarioDone = false; // true when the current scenario has been correctly ordered
   let selectedId = null;
+
+  // Rotating motivational messages for wrong attempts — picked at random so
+  // the kid sees a different cheer each time instead of the same "Try again".
+  const ENCOURAGEMENTS = [
+    '🌟 Almost! Read the story one more time — you can do it!',
+    '💪 Keep going! Think about what happens first.',
+    '🤔 So close! Look at the order again.',
+    '✨ Nice try! What comes after the first step?',
+    '🚀 You are learning! Give it another go.',
+    '🌈 Great effort! Move one card at a time.'
+  ];
 
   function startNewSession() {
     sessionScenarios = shuffle($safeWalkStore).slice(0, SAFE_WALK_SESSION);
@@ -41,6 +53,7 @@
     currentScenario = sessionScenarios[currentIndex];
     items = shuffle(currentScenario.sequence.map(i => ({ ...i })));
     feedback = '';
+    feedbackType = '';
     scenarioDone = false;
     selectedId = null;
   }
@@ -142,7 +155,8 @@
   function checkOrder() {
     const isCorrect = items.every((it, idx) => it.correctIndex === idx);
     if (isCorrect) {
-      feedback = '✅ Correct sequence!';
+      feedback = '✅ Great job! You got it!';
+      feedbackType = 'success';
       scenarioDone = true;
 
       // small delay gives time to read feedback before switching automatically
@@ -155,7 +169,8 @@
         }
       }, 700);
     } else {
-      feedback = '❌ Not yet. Try again.';
+      feedback = ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)];
+      feedbackType = 'error';
     }
   }
   function restart() {
@@ -417,8 +432,8 @@
 
         {#if feedback}
           <div class="mt-6 p-4 rounded-xl text-center font-semibold border
-            {feedback.includes('Correct') ? 'bg-success/10 text-success border-success/20' : ''}
-            {feedback.includes('Not') ? 'bg-error/10 text-error border-error/20' : ''}"
+            {feedbackType === 'success' ? 'bg-success/10 text-success border-success/20' : ''}
+            {feedbackType === 'error' ? 'bg-warning/10 text-warning border-warning/20' : ''}"
                in:fly={{ y: 10, duration: 250 }}
                role="status" aria-live="polite">
             {feedback}

@@ -22,6 +22,19 @@
   let finished = false;
   let selectedId = null;
   let buttonStatus = null; // 'correct' or 'incorrect'
+  let eliminatedIds = []; // option ids already tried wrong for the current question
+  let wrongAttemptsForCurrent = 0;
+  let feedback = ''; // motivational message shown after a wrong attempt
+
+  // Rotating cheers — picked randomly so it doesn't feel repetitive.
+  const ENCOURAGEMENTS = [
+    '🌟 Almost! Read the question one more time — you can do it!',
+    '💪 Keep going! Try a different answer.',
+    '🤔 Good try! Which one sounds the most polite?',
+    '✨ Nice attempt! Pick another one and see.',
+    '🚀 You are learning! Give it another go.',
+    '🌈 Great effort! Think about what the person really needs.'
+  ];
 
   onMount(() => {
     // Ensure store is a valid array and has items. If not, reset to defaults.
@@ -45,6 +58,9 @@
     finished = false;
     selectedId = null;
     buttonStatus = null;
+    eliminatedIds = [];
+    wrongAttemptsForCurrent = 0;
+    feedback = '';
   }
 
   // Re-init if store changes and we have no items (initial load)
@@ -58,7 +74,7 @@
 
   function selectOption(id) {
     const current = items[currentIndex];
-    if (finished || !current || buttonStatus !== null) return;
+    if (finished || !current || buttonStatus !== null || eliminatedIds.includes(id)) return;
 
     attempts += 1;
     selectedId = id;
@@ -66,21 +82,33 @@
     if (id === current.answer) {
       score += 1;
       buttonStatus = "correct";
+      feedback = '';
+      // Advance after a short delay so the kid sees the green confirmation.
+      setTimeout(() => {
+        buttonStatus = null;
+        selectedId = null;
+        eliminatedIds = [];
+        wrongAttemptsForCurrent = 0;
+        feedback = '';
+        if (currentIndex < items.length - 1) {
+          currentIndex += 1;
+        } else {
+          finished = true;
+          // Perfect-score celebration is handled by the global Celebration
+          // component (triggered via the "sticker-earned" event).
+        }
+      }, 1100);
     } else {
       buttonStatus = "incorrect";
+      wrongAttemptsForCurrent += 1;
+      eliminatedIds = [...eliminatedIds, id];
+      feedback = ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)];
+      // Brief red flash, then re-enable the remaining options so the kid can try again.
+      setTimeout(() => {
+        buttonStatus = null;
+        selectedId = null;
+      }, 700);
     }
-
-    setTimeout(() => {
-      buttonStatus = null;
-      selectedId = null;
-      if (currentIndex < items.length - 1) {
-        currentIndex += 1;
-      } else {
-        finished = true;
-        // Perfect-score celebration is handled by the global Celebration
-        // component (triggered via the "sticker-earned" event).
-      }
-    }, 1200); // Wait enough time for user to see the correct answer
   }
 
   function restart() {
@@ -435,37 +463,30 @@
           <!-- Answer Options -->
           <div class="grid gap-2.5 sm:grid-cols-2">
             {#each items[currentIndex].options as opt, i (opt.id)}
+              {@const isEliminated = eliminatedIds.includes(opt.id)}
               <button
                 type="button"
-                class="group relative flex items-center gap-3 p-4 rounded-xl border-2 transition-all duration-200 active:scale-[0.98] bg-base-100 text-left
-              {selectedId !== opt.id &&
-                !(
-                  buttonStatus === 'incorrect' &&
-                  opt.id === items[currentIndex].answer
-                )
+                class="group relative flex items-center gap-3 p-4 rounded-xl border-2 transition-all duration-200 bg-base-100 text-left
+              {isEliminated
+                  ? 'border-base-200 bg-base-200/50 cursor-not-allowed opacity-60'
+                  : 'active:scale-[0.98]'}
+              {!isEliminated && selectedId !== opt.id
                   ? 'border-base-200 hover:border-primary/40 hover:bg-primary/5'
                   : ''}
               {selectedId === opt.id && buttonStatus === 'correct'
                   ? 'border-success bg-success/10'
                   : ''}
-              {buttonStatus === 'incorrect' &&
-                opt.id === items[currentIndex].answer
-                  ? 'border-success bg-success/10'
-                  : ''}
               {selectedId === opt.id && buttonStatus === 'incorrect'
-                  ? 'border-error bg-error/10'
+                  ? 'border-error bg-error/10 animate-shake'
                   : ''}"
                 on:click={() => selectOption(opt.id)}
-                disabled={buttonStatus !== null}
+                disabled={buttonStatus !== null || isEliminated}
                 aria-label={`Answer option: ${opt.text}`}
               >
                 <div
-                  class="w-8 h-8 rounded-lg bg-base-200 flex items-center justify-center font-bold text-sm text-base-content/50 group-hover:bg-primary group-hover:text-primary-content transition-colors flex-shrink-0
+                  class="w-8 h-8 rounded-lg bg-base-200 flex items-center justify-center font-bold text-sm text-base-content/50 transition-colors flex-shrink-0
+                {!isEliminated ? 'group-hover:bg-primary group-hover:text-primary-content' : ''}
                 {selectedId === opt.id && buttonStatus === 'correct'
-                    ? 'bg-success text-success-content'
-                    : ''}
-                {buttonStatus === 'incorrect' &&
-                  opt.id === items[currentIndex].answer
                     ? 'bg-success text-success-content'
                     : ''}
                 {selectedId === opt.id && buttonStatus === 'incorrect'
@@ -475,11 +496,11 @@
                   {String.fromCharCode(65 + i)}
                 </div>
                 <span
-                  class="text-sm sm:text-base font-medium leading-snug flex-1"
+                  class="text-sm sm:text-base font-medium leading-snug flex-1 {isEliminated ? 'line-through text-base-content/40' : ''}"
                   >{opt.text}</span
                 >
 
-                {#if (selectedId === opt.id && buttonStatus === "correct") || (buttonStatus === "incorrect" && opt.id === items[currentIndex].answer)}
+                {#if selectedId === opt.id && buttonStatus === "correct"}
                   <div class="text-success flex-shrink-0">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -512,6 +533,17 @@
               </button>
             {/each}
           </div>
+
+          {#if feedback && wrongAttemptsForCurrent > 0 && buttonStatus !== 'correct'}
+            <div
+              class="mt-4 p-3 sm:p-4 rounded-xl text-center font-semibold border bg-warning/10 text-warning border-warning/20"
+              in:fly={{ y: 10, duration: 250 }}
+              role="status"
+              aria-live="polite"
+            >
+              {feedback}
+            </div>
+          {/if}
 
           <!-- Footer Stats -->
           <div

@@ -4,6 +4,10 @@
   import Toast from "./components/Toast.svelte";
   import Celebration from "./components/Celebration.svelte";
   import Icon from "./components/Icon.svelte";
+  // AchievementsModal is statically imported (small, lazy-loading it produced
+  // a perceptible delay between clicking Profile and the modal fading in,
+  // which read as a backdrop flicker).
+  import AchievementsModal from "./components/AchievementsModal.svelte";
   import ucrLogo from "./assets/firma-ucr-vertical.svg";
   import {
     teacherMode,
@@ -515,7 +519,8 @@
                 />
                 <div class="h-px w-16 sm:h-12 sm:w-px bg-white/20"></div>
                 <div class="text-center sm:text-left">
-                  <p class="font-bold text-lg">TCU-501 Project</p>
+                  <p class="font-bold text-lg">TCU-501 Project: Getting around town!</p>
+                  <p class="text-sm opacity-60">By Alejandro Solórzano</p>
                   <p class="text-sm opacity-60">Escuela de Lenguas Modernas</p>
                   <p class="text-sm opacity-60">Universidad de Costa Rica</p>
                 </div>
@@ -615,11 +620,7 @@
   {/await}
 {/if}
 
-{#if showAchievements}
-  {#await import("./components/AchievementsModal.svelte") then { default: AchievementsModal }}
-    <svelte:component this={AchievementsModal} isOpen={true} onClose={() => (showAchievements = false)} />
-  {/await}
-{/if}
+<AchievementsModal isOpen={showAchievements} onClose={() => (showAchievements = false)} />
 
 <Celebration
   show={showCelebration}
