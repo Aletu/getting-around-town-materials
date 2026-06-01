@@ -15,10 +15,23 @@
   let currentIndex = 0;
   let currentScenario;
   let feedback = '';
+  let feedbackType = ''; // 'success' | 'error' | ''
   let completed = false;
   let scenarioDone = false;
   let wrongId = null;
   let wrongTimer = null;
+
+  // Rotating motivational messages for wrong taps — picked at random so the kid
+  // sees a different cheer each time instead of the same "Not quite". Matches the
+  // encouraging tone used in Short Q&A and Daily Sequences.
+  const ENCOURAGEMENTS = [
+    '🧭 Almost! Read the directions one more time — you can do it!',
+    '💪 Keep going! Check the compass and try another place.',
+    '🤔 Good try! Which way does the arrow point?',
+    '✨ Nice try! Count the steps again and have another go.',
+    '🚀 You are exploring! Give it another try.',
+    '🌈 Great effort! Follow the path one move at a time.'
+  ];
 
   function startNewSession() {
     sessionScenarios = shuffle(MAP_QUESTS).slice(0, MAP_QUEST_SESSION);
@@ -30,6 +43,7 @@
   function loadCurrentScenario() {
     currentScenario = sessionScenarios[currentIndex];
     feedback = '';
+    feedbackType = '';
     scenarioDone = false;
     wrongId = null;
     if (wrongTimer) { clearTimeout(wrongTimer); wrongTimer = null; }
@@ -49,7 +63,8 @@
     if (completed || scenarioDone || cell.type !== 'place') return;
 
     if (cell.id === currentScenario.correctId) {
-      feedback = '✅ You found it!';
+      feedback = '🎉 You found it! Great map reading!';
+      feedbackType = 'success';
       scenarioDone = true;
       setTimeout(() => {
         if (currentIndex < sessionScenarios.length - 1) {
@@ -60,7 +75,8 @@
         }
       }, 700);
     } else {
-      feedback = '❌ Not quite. Try again.';
+      feedback = ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)];
+      feedbackType = 'error';
       wrongId = cell.id;
       if (wrongTimer) clearTimeout(wrongTimer);
       wrongTimer = setTimeout(() => { wrongId = null; }, 600);
@@ -234,8 +250,8 @@
         {#if feedback}
           <div
             class="mt-5 p-3 sm:p-4 rounded-xl text-center font-semibold border
-              {feedback.includes('found') ? 'bg-success/10 text-success border-success/20' : ''}
-              {feedback.includes('Not') ? 'bg-error/10 text-error border-error/20' : ''}"
+              {feedbackType === 'success' ? 'bg-success/10 text-success border-success/20' : ''}
+              {feedbackType === 'error' ? 'bg-warning/10 text-warning border-warning/20' : ''}"
             in:fly={{ y: 10, duration: 250 }}
             role="status"
             aria-live="polite"

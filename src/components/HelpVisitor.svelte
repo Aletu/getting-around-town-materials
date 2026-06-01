@@ -19,6 +19,18 @@
   let selectedId = null;
   let buttonStatus = null; // 'correct' or 'incorrect'
   let messages = [];
+  let feedback = ''; // motivational message shown after a wrong attempt
+
+  // Rotating cheers for wrong attempts — keeps the tone warm and encouraging,
+  // matching Short Q&A and the other modules.
+  const ENCOURAGEMENTS = [
+    '🌟 Almost! Read what the visitor needs one more time — you can do it!',
+    '💪 Keep going! Try a different place.',
+    '🤔 Good try! Think about where that would happen.',
+    '✨ Nice try! Pick another spot and see.',
+    '🚀 You are learning! Give it another go.',
+    '🌈 Great effort! Where would you go for that?'
+  ];
 
   // Initialize messages when store is ready
   $: if ($scenariosStore.length > 0 && messages.length === 0) {
@@ -45,11 +57,13 @@
     if (current && id === current.answer) {
       score++;
       buttonStatus = 'correct';
+      feedback = '';
       advance();
     } else {
       buttonStatus = 'incorrect';
       wrongAttemptsForCurrent += 1;
       eliminatedIds = [...eliminatedIds, id];
+      feedback = ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)];
       setTimeout(() => {
         buttonStatus = null;
         selectedId = null;
@@ -65,6 +79,7 @@
         currentIndex++;
         wrongAttemptsForCurrent = 0;
         eliminatedIds = [];
+        feedback = '';
       } else {
         finished = true;
       }
@@ -80,6 +95,7 @@
     finished = false;
     selectedId = null;
     buttonStatus = null;
+    feedback = '';
     messages = shuffle($scenariosStore).slice(0, Math.min(HELP_VISITOR_SESSION, $scenariosStore.length));
   }
 
@@ -376,8 +392,19 @@
           </div>
         {/key}
         
+        {#if feedback && wrongAttemptsForCurrent > 0 && buttonStatus !== 'correct'}
+          <div
+            class="mt-6 p-3 sm:p-4 rounded-xl text-center font-semibold border bg-warning/10 text-warning border-warning/20"
+            in:fly={{ y: 10, duration: 250 }}
+            role="status"
+            aria-live="polite"
+          >
+            {feedback}
+          </div>
+        {/if}
+
         {#if wrongAttemptsForCurrent >= 1 && current?.hint}
-          <div class="flex items-start gap-3 mt-6 p-4 bg-info/10 rounded-xl border border-info/20" in:fade>
+          <div class="flex items-start gap-3 mt-4 p-4 bg-info/10 rounded-xl border border-info/20" in:fade>
             <div class="flex-shrink-0 w-8 h-8 rounded-full bg-info/20 flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>

@@ -5,12 +5,21 @@
 @layer base {
   html, body {
     @apply bg-base-200 text-base-content;
-    font-family: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Plus Jakarta Sans', 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     scroll-behavior: smooth;
     scrollbar-gutter: stable;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Display face for headings — gives the UI a crafted, editorial warmth
+     rather than the default rounded-sans EdTech look. Falls back to the body
+     font under the dyslexia-friendly override (which forces its own family). */
+  h1, h2, h3, .font-display {
+    font-family: 'Fraunces', Georgia, Cambria, 'Times New Roman', serif;
+    font-optical-sizing: auto;
+    letter-spacing: -0.01em;
   }
 
   /* Prevent FOUC */
@@ -20,14 +29,18 @@
     transition: opacity 0.2s ease-in;
   }
 
-  /* Subtle background pattern */
+  /* Warm-paper background: a soft marigold/terracotta wash plus a faint dot
+     grid for a tactile, less-flat feel. Kept very low-contrast so text stays
+     fully legible. */
   body {
-    background-color: #fdfcfb;
+    background-color: #fffdf8;
     background-image:
-      radial-gradient(circle at 100% 0%, rgba(101, 195, 200, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 0% 100%, rgba(239, 159, 188, 0.03) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, rgba(238, 175, 58, 0.02) 0%, transparent 70%);
-    background-attachment: fixed;
+      radial-gradient(circle at 12% -5%, rgba(234, 161, 46, 0.10) 0%, transparent 42%),
+      radial-gradient(circle at 92% 0%, rgba(214, 85, 47, 0.07) 0%, transparent 40%),
+      radial-gradient(circle at 50% 115%, rgba(31, 138, 130, 0.06) 0%, transparent 55%),
+      radial-gradient(rgba(43, 32, 24, 0.045) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 22px 22px;
+    background-attachment: fixed, fixed, fixed, fixed;
   }
 
   /* ============================================
@@ -37,25 +50,25 @@
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    background: rgba(101, 195, 200, 0.3);
+    background: rgba(214, 85, 47, 0.35);
     border-radius: 5px;
     border: 2px solid transparent;
     background-clip: content-box;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(101, 195, 200, 0.5);
+    background: rgba(214, 85, 47, 0.55);
     background-clip: content-box;
   }
 
   /* Firefox */
-  * { scrollbar-width: thin; scrollbar-color: rgba(101, 195, 200, 0.3) transparent; }
+  * { scrollbar-width: thin; scrollbar-color: rgba(214, 85, 47, 0.35) transparent; }
 
   /* ============================================
      Selection Styling
      ============================================ */
 
-  ::selection       { background-color: rgba(101, 195, 200, 0.3); color: inherit; }
-  ::-moz-selection  { background-color: rgba(101, 195, 200, 0.3); color: inherit; }
+  ::selection       { background-color: rgba(214, 85, 47, 0.22); color: inherit; }
+  ::-moz-selection  { background-color: rgba(214, 85, 47, 0.22); color: inherit; }
 }
 
 /* ============================================
