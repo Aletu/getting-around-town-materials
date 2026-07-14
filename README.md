@@ -7,7 +7,7 @@ An educational web app built with **Svelte 4 + Vite + Tailwind (DaisyUI)** to he
 - **Help the Visitor**: read scenarios and choose the correct place.
 - **Daily Sequences**: put daily activities in the correct order.
 - **Short Q&A**: answer practical multiple-choice questions.
-- **Plan Your Trip**: choose what to pack and how to travel safely.
+- **Map Quest**: follow written directions on a town map and find the destination.
 - **Learn Places**: browse place vocabulary and context.
 
 ## Quick links
