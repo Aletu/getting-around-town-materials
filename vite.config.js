@@ -7,18 +7,20 @@ export default defineConfig({
     svelte(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['*.svg'],
+      includeAssets: ['*.svg', '*.png'],
       manifest: {
         name: 'Getting Around Town',
         short_name: 'Around Town',
         description: 'Interactive ESL learning — navigate your community',
-        theme_color: '#65c3c8',
+        theme_color: '#d6552f',
         background_color: '#fdfcfb',
         display: 'standalone',
         start_url: '/',
         icons: [
           { src: 'pwa-icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
-          { src: 'pwa-icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'maskable' },
+          { src: 'pwa-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: 'pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {

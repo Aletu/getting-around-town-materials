@@ -1,4 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#65c3c8"/>
-  <text x="256" y="375" font-size="320" text-anchor="middle" font-family="Apple Color Emoji,Segoe UI Emoji,Noto Color Emoji,sans-serif">🏘️</text>
+  <rect width="512" height="512" rx="96" fill="#d6552f"/>
+  <circle cx="396" cy="112" r="34" fill="#ffd166"/>
+  <path d="M100 252 L256 116 L412 252 Z" fill="#ffd166"/>
+  <rect x="146" y="236" width="220" height="152" rx="12" fill="#fff7f0"/>
+  <rect x="236" y="308" width="52" height="80" rx="10" fill="#d6552f"/>
+  <rect x="172" y="264" width="46" height="46" rx="9" fill="#65c3c8"/>
+  <rect x="294" y="264" width="46" height="46" rx="9" fill="#65c3c8"/>
+  <rect x="90" y="432" width="64" height="16" rx="8" fill="#fff7f0"/>
+  <rect x="224" y="432" width="64" height="16" rx="8" fill="#fff7f0"/>
+  <rect x="358" y="432" width="64" height="16" rx="8" fill="#fff7f0"/>
 </svg>
